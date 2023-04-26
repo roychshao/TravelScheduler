@@ -16,6 +16,7 @@ PORT=3000
 **build the static resource**
 ```
 cd view
+pnpm install
 pnpm run build
 ```
 **back to /TravelScheduler and start**
