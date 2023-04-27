@@ -1,9 +1,18 @@
-import BottomNavbar from './common/BottomNavbar.jsx';
+import { Routes, Route } from 'react-router-dom'
+import Login from './pages/Login/Login.jsx'
+import Catalog from './pages/Catalog/Catalog.jsx'
 
 function App() {
-  return (
-      <BottomNavbar/>
-  )
+    return (
+        <div>
+            <div>
+                <Routes>
+                    <Route path="/catalog/*" element={<Catalog/>}/>
+                    <Route path="/" element={<Login/>}/>
+                </Routes>
+            </div>
+        </div>
+    )
 }
 
 export default App

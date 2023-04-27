@@ -3,7 +3,7 @@
 ### To run the project:
 **clone the repo**
 ```
-git@github.com:roychshao/TravelScheduler.git
+git clone git@github.com:roychshao/TravelScheduler.git
 ```
 **install dependencies**
 ```

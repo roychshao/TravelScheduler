@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import { BottomNavigation, BottomNavigationAction } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Person2Icon from '@mui/icons-material/Person2';
@@ -13,18 +15,36 @@ const useStyles = makeStyles({
         bottom: 0,
         left: 0,
         right: 0,
-        backgroundImage: 'linear-gradient(#e0eafc 30%, #fff 90%)'
+        backgroundImage: 'linear-gradient(#fff 10%, #e0eafc 90%)'
     },
 })
 
 const BottomNavbar = () => {
 
     const classes = useStyles();
-
-    const [value, setValue] = useState('recents');
+    const [value, setValue] = useState('travel');
+    const navigate = useNavigate();
+    const dispatcher = useDispatch();
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
+        switch (newValue) {
+            case 'user':
+                navigate('/catalog/user');
+                break;
+            case 'spot':
+                navigate('/catalog/spot');
+                break;
+            case 'group':
+                navigate('/catalog/group');
+                break;
+            case 'travel':
+                navigate('/catalog/travel');
+                break;
+            default:
+                console.log("no matched path to redirect");
+                break;
+        };
     };
 
     return (
