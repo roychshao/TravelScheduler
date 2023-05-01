@@ -1,6 +1,8 @@
 const initialState = {
-    isLogin: false,
     loginWithGoogle: false,
+    displayName: "",
+    email: "",
+    photoURL: "",
 };
 
 const loginReducer = (state = initialState, action) => {
@@ -8,14 +10,18 @@ const loginReducer = (state = initialState, action) => {
         case 'LoggedInWithGoogle':
             return {
                 ...state,
-                isLogin: true,
                 loginWithGoogle: true,
+                displayName: action.payload.displayName,
+                email: action.payload.email,
+                photoURL: action.payload.photoURL
             }
         case 'LoggedOutWithGoogle':
             return {
                 ...state,
-                isLogin: false,
                 loginWithGoogle: false,
+                displayName: "",
+                email: "",
+                photoURL: ""
             }
         default:
             return state;

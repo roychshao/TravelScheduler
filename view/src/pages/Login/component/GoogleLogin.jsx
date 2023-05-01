@@ -1,15 +1,14 @@
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { auth, provide } from './../../../firebase.js'
-import { signInWithRedirect, getRedirectResult } from 'firebase/auth'
+import { signInWithPopup, signInWithRedirect, getRedirectResult } from 'firebase/auth'
 import { useDispatch } from 'react-redux'
 import { loggedinwithgoogle } from './../../../actions/loginAction.js'
-import { setuserprofile } from './../../../actions/userAction.js'
 import { FcGoogle } from 'react-icons/fc'
 import { createUseStyles } from 'react-jss'
 
 const GoogleLogin = () => {
-    
+
     const navigate = useNavigate();
     const dispatcher = useDispatch();
     const useStyles = createUseStyles({
@@ -38,47 +37,54 @@ const GoogleLogin = () => {
 
     const classes = useStyles();
 
-    const [onLogin, setOnLogin] = useState(false);
+    /* 使用signInWithRedirect則將註解部份去掉 */
+    // const [onLogin, setOnLogin] = useState(false);
 
-    useEffect(() => {
-        const getData = async () => {
-            try {
-                const loginUser = await getRedirectResult(auth)
-                if(loginUser) {
-                    dispatcher(loggedinwithgoogle());
-                    dispatcher(setuserprofile(loginUser.user.displayName, loginUser.user.email))
-                    navigate('/catalog/travel');
-                }
-            } catch (err) {
-                console.log(err);
-            }
-        };
-        setOnLogin(false);
-        getData();
-    }, [onLogin])
+    // useEffect(() => {
+    //     const getData = async () => {
+    //         try {
+    //             const loginUser = await getRedirectResult(auth)
+    //             if(loginUser) {
+    //                 dispatcher(loggedinwithgoogle());
+    //                 dispatcher(setuserprofile(loginUser.user.displayName, loginUser.user.email))
+    //                 navigate('/catalog/travel');
+    //             }
+    //         } catch (err) {
+    //             console.log(err);
+    //         }
+    //     };
+    //     setOnLogin(false);
+    //     getData();
+    // }, [onLogin])
 
     const googleLogin = async () => {
-        setOnLogin(true);
-        const button = document.getElementById("google-login-btn");
-        signInWithRedirect(auth, provide);
+        // setOnLogin(true);
+        const result = await signInWithPopup(auth, provide);
+
+        if(result) {
+            console.log(result);
+            const user = result.user;
+            dispatcher(loggedinwithgoogle(user.displayName, user.email, user.photoURL));
+            navigate('/catalog/travel');
+        }
     }
 
-    if(onLogin) {
-        return null;
-    }
-    else {
-        return (
-            <div className={classes.Wrapper}>
-                <button
-                    id="google-login-btn"
-                    className={classes.GoogleLogin} 
-                    onClick={googleLogin}>
-                    <FcGoogle size='1.5rem'/>
-                    Login with Google
-                </button>
-            </div>
-        );
-    }
+    // if(onLogin) {
+    //     return null;
+    // }
+    // else {
+    return (
+        <div className={classes.Wrapper}>
+            <button
+                id="google-login-btn"
+                className={classes.GoogleLogin} 
+                onClick={googleLogin}>
+                <FcGoogle size='1.5rem'/>
+                Login with Google
+            </button>
+        </div>
+    );
+    // }
 };
 
 export default GoogleLogin
