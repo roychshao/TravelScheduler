@@ -82,7 +82,8 @@ body: {
                     spot_rank,
                     spot_openhour,
                     spot_discription,
-                    spot_time,
+                    spot_arrive_time,
+                    spot_start_time,
                     spot_transportation,  // "" if terminus
                     spot_tag_id,
                     spot_tag_name,
