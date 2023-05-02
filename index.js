@@ -2,8 +2,6 @@ const express = require("express");
 const dotenv = require('dotenv').config({ path: require('find-config')('.env') });
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger/swagger.json');
 
 const app = express();
 
@@ -23,7 +21,6 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }));
 app.use(express.static('./view/dist'));
 
 // Routes
-app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // root router
 app.get("/", (req, res) => {
