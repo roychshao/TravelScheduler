@@ -45,6 +45,7 @@ body: {
             travel_peoplenum,
             travel_discription,
             travel_done,
+            group_id,
         ]
     }
 }
@@ -71,6 +72,7 @@ body: {
         travel_peoplenum,
         travel_discription,
         travel_done,
+        group_id,
         days: [
             spots: [
                 spot: {
@@ -103,6 +105,7 @@ param: {
     travel_peoplenum,
     travel_discription,
     travel_done,
+    group_id,
 }
 ```
 
@@ -144,6 +147,7 @@ param: {
     travel_peoplenum,
     travel_discription,
     travel_done,
+    group_id,
 }
 ```
 
