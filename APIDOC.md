@@ -5,7 +5,7 @@
 
 request
 ```
-param: {
+body: {
     username,
     email
 }
@@ -27,7 +27,7 @@ body: {
 
 request
 ```
-param: {
+body: {
     user_id
 }
 ```
@@ -55,7 +55,7 @@ body: {
 
 request
 ```
-param: {
+body: {
     travel_id,
 }
 ```
@@ -99,7 +99,7 @@ body: {
 
 request
 ```
-param: {
+body: {
     user_id,
     travel_name,
     travel_date,
@@ -123,7 +123,7 @@ body: {
 
 request
 ```
-param: {
+body: {
     travel_id
 }
 ```
@@ -141,7 +141,7 @@ body: {
 
 request
 ```
-param: {
+body: {
     travel_id,
     travel_name,
     travel_date,
@@ -166,7 +166,7 @@ body: {
 
 request
 ```
-param: {
+body: {
     user_id,
 }
 ```
@@ -199,7 +199,7 @@ body: {
 
 request
 ```
-param: {
+body: {
     user_id,
     spot_name,
     spot_location,
@@ -225,7 +225,7 @@ body: {
 
 request
 ```
-param: {
+body: {
     spot_star,
     spot_discription,
     spot_tag_name,
@@ -245,7 +245,7 @@ body: {
 
 request
 ```
-param: {
+body: {
     spot_id,
 }
 ```
@@ -264,7 +264,7 @@ body: {
 
 request
 ```
-param: {
+body: {
     user_id
 }
 ```
@@ -297,7 +297,7 @@ body: {
 
 request
 ```
-param: {
+body: {
     group_name,
     group_discription,
     group_peoplenum,    // initially 1
@@ -317,7 +317,7 @@ body: {
 
 request
 ```
-param: {
+body: {
     group_id,
     user_id,
 }
@@ -336,7 +336,7 @@ body: {
 
 request
 ```
-param: {
+body: {
     group_id,
     user_id,
 }
@@ -355,7 +355,7 @@ body: {
 
 request
 ```
-param: {
+body: {
     group_id,
     group_name,
     group_discription,
@@ -375,7 +375,7 @@ body: {
 
 request
 ```
-param: {
+body: {
     group_id,
 }
 ```

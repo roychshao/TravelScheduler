@@ -1,12 +1,32 @@
-const express = require("express");
-const dotenv = require('dotenv').config({ path: require('find-config')('.env') });
-const cors = require('cors');
-const bodyParser = require('body-parser');
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import bodyParser from "body-parser";
+// TODO: session
+import morgan from "morgan";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+import helmet from "helmet";
+
+// import Routers
+import userRouter from "./routes/user.js";
 
 const app = express();
 
 const port = process.env.PORT || 8080;
 
+// log to access.log
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {
+    flags: 'a'
+})
+app.use(morgan('combined', { stream: accessLogStream }));
+
+
+// helmet
+app.use(helmet());
 
 // body-parser
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -21,6 +41,7 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }));
 app.use(express.static('./view/dist'));
 
 // Routes
+app.use('/api/user/', userRouter);
 
 // root router
 app.get("/", (req, res) => {
