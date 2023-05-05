@@ -5,30 +5,32 @@
 ```
 git clone git@github.com:roychshao/TravelScheduler.git
 ```
-**install dependencies**
-```
-pnpm install
-```
-**create .env file of your own**
+**create .env file in /backend like**
 ```properties
 PORT=3000
 SECRET=***
 
-DB_HOST=***
-DB_USER=***
-DB_PWD=***
-DB_PORT=***
-DB_DATABASE=***
+DB_HOST="localhost"
+DB_USER="root"
+DB_PWD="root"
+DB_PORT=3306
+DB_DATABASE"TravelScheduler
 ```
-**build the static resource**
+
+**run backend**
 ```
-cd view
 pnpm install
-pnpm run build
-```
-**back to /TravelScheduler and start**
-```
-cd ../
 pnpm start
 ```
-**open localhost:3000 in the browser and see the website**
+
+**create .env.local in /frontend like**
+```properties
+VITE_HOST_URL="http://localhost:3000/"
+```
+
+**run frontend**
+```
+pnpm install
+pnpm run dev
+```
+**then open localhost:3000 in the browser**
