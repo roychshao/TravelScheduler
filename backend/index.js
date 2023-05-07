@@ -26,7 +26,36 @@ app.use(morgan('combined', { stream: accessLogStream }));
 
 
 // helmet
-app.use(helmet());
+// app.use(helmet());
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+            'script-src': ["'self'", "'unsafe-inline'", '*'],
+            'connect-src': ["'self'", '*'],
+            'frame-src': ["'self'", '*']
+        }
+    }
+}));
+
+// helmet with all opened
+// app.use(
+//   helmet({
+//     contentSecurityPolicy: {
+//       directives: {
+//         defaultSrc: ["'self'", "*"],
+//         scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "*"],
+//         styleSrc: ["'self'", "'unsafe-inline'", "*"],
+//         imgSrc: ["'self'", "data:", "*"],
+//         fontSrc: ["'self'", "*"],
+//         connectSrc: ["'self'", "*"],
+//         frameSrc: ["'self'", "*"],
+//         objectSrc: ["'none'"],
+//         mediaSrc: ["'self'", "*"],
+//       },
+//     },
+//   })
+// );
 
 // body-parser
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -38,7 +67,7 @@ app.use(cors());
 // express
 app.use(express.json({ limit: "30mb", extended: true }));
 app.use(express.urlencoded({ limit: "30mb", extended: true }));
-app.use(express.static('./view/dist'));
+// app.use(express.static('./view/dist'));
 
 // Routes
 app.use('/api/user/', userRouter);
@@ -48,6 +77,6 @@ app.get("/", (req, res) => {
     res.send("Hello World!");
 });
 
-app.listen(3000, () => {
+app.listen(port, () => {
     console.log("App listening on port 3000");
 });

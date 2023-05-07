@@ -11,11 +11,13 @@ import { ThemeProvider, createTheme } from '@mui/system';
 
 const useStyles = makeStyles({
     bottomNavbar: {
-        position: 'fixed',
+        position: 'absolute',
+        width: '100%',
         bottom: 0,
         left: 0,
         right: 0,
-        backgroundImage: 'linear-gradient(#fff 10%, #e0eafc 90%)'
+        backgroundImage: 'linear-gradient(#fff 10%, #e0eafc 90%)',
+        zIndex: 999,
     },
 })
 
