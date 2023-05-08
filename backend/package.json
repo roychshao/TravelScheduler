@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,8 +17,12 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "find-config": "^1.0.0",
+    "fs": "0.0.1-security",
+    "helmet": "^6.1.5",
+    "morgan": "^1.10.0",
+    "mysql": "^2.18.1",
     "nodemon": "^2.0.22",
-    "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^4.6.2"
+    "path": "^0.12.7",
+    "url": "^0.11.0"
   }
 }

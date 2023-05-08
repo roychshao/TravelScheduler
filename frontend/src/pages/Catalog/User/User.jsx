@@ -13,7 +13,8 @@ const User = () => {
     const displayName = useSelector(state => state.loginReducer.displayName);
     const email = useSelector(state => state.loginReducer.email);
     const photoURL = useSelector(state => state.loginReducer.photoURL);
-    
+    const userId = useSelector(state => state.loginReducer.userId);
+
     const handleLogout = () => {
         // 確認是在登入狀態
         if(displayName && email && photoURL) {
@@ -33,6 +34,7 @@ const User = () => {
             <img src={photoURL} alt="user photo"/>
             <p>{displayName}</p>
             <p>{email}</p>
+            <p>{userId}</p>
             <Button variant="contained" onClick={handleLogout}>logout</Button>
         </div>
     )
