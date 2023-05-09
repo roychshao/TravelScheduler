@@ -5,6 +5,29 @@ const print_error = (err) => {
 }
 
 // TODO: transaction, prevent sql injection
+
+const authenticate = (user_id) => {
+    return new Promise((resolve, reject) => {
+        var sql = "SELECT user_id FROM user WHERE user_id = ?";
+        pool.getConnection( async (err, conn) => {
+            if(err) {
+                print_error(err);
+                reject(err);
+            } else {
+                await conn.query(sql, user_id, (err, results, fields) => {
+                    if(err)
+                        reject(err);
+                    else {
+                        conn.release();
+                        resolve(results);
+                    }
+                })
+            }
+        })
+    })
+}
+
+
 const register = (user_id, username, email) => {
     return new Promise((resolve, reject) => {
         var sql = "INSERT INTO user VALUE(?,?,?)";
@@ -30,4 +53,4 @@ const register = (user_id, username, email) => {
     })
 }
 
-export default { register }
+export default { register, authenticate }

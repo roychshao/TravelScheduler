@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { auth, provide } from './../../../firebase.js'
 import { signInWithPopup, signInWithRedirect, getRedirectResult } from 'firebase/auth'
 import { useDispatch } from 'react-redux'
-import { loggedinwithgoogle } from './../../../actions/loginAction.js'
+import { loggedinwithgoogle, register } from './../../../actions/loginAction.js'
 import { FcGoogle } from 'react-icons/fc'
 import { createUseStyles } from 'react-jss'
 
@@ -64,6 +64,7 @@ const GoogleLogin = () => {
         if(result) {
             console.log(result);
             const user = result.user;
+            dispatcher(register(user.displayName, user.email));
             dispatcher(loggedinwithgoogle(user.displayName, user.email, user.photoURL));
             navigate('/catalog/travel');
         }

@@ -1,5 +1,6 @@
 const initialState = {
     loginWithGoogle: false,
+    userId: "",
     displayName: "",
     email: "",
     photoURL: "",
@@ -22,6 +23,11 @@ const loginReducer = (state = initialState, action) => {
                 displayName: "",
                 email: "",
                 photoURL: ""
+            }
+        case 'Register':
+            return {
+                ...state,
+                userId: action.payload.userId
             }
         default:
             return state;
