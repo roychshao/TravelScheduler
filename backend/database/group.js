@@ -9,7 +9,7 @@ const print_error = (err) => {
 
 const create = (group_id, group_name, group_discription, group_peoplenum) => {
     return new Promise((resolve, reject) => {
-        var sql = "INSERT INTO group VALUE(?,?,?,?)";
+        var sql = "INSERT INTO `GROUP` VALUE(?,?,?,?)";
         // 從pool中拿一條connection
         pool.getConnection( async (err, conn) => {
             // 檢查連線時錯誤

@@ -13,6 +13,14 @@ export const register = async (req, res, next) => {
     const user_id = sha256Hasher.update(email).digest('base64');
     var isRegistered = false;
 
+    if(req.session.user_id != undefined) {
+        console.log("user_id in session: " + req.session.user_id);
+    }
+
+    req.session.user_id = user_id;
+    req.session.username = username;
+    req.session.email = email;
+
     await User.authenticate(user_id)
         .then(result => {
             if(result.length !== 0)

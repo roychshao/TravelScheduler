@@ -2,7 +2,7 @@ export const register_response = async (req, res, next) => {
 
     var response = {};
     
-    // 如果req中帶有message則表示是錯誤回傳
+    // 如果req中帶有err則表示是錯誤回傳
     if(req.err) {
         response = {
             "success": false,

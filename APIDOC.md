@@ -74,22 +74,24 @@ body: {
         travel_done,
         group_id,
         days: [
-            spots: [
-                spot: {
-                    spot_id,
-                    spot_name,
-                    spot_location,
-                    spot_rank,
-                    spot_openhour,
-                    spot_discription,
-                    spot_arrive_time,
-                    spot_start_time,
-                    spot_transportation,  // "" if terminus
-                    spot_tag_id,
-                    spot_tag_name,
-                    spot_tag_color,
-                }
-            ]
+            {
+                spots: [
+                    {
+                        spot_id,
+                        spot_name,
+                        spot_location,
+                        spot_rank,
+                        spot_openhour,
+                        spot_discription,
+                        spot_arrive_time,
+                        spot_start_time,
+                        spot_transportation,  // "" if terminus
+                        spot_tag_id,
+                        spot_tag_name,
+                        spot_tag_color,
+                    }
+                ]
+            }
         ]
     }
 }
@@ -178,7 +180,7 @@ body: {
     message: "",
     data: {
         spots: [
-            spot: {
+            {
                 spot_id,
                 spot_name,
                 spot_location,
@@ -276,13 +278,13 @@ body: {
     message: "",
     data: {
         groups: [
-            group: {
+            {
                 group_id,
                 group_name.
                 group_discription,
                 group_peoplenum,
                 members: [
-                    member: {
+                    {
                         username,
                         email
                     }

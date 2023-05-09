@@ -8,6 +8,9 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import helmet from "helmet";
+import session from "express-session";
+import mysqlSession from "express-mysql-session";
+import { pool } from "./database/pool.js";
 
 // import Routers
 import userRouter from "./routes/user.js";
@@ -63,12 +66,30 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // cors
-app.use(cors());
+// app.use(cors());
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
 
 // express
 app.use(express.json({ limit: "30mb", extended: true }));
 app.use(express.urlencoded({ limit: "30mb", extended: true }));
 // app.use(express.static('./view/dist'));
+
+// session
+const MySQLStore = mysqlSession(session);
+var sessionStore = new MySQLStore({}, pool)
+
+app.use(session({
+  secret: process.env.SECRET,
+  resave: false,
+  saveUninitialized: false,
+  store: sessionStore,
+  cookie: {
+    maxAge: 86400000
+  }
+}));
 
 // Routes
 app.use('/api/user/', userRouter);
@@ -80,6 +101,6 @@ app.get("/", (req, res) => {
     res.send("Hello World!");
 });
 
-app.listen(3000, () => {
+app.listen(port, () => {
     console.log(`App listening on port ${port}`);
 });
