@@ -11,6 +11,7 @@ import helmet from "helmet";
 
 // import Routers
 import userRouter from "./routes/user.js";
+import groupRouter from "./routes/group.js";
 
 const app = express();
 
@@ -71,6 +72,8 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }));
 
 // Routes
 app.use('/api/user/', userRouter);
+app.use('/api/group/', groupRouter);
+
 
 // root router
 app.get("/", (req, res) => {
@@ -78,5 +81,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(3000, () => {
-    console.log("App listening on port 3000");
+    console.log(`App listening on port ${port}`);
 });

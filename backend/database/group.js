@@ -5,9 +5,11 @@ const print_error = (err) => {
 }
 
 // TODO: transaction, prevent sql injection
-const register = (user_id, username, email) => {
+
+
+const create = (group_id, group_name, group_discription, group_peoplenum) => {
     return new Promise((resolve, reject) => {
-        var sql = "INSERT INTO user VALUE(?,?,?)";
+        var sql = "INSERT INTO group VALUE(?,?,?,?)";
         // 從pool中拿一條connection
         pool.getConnection( async (err, conn) => {
             // 檢查連線時錯誤
@@ -15,7 +17,7 @@ const register = (user_id, username, email) => {
                 print_error(err);
                 reject(err);
             } else {
-                await conn.query(sql, [user_id, username, email], (err, results, fields) => {
+                await conn.query(sql, [group_id, group_name, group_discription, group_peoplenum], (err, results, fields) => {
                     // 檢查sql執行時錯誤
                     if(err)
                         reject(err);
@@ -30,4 +32,4 @@ const register = (user_id, username, email) => {
     })
 }
 
-export default { register }
+export default {create}

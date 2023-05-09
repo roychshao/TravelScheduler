@@ -1,4 +1,4 @@
-export const register_response = async (req, res, next) => {
+export const create_response = async (req, res, next) => {
 
     var response = {};
     
@@ -6,15 +6,16 @@ export const register_response = async (req, res, next) => {
     if(req.err) {
         response = {
             "success": false,
-            "message": "使用者註冊失敗 err: " + req.err.message,
+            "message": "新增群組失敗 err: " + req.err.message,
             "data": {}
         }
+        console.log(response);
         res.status(500).json(response);
     } else {
         req.data = JSON.parse(req.data);
         response = {
             "success": true,
-            "message": "使用者註冊成功",
+            "message": "新增群組成功",
             "data": {}
         }
         response.data = req.data;
