@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { auth, provide } from './../../../firebase.js'
-import { signInWithPopup, signInWithRedirect, getRedirectResult } from 'firebase/auth'
+import { signInWithPopup, getAuth, setPersistence, inMemoryPersistence } from 'firebase/auth'
 import { useDispatch } from 'react-redux'
 import { loggedinwithgoogle, register } from './../../../actions/loginAction.js'
 import { FcGoogle } from 'react-icons/fc'
@@ -58,16 +58,21 @@ const GoogleLogin = () => {
     // }, [onLogin])
 
     const googleLogin = async () => {
-        // setOnLogin(true);
-        const result = await signInWithPopup(auth, provide);
+        // setOnLogin(true); 
+        
+        // TODO: persistence invalid
+        // await setPersistence().then( async () => {
 
-        if(result) {
-            console.log(result);
-            const user = result.user;
-            dispatcher(register(user.displayName, user.email));
-            dispatcher(loggedinwithgoogle(user.displayName, user.email, user.photoURL));
-            navigate('/catalog/travel');
-        }
+            const result = await signInWithPopup(auth, provide);
+
+            if(result) {
+                console.log(result);
+                const user = result.user;
+                dispatcher(register(user.displayName, user.email));
+                dispatcher(loggedinwithgoogle(user.displayName, user.email, user.photoURL));
+                navigate('/catalog/travel');
+            }
+        // });
     }
 
     // if(onLogin) {
