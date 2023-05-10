@@ -11,7 +11,7 @@ import helmet from "helmet";
 
 // import Routers
 import userRouter from "./routes/user.js";
-
+import spotRouter from "./routes/spot.js";
 const app = express();
 
 const port = process.env.PORT || 8080;
@@ -19,24 +19,25 @@ const port = process.env.PORT || 8080;
 // log to access.log
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {
-    flags: 'a'
-})
-app.use(morgan('combined', { stream: accessLogStream }));
-
+var accessLogStream = fs.createWriteStream(path.join(__dirname, "access.log"), {
+  flags: "a",
+});
+app.use(morgan("combined", { stream: accessLogStream }));
 
 // helmet
 // app.use(helmet());
-app.use(helmet({
+app.use(
+  helmet({
     contentSecurityPolicy: {
-        directives: {
-            ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-            'script-src': ["'self'", "'unsafe-inline'", '*'],
-            'connect-src': ["'self'", '*'],
-            'frame-src': ["'self'", '*']
-        }
-    }
-}));
+      directives: {
+        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+        "script-src": ["'self'", "'unsafe-inline'", "*"],
+        "connect-src": ["'self'", "*"],
+        "frame-src": ["'self'", "*"],
+      },
+    },
+  })
+);
 
 // helmet with all opened
 // app.use(
@@ -70,13 +71,14 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }));
 // app.use(express.static('./view/dist'));
 
 // Routes
-app.use('/api/user/', userRouter);
+app.use("/api/user/", userRouter);
+app.use("/api/spot/", spotRouter);
 
 // root router
 app.get("/", (req, res) => {
-    res.send("Hello World!");
+  res.send("Hello World!");
 });
 
 app.listen(port, () => {
-    console.log("App listening on port 3000");
+  console.log(`App listening on port ${port}`);
 });

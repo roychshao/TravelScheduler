@@ -1,9 +1,11 @@
 # TravelScheduler api doc
 
 ## User
-#### POST /api/user/register  
+
+#### POST /api/user/register
 
 request
+
 ```
 body: {
     username,
@@ -12,6 +14,7 @@ body: {
 ```
 
 response
+
 ```
 body: {
     success: true,
@@ -23,9 +26,11 @@ body: {
 ```
 
 ## Travel
+
 #### GET /api/travel
 
 request
+
 ```
 body: {
     user_id
@@ -33,6 +38,7 @@ body: {
 ```
 
 response
+
 ```
 body: {
     success: true,
@@ -54,6 +60,7 @@ body: {
 #### GET /api/travel/spot
 
 request
+
 ```
 body: {
     travel_id,
@@ -61,6 +68,7 @@ body: {
 ```
 
 response
+
 ```
 body: {
     success: true,
@@ -98,6 +106,7 @@ body: {
 #### POST /api/travel/create
 
 request
+
 ```
 body: {
     user_id,
@@ -111,6 +120,7 @@ body: {
 ```
 
 response
+
 ```
 body: {
     success: true,
@@ -122,6 +132,7 @@ body: {
 #### DELETE /api/travel/delete
 
 request
+
 ```
 body: {
     travel_id
@@ -129,6 +140,7 @@ body: {
 ```
 
 response
+
 ```
 body: {
     success: true,
@@ -140,6 +152,7 @@ body: {
 #### PUT /api/travel/edit
 
 request
+
 ```
 body: {
     travel_id,
@@ -153,6 +166,7 @@ body: {
 ```
 
 response
+
 ```
 body: {
     success: true,
@@ -162,9 +176,11 @@ body: {
 ```
 
 ## Spot
+
 #### GET /api/spot
 
 request
+
 ```
 body: {
     user_id,
@@ -172,6 +188,7 @@ body: {
 ```
 
 response
+
 ```
 body: {
     success: true,
@@ -198,21 +215,24 @@ body: {
 #### POST /api/spot/create
 
 request
+
 ```
 body: {
-    user_id,
+    spot_tag_id,
+    spot_name_id,
     spot_name,
     spot_location,
     spot_rank,
     spot_openhour,
     spot_discription,
-    spot_tag_id,
-    spot_tag_name,
-    spot_tag_color,
+    spot_transportation,
+    spot_start_time,
+    spot_arrive_time
 }
 ```
 
 response
+
 ```
 body: {
     success: true,
@@ -224,6 +244,7 @@ body: {
 #### PUT /api/spot/edit
 
 request
+
 ```
 body: {
     spot_star,
@@ -233,6 +254,7 @@ body: {
 ```
 
 response
+
 ```
 body: {
     success: true,
@@ -244,6 +266,7 @@ body: {
 #### DELETE /api/spot/delete
 
 request
+
 ```
 body: {
     spot_id,
@@ -251,6 +274,7 @@ body: {
 ```
 
 response
+
 ```
 body: {
     success: true,
@@ -260,9 +284,11 @@ body: {
 ```
 
 ## Group
+
 #### GET /api/group/
 
 request
+
 ```
 body: {
     user_id
@@ -270,6 +296,7 @@ body: {
 ```
 
 response
+
 ```
 body: {
     success: true,
@@ -296,6 +323,7 @@ body: {
 #### POST /api/group/create
 
 request
+
 ```
 body: {
     group_name,
@@ -305,6 +333,7 @@ body: {
 ```
 
 response
+
 ```
 body: {
     success: true,
@@ -316,6 +345,7 @@ body: {
 #### PUT /api/group/join
 
 request
+
 ```
 body: {
     group_id,
@@ -324,6 +354,7 @@ body: {
 ```
 
 response
+
 ```
 body: {
     success: true,
@@ -335,6 +366,7 @@ body: {
 #### PUT /api/group/kick
 
 request
+
 ```
 body: {
     group_id,
@@ -343,6 +375,7 @@ body: {
 ```
 
 response
+
 ```
 body: {
     success: true,
@@ -354,6 +387,7 @@ body: {
 #### PUT /api/group/edit
 
 request
+
 ```
 body: {
     group_id,
@@ -363,6 +397,7 @@ body: {
 ```
 
 response
+
 ```
 body: {
     success: true,
@@ -374,6 +409,7 @@ body: {
 #### DELETE /api/group/delete
 
 request
+
 ```
 body: {
     group_id,
@@ -381,6 +417,7 @@ body: {
 ```
 
 response
+
 ```
 body: {
     success: true,
@@ -392,6 +429,7 @@ body: {
 ## Error return
 
 response
+
 ```
 body: {
     success: false,
