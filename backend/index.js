@@ -14,6 +14,7 @@ import { pool } from "./database/pool.js";
 
 // import Routers
 import userRouter from "./routes/user.js";
+import groupRouter from "./routes/group.js";
 
 const app = express();
 
@@ -92,6 +93,8 @@ app.use(session({
 
 // Routes
 app.use('/api/user/', userRouter);
+app.use('/api/group/', groupRouter);
+
 
 // root router
 app.get("/", (req, res) => {
