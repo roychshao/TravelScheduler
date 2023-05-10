@@ -9,6 +9,8 @@ import { createUseStyles } from 'react-jss'
 
 const GoogleLogin = () => {
 
+    const [user, setUser] = useState(null);
+
     const navigate = useNavigate();
     const dispatcher = useDispatch();
     const useStyles = createUseStyles({
@@ -37,48 +39,24 @@ const GoogleLogin = () => {
 
     const classes = useStyles();
 
-    /* 使用signInWithRedirect則將註解部份去掉 */
-    // const [onLogin, setOnLogin] = useState(false);
-
-    // useEffect(() => {
-    //     const getData = async () => {
-    //         try {
-    //             const loginUser = await getRedirectResult(auth)
-    //             if(loginUser) {
-    //                 dispatcher(loggedinwithgoogle());
-    //                 dispatcher(setuserprofile(loginUser.user.displayName, loginUser.user.email))
-    //                 navigate('/catalog/travel');
-    //             }
-    //         } catch (err) {
-    //             console.log(err);
-    //         }
-    //     };
-    //     setOnLogin(false);
-    //     getData();
-    // }, [onLogin])
-
     const googleLogin = async () => {
-        // setOnLogin(true); 
-        
-        // TODO: persistence invalid
-        // await setPersistence().then( async () => {
+       
+        // 登入持久化
+        const Auth = getAuth();
+        const result = await setPersistence(Auth, inMemoryPersistence)
+            .then(() => {
+                return signInWithPopup(auth, provide);
+            })
 
-            const result = await signInWithPopup(auth, provide);
-
-            if(result) {
-                console.log(result);
-                const user = result.user;
-                dispatcher(register(user.displayName, user.email));
-                dispatcher(loggedinwithgoogle(user.displayName, user.email, user.photoURL));
-                navigate('/catalog/travel');
-            }
-        // });
+        if(result) {
+            console.log(result);
+            const user = result.user;
+            dispatcher(register(user.displayName, user.email));
+            dispatcher(loggedinwithgoogle(user.displayName, user.email, user.photoURL));
+            navigate('/catalog/travel');
+        }
     }
 
-    // if(onLogin) {
-    //     return null;
-    // }
-    // else {
     return (
         <div className={classes.Wrapper}>
             <button

@@ -7,9 +7,9 @@ const print_error = (err) => {
 // TODO: transaction, prevent sql injection
 
 
-const create = (group_id, group_name, group_discription, group_peoplenum) => {
+const create = (group_id, group_name, group_discription, group_peoplenum, user_id) => {
     return new Promise((resolve, reject) => {
-        var sql = "INSERT INTO `GROUP` VALUE(?,?,?,?)";
+        var sql = "INSERT INTO `GROUP` VALUE(?,?,?,?,?)";
         // 從pool中拿一條connection
         pool.getConnection( async (err, conn) => {
             // 檢查連線時錯誤
@@ -17,7 +17,7 @@ const create = (group_id, group_name, group_discription, group_peoplenum) => {
                 print_error(err);
                 reject(err);
             } else {
-                await conn.query(sql, [group_id, group_name, group_discription, group_peoplenum], (err, results, fields) => {
+                await conn.query(sql, [group_id, group_name, group_discription, group_peoplenum, user_id], (err, results, fields) => {
                     // 檢查sql執行時錯誤
                     if(err)
                         reject(err);

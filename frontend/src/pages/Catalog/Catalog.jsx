@@ -12,6 +12,7 @@ const Catalog = () => {
     
     const navigate = useNavigate();
     const loginWithGoogle = useSelector(state => state.loginReducer.loginWithGoogle);
+    // const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 
     useEffect(() => {
         if(!loginWithGoogle) {

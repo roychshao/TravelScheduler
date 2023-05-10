@@ -311,7 +311,9 @@ response
 body: {
     success: true,
     message: "",
-    data: {}
+    data: {
+        group_id,
+    }
 }
 ```
 

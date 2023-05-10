@@ -15,32 +15,34 @@ import { pool } from "./database/pool.js";
 // import Routers
 import userRouter from "./routes/user.js";
 import groupRouter from "./routes/group.js";
+import travelRouter from "./routes/travel.js";
 
 const app = express();
-
+dotenv.config();
 const port = process.env.PORT || 8080;
 
 // log to access.log
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {
-    flags: 'a'
-})
-app.use(morgan('combined', { stream: accessLogStream }));
-
+var accessLogStream = fs.createWriteStream(path.join(__dirname, "access.log"), {
+  flags: "a",
+});
+app.use(morgan("combined", { stream: accessLogStream }));
 
 // helmet
 // app.use(helmet());
-app.use(helmet({
+app.use(
+  helmet({
     contentSecurityPolicy: {
-        directives: {
-            ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-            'script-src': ["'self'", "'unsafe-inline'", '*'],
-            'connect-src': ["'self'", '*'],
-            'frame-src': ["'self'", '*']
-        }
-    }
-}));
+      directives: {
+        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+        "script-src": ["'self'", "'unsafe-inline'", "*"],
+        "connect-src": ["'self'", "*"],
+        "frame-src": ["'self'", "*"],
+      },
+    },
+  })
+);
 
 // helmet with all opened
 // app.use(
@@ -92,13 +94,13 @@ app.use(session({
 }));
 
 // Routes
-app.use('/api/user/', userRouter);
+app.use("/api/user/", userRouter);
+app.use("/api/travel", travelRouter);
 app.use('/api/group/', groupRouter);
-
 
 // root router
 app.get("/", (req, res) => {
-    res.send("Hello World!");
+  res.send("Hello World!");
 });
 
 app.listen(port, () => {
