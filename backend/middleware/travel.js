@@ -1,23 +1,21 @@
-export const register_response = async (req, res, next) => {
+export const create_response = async (req, res, next) => {
   var response = {};
 
   // 如果req中帶有err則表示是錯誤回傳
   if (req.err) {
     response = {
       success: false,
-      message: "使用者註冊失敗 err: " + req.err.message,
+      message: "Travel新增失敗 err: " + req.err.message,
       data: {},
     };
     console.log(response);
     res.status(500).json(response);
   } else {
-    req.data = JSON.parse(req.data);
     response = {
       success: true,
-      message: "使用者註冊成功",
+      message: "Travel新增成功",
       data: {},
     };
-    response.data = req.data;
     res.status(201).json(response);
   }
 };

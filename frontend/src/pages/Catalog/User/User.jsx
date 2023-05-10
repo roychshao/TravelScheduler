@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { getAuth, signOut } from 'firebase/auth'
 import { loggedoutwithgoogle } from './../../../actions/loginAction.js'
-import Button from '@mui/material/Button';
+import { Button } from '@mui/material';
+import CreateGroup from './component/CreateGroup.jsx';
+import GroupList from './component/GroupList.jsx';
 
 const User = () => {
-   
+
     const navigate = useNavigate();
     const dispatcher = useDispatch();
     const loginWithGoogle = useSelector(state => state.loginReducer.loginWithGoogle);
@@ -26,6 +28,8 @@ const User = () => {
             }).catch((err) => {
                 console.log("err: " + err.message);
             })
+        } else {
+            navigate('/');
         }
     }
 
@@ -36,6 +40,10 @@ const User = () => {
             <p>{email}</p>
             <p>{userId}</p>
             <Button variant="contained" onClick={handleLogout}>logout</Button>
+            <br/>
+            <br/>
+            <CreateGroup/>
+            <GroupList/>
         </div>
     )
 }

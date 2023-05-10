@@ -1,13 +1,15 @@
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { auth, provide } from './../../../firebase.js'
-import { signInWithPopup, signInWithRedirect, getRedirectResult } from 'firebase/auth'
+import { signInWithPopup, getAuth, setPersistence, inMemoryPersistence } from 'firebase/auth'
 import { useDispatch } from 'react-redux'
 import { loggedinwithgoogle, register } from './../../../actions/loginAction.js'
 import { FcGoogle } from 'react-icons/fc'
 import { createUseStyles } from 'react-jss'
 
 const GoogleLogin = () => {
+
+    const [user, setUser] = useState(null);
 
     const navigate = useNavigate();
     const dispatcher = useDispatch();
@@ -37,29 +39,14 @@ const GoogleLogin = () => {
 
     const classes = useStyles();
 
-    /* 使用signInWithRedirect則將註解部份去掉 */
-    // const [onLogin, setOnLogin] = useState(false);
-
-    // useEffect(() => {
-    //     const getData = async () => {
-    //         try {
-    //             const loginUser = await getRedirectResult(auth)
-    //             if(loginUser) {
-    //                 dispatcher(loggedinwithgoogle());
-    //                 dispatcher(setuserprofile(loginUser.user.displayName, loginUser.user.email))
-    //                 navigate('/catalog/travel');
-    //             }
-    //         } catch (err) {
-    //             console.log(err);
-    //         }
-    //     };
-    //     setOnLogin(false);
-    //     getData();
-    // }, [onLogin])
-
     const googleLogin = async () => {
-        // setOnLogin(true);
-        const result = await signInWithPopup(auth, provide);
+       
+        // 登入持久化
+        const Auth = getAuth();
+        const result = await setPersistence(Auth, inMemoryPersistence)
+            .then(() => {
+                return signInWithPopup(auth, provide);
+            })
 
         if(result) {
             console.log(result);
@@ -70,10 +57,6 @@ const GoogleLogin = () => {
         }
     }
 
-    // if(onLogin) {
-    //     return null;
-    // }
-    // else {
     return (
         <div className={classes.Wrapper}>
             <button
