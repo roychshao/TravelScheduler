@@ -27,8 +27,8 @@ body: {
 
 request
 ```
-body: {
-    user_id
+session: {
+    user_id,
 }
 ```
 
@@ -101,8 +101,11 @@ body: {
 
 request
 ```
-body: {
+session: {
     user_id,
+}
+
+body: {
     travel_name,
     travel_date,
     travel_peoplenum,
@@ -168,7 +171,7 @@ body: {
 
 request
 ```
-body: {
+session: {
     user_id,
 }
 ```
@@ -201,8 +204,11 @@ body: {
 
 request
 ```
-body: {
+session: {
     user_id,
+}
+
+body: {
     spot_name,
     spot_location,
     spot_rank,
@@ -266,7 +272,7 @@ body: {
 
 request
 ```
-body: {
+session: {
     user_id
 }
 ```
@@ -340,9 +346,12 @@ body: {
 
 request
 ```
+session: {
+    user_id,
+}
+
 body: {
     group_id,
-    user_id,
 }
 ```
 
