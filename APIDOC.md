@@ -27,8 +27,8 @@ body: {
 
 request
 ```
-body: {
-    user_id
+session: {
+    user_id,
 }
 ```
 
@@ -74,22 +74,24 @@ body: {
         travel_done,
         group_id,
         days: [
-            spots: [
-                spot: {
-                    spot_id,
-                    spot_name,
-                    spot_location,
-                    spot_rank,
-                    spot_openhour,
-                    spot_discription,
-                    spot_arrive_time,
-                    spot_start_time,
-                    spot_transportation,  // "" if terminus
-                    spot_tag_id,
-                    spot_tag_name,
-                    spot_tag_color,
-                }
-            ]
+            {
+                spots: [
+                    {
+                        spot_id,
+                        spot_name,
+                        spot_location,
+                        spot_rank,
+                        spot_openhour,
+                        spot_discription,
+                        spot_arrive_time,
+                        spot_start_time,
+                        spot_transportation,  // "" if terminus
+                        spot_tag_id,
+                        spot_tag_name,
+                        spot_tag_color,
+                    }
+                ]
+            }
         ]
     }
 }
@@ -99,8 +101,11 @@ body: {
 
 request
 ```
-body: {
+session: {
     user_id,
+}
+
+body: {
     travel_name,
     travel_date,
     travel_peoplenum,
@@ -166,7 +171,7 @@ body: {
 
 request
 ```
-body: {
+session: {
     user_id,
 }
 ```
@@ -178,7 +183,7 @@ body: {
     message: "",
     data: {
         spots: [
-            spot: {
+            {
                 spot_id,
                 spot_name,
                 spot_location,
@@ -199,8 +204,11 @@ body: {
 
 request
 ```
-body: {
+session: {
     user_id,
+}
+
+body: {
     spot_name,
     spot_location,
     spot_rank,
@@ -264,7 +272,7 @@ body: {
 
 request
 ```
-body: {
+session: {
     user_id
 }
 ```
@@ -276,13 +284,13 @@ body: {
     message: "",
     data: {
         groups: [
-            group: {
+            {
                 group_id,
                 group_name.
                 group_discription,
                 group_peoplenum,
                 members: [
-                    member: {
+                    {
                         username,
                         email
                     }
@@ -309,7 +317,9 @@ response
 body: {
     success: true,
     message: "",
-    data: {}
+    data: {
+        group_id,
+    }
 }
 ```
 
@@ -336,9 +346,12 @@ body: {
 
 request
 ```
+session: {
+    user_id,
+}
+
 body: {
     group_id,
-    user_id,
 }
 ```
 
