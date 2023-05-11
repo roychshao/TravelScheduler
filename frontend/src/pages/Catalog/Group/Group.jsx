@@ -11,7 +11,7 @@ const Group = () => {
 
     return (
         <div>
-            <p>This is the Group page</p>
+            <h1>Group</h1>
         </div>
     )
 }

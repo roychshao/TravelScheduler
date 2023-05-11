@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { auth, provide } from './../../../firebase.js'
-import { signInWithPopup, signInWithRedirect, getRedirectResult } from 'firebase/auth'
+import { signInWithPopup, getAuth, setPersistence, inMemoryPersistence } from 'firebase/auth'
 import { useDispatch } from 'react-redux'
 import { loggedinwithgoogle, register } from './../../../actions/loginAction.js'
 import { FcGoogle } from 'react-icons/fc'
@@ -9,14 +9,17 @@ import { createUseStyles } from 'react-jss'
 
 const GoogleLogin = () => {
 
+    const [user, setUser] = useState(null);
+
     const navigate = useNavigate();
     const dispatcher = useDispatch();
     const useStyles = createUseStyles({
         GoogleLogin: {
             display: 'flex',
-            justifyContent: 'space-around',
+            justifyContent: 'center',
             alignItems: 'center',
             width: '80%',
+            maxWidth: '300px',
             height: '200%',
             backgroundColor: 'white',
             fontSize: '1rem',
@@ -28,41 +31,27 @@ const GoogleLogin = () => {
             cursor: 'pointer',
         },
         Wrapper: {
+            display: 'flex',
+            justifyContent: 'center',
             width: '60%',
             position: 'fixed',
             top: '50%',
-            left: '25%'
+            left: '20%',
         }
     })
 
     const classes = useStyles();
 
-    /* 使用signInWithRedirect則將註解部份去掉 */
-    // const [onLogin, setOnLogin] = useState(false);
-
-    // useEffect(() => {
-    //     const getData = async () => {
-    //         try {
-    //             const loginUser = await getRedirectResult(auth)
-    //             if(loginUser) {
-    //                 dispatcher(loggedinwithgoogle());
-    //                 dispatcher(setuserprofile(loginUser.user.displayName, loginUser.user.email))
-    //                 navigate('/catalog/travel');
-    //             }
-    //         } catch (err) {
-    //             console.log(err);
-    //         }
-    //     };
-    //     setOnLogin(false);
-    //     getData();
-    // }, [onLogin])
-
     const googleLogin = async () => {
-        // setOnLogin(true);
-        const result = await signInWithPopup(auth, provide);
+       
+        // 登入持久化
+        const Auth = getAuth();
+        const result = await setPersistence(Auth, inMemoryPersistence)
+            .then(() => {
+                return signInWithPopup(auth, provide);
+            })
 
         if(result) {
-            console.log(result);
             const user = result.user;
             dispatcher(register(user.displayName, user.email));
             dispatcher(loggedinwithgoogle(user.displayName, user.email, user.photoURL));
@@ -70,10 +59,6 @@ const GoogleLogin = () => {
         }
     }
 
-    // if(onLogin) {
-    //     return null;
-    // }
-    // else {
     return (
         <div className={classes.Wrapper}>
             <button

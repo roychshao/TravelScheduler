@@ -19,7 +19,7 @@ export const register = (displayName, email) => {
         axios.post(`${hostUrl}/api/user/register`, {
             username: displayName,
             email: email
-        }).then(res => res = res.data)
+        }, { withCredentials: true }).then(res => res = res.data)
         .then(res => {
             dispatch({
                 type: "Register",

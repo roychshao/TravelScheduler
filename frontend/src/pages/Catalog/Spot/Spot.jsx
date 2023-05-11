@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Button from '@mui/material/Button';
 
+
 const Spot = () => {
 
     const navigate = useNavigate();
     const dispatcher = useDispatch();
     const loginWithGoogle = useSelector(state => state.loginReducer.loginWithGoogle);
-
 
     return (
         <div>

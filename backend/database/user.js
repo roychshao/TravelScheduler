@@ -8,7 +8,7 @@ const print_error = (err) => {
 
 const authenticate = (user_id) => {
     return new Promise((resolve, reject) => {
-        var sql = "SELECT user_id FROM user WHERE user_id = ?";
+        var sql = "SELECT user_id FROM USER WHERE user_id = ?";
         pool.getConnection( async (err, conn) => {
             if(err) {
                 print_error(err);
@@ -30,7 +30,7 @@ const authenticate = (user_id) => {
 
 const register = (user_id, username, email) => {
     return new Promise((resolve, reject) => {
-        var sql = "INSERT INTO user VALUE(?,?,?)";
+        var sql = "INSERT INTO USER VALUE(?,?)";
         // 從pool中拿一條connection
         pool.getConnection( async (err, conn) => {
             // 檢查連線時錯誤
@@ -38,7 +38,7 @@ const register = (user_id, username, email) => {
                 print_error(err);
                 reject(err);
             } else {
-                await conn.query(sql, [user_id, username, email], (err, results, fields) => {
+                await conn.query(sql, [user_id, username], (err, results, fields) => {
                     // 檢查sql執行時錯誤
                     if(err)
                         reject(err);
