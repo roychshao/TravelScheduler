@@ -17,7 +17,9 @@ function App() {
         } else {
             // 如果localStorage中有資料 則重新將資料寫回redux store
             const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-            dispatcher(loggedinwithgoogle(currentUser.displayName, currentUser.email, currentUser.photoURL));
+            if(currentUser) {
+                dispatcher(loggedinwithgoogle(currentUser.displayName, currentUser.email, currentUser.photoURL));
+            }
         }
     })
 
