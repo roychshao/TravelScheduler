@@ -49,7 +49,6 @@ const GoogleLogin = () => {
             })
 
         if(result) {
-            console.log(result);
             const user = result.user;
             dispatcher(register(user.displayName, user.email));
             dispatcher(loggedinwithgoogle(user.displayName, user.email, user.photoURL));

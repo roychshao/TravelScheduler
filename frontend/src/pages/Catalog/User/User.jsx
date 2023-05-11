@@ -23,6 +23,10 @@ const User = () => {
             dispatcher(loggedoutwithgoogle());
             const auth = getAuth();
             signOut(auth).then(() => {
+                // 登出同時清除localStorage中的資料
+                if(localStorage.getItem("currentUser")) {
+                    localStorage.removeItem("currentUser");
+                }
                 console.log("successfully logout");
                 navigate('/');
             }).catch((err) => {

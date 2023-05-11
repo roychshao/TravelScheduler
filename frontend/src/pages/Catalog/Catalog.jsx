@@ -11,14 +11,15 @@ import BottomNavbar from './common/BottomNavbar.jsx'
 const Catalog = () => {
     
     const navigate = useNavigate();
-    const loginWithGoogle = useSelector(state => state.loginReducer.loginWithGoogle);
+    // const loginWithGoogle = useSelector(state => state.loginReducer.loginWithGoogle);
     // const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-
+    const currentUser = localStorage.getItem("currentUser");
+    
     useEffect(() => {
-        if(!loginWithGoogle) {
+        if(!JSON.parse(currentUser)) {
             navigate('/');
         }
-    }, [loginWithGoogle, navigate])
+    }, [navigate])
 
     return (
         <div>
