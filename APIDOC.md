@@ -289,10 +289,11 @@ body: {
                 group_name.
                 group_discription,
                 group_peoplenum,
+                group_creator,
                 members: [
                     {
                         username,
-                        email
+                        email,
                     }
                 ]
             }

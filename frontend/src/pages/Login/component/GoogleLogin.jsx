@@ -16,9 +16,10 @@ const GoogleLogin = () => {
     const useStyles = createUseStyles({
         GoogleLogin: {
             display: 'flex',
-            justifyContent: 'space-around',
+            justifyContent: 'center',
             alignItems: 'center',
             width: '80%',
+            maxWidth: '300px',
             height: '200%',
             backgroundColor: 'white',
             fontSize: '1rem',
@@ -30,10 +31,12 @@ const GoogleLogin = () => {
             cursor: 'pointer',
         },
         Wrapper: {
+            display: 'flex',
+            justifyContent: 'center',
             width: '60%',
             position: 'fixed',
             top: '50%',
-            left: '25%'
+            left: '20%',
         }
     })
 
@@ -49,7 +52,6 @@ const GoogleLogin = () => {
             })
 
         if(result) {
-            console.log(result);
             const user = result.user;
             dispatcher(register(user.displayName, user.email));
             dispatcher(loggedinwithgoogle(user.displayName, user.email, user.photoURL));
