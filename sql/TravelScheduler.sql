@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.32, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.33, for Linux (x86_64)
 --
 -- Host: localhost    Database: TravelScheduler
 -- ------------------------------------------------------
--- Server version	8.0.32-0ubuntu0.22.04.2
+-- Server version	8.0.33-0ubuntu0.22.04.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -55,8 +55,8 @@ CREATE TABLE `GROUP` (
   `people_num` int DEFAULT NULL,
   `creator_id` varchar(256) NOT NULL,
   PRIMARY KEY (`group_id`),
-  KEY `FK_creator` (`creator_id`),
-  CONSTRAINT `FK_creator` FOREIGN KEY (`creator_id`) REFERENCES `USER` (`user_id`)
+  KEY `creator_id` (`creator_id`),
+  CONSTRAINT `GROUP_ibfk_1` FOREIGN KEY (`creator_id`) REFERENCES `USER` (`user_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -256,10 +256,6 @@ CREATE TABLE `sessions` (
 -- Dumping data for table `sessions`
 --
 
-LOCK TABLES `sessions` WRITE;
-/*!40000 ALTER TABLE `sessions` DISABLE KEYS */;
-/*!40000 ALTER TABLE `sessions` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -270,4 +266,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-10 16:49:05
+-- Dump completed on 2023-05-15 16:43:16

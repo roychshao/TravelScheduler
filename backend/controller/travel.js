@@ -19,13 +19,13 @@ export const create = async (req, res, next) => {
 
     await Travel.create(
         travel_id,
+        group_id,
         user_id,
         travel_name,
         travel_date,
         travel_peoplenum,
         travel_discription,
         travel_done,
-        group_id
     ).then((result) => {
         var data = {};
         req.data = JSON.stringify(data);
