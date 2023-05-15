@@ -51,7 +51,7 @@ DROP TABLE IF EXISTS `GROUP`;
 CREATE TABLE `GROUP` (
   `group_id` varchar(256) NOT NULL,
   `name` varchar(20) DEFAULT NULL,
-  `discription` varchar(100) DEFAULT NULL,
+  `description` varchar(100) DEFAULT NULL,
   `people_num` int DEFAULT NULL,
   `creator_id` varchar(256) NOT NULL,
   PRIMARY KEY (`group_id`),
@@ -110,7 +110,7 @@ CREATE TABLE `SPOT` (
   `location` varchar(100) DEFAULT NULL,
   `ranking` float DEFAULT NULL,
   `open_hour` time DEFAULT NULL,
-  `discription` varchar(100) DEFAULT NULL,
+  `description` varchar(100) DEFAULT NULL,
   `transportation` varchar(20) DEFAULT NULL,
   `start_time` time DEFAULT NULL,
   `arrive_time` time DEFAULT NULL,
@@ -195,7 +195,7 @@ CREATE TABLE `TRAVEL` (
   `name` varchar(20) DEFAULT NULL,
   `date` date DEFAULT NULL,
   `people_num` int DEFAULT NULL,
-  `discription` varchar(100) DEFAULT NULL,
+  `description` varchar(100) DEFAULT NULL,
   `done` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`travel_id`),
   KEY `group_id` (`group_id`),
@@ -256,6 +256,10 @@ CREATE TABLE `sessions` (
 -- Dumping data for table `sessions`
 --
 
+LOCK TABLES `sessions` WRITE;
+/*!40000 ALTER TABLE `sessions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sessions` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -266,4 +270,4 @@ CREATE TABLE `sessions` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-15 16:43:16
+-- Dump completed on 2023-05-16  1:38:25

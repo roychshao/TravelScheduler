@@ -4,10 +4,14 @@ const initialState = {
 
 const groupReducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'Create':
+        case 'Get':
             return {
                 ...state,
-                groups: [...state.groups, action.payload]
+                groups: [action.payload]
+            }
+        case 'Create':
+            return {
+                ...state
             }
         default:
             return state;

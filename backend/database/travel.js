@@ -12,17 +12,17 @@ const create = (
     travel_name,
     travel_date,
     travel_peoplenum,
-    travel_discription,
+    travel_description,
     trvel_done,
 ) => {
-    return new Promise((resolve, reject) => {
+    return new Promise( async (resolve, reject) => {
         
         var sqls = [
-            "INSERT INTO travel VALUE(?,?,?,?,?,?,?,?,?)";
+            "INSERT INTO travel VALUE(?,?,?,?,?,?,?,?,?)",
         ]
 
         var values = [
-            [travel_id, group_id, user_id, travel_name, travel_date, travel_peoplenum, travel_discription, travel_done]
+            [travel_id, group_id, user_id, travel_name, travel_date, travel_peoplenum, travel_description, travel_done]
         ]
 
         await useTransaction(sqls, values).then(results => {

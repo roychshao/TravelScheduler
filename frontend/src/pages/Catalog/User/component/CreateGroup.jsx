@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { creategroup } from './../../../../actions/groupAction.js'
+import { getgroup, creategroup } from './../../../../actions/groupAction.js'
 import { useDispatch, useSelector } from 'react-redux'
 import {
     Button,
