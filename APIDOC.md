@@ -43,7 +43,7 @@ body: {
             travel_name,
             travel_date,
             travel_peoplenum,
-            travel_discription,
+            travel_description,
             travel_done,
             group_id,
         ]
@@ -70,7 +70,7 @@ body: {
         travel_name,
         travel_date,
         travel_peoplenum,
-        travel_discription,
+        travel_description,
         travel_done,
         group_id,
         days: [
@@ -82,7 +82,7 @@ body: {
                         spot_location,
                         spot_rank,
                         spot_openhour,
-                        spot_discription,
+                        spot_description,
                         spot_arrive_time,
                         spot_start_time,
                         spot_transportation,  // "" if terminus
@@ -110,7 +110,7 @@ body: {
     group_id,
     travel_date,
     travel_peoplenum,
-    travel_discription,
+    travel_description,
     travel_done,
 }
 ```
@@ -151,7 +151,7 @@ body: {
     travel_name,
     travel_date,
     travel_peoplenum,
-    travel_discription,
+    travel_description,
     travel_done,
     group_id,
 }
@@ -190,7 +190,7 @@ body: {
                 spot_rank,
                 spot_openhour,
                 spot_star,
-                spot_discription,
+                spot_description,
                 spot_tag_id,
                 spot_tag_name,
                 spot_tag_color,
@@ -213,7 +213,7 @@ body: {
     spot_location,
     spot_rank,
     spot_openhour,
-    spot_discription,
+    spot_description,
     spot_tag_id,
     spot_tag_name,
     spot_tag_color,
@@ -235,7 +235,7 @@ request
 ```
 body: {
     spot_star,
-    spot_discription,
+    spot_description,
     spot_tag_name,
 }
 ```
@@ -287,9 +287,10 @@ body: {
             {
                 group_id,
                 group_name.
-                group_discription,
+                group_description,
                 group_peoplenum,
-                group_creator,
+                group_creator_id,
+                group_creator_name,
                 members: [
                     {
                         user_id,
@@ -308,7 +309,7 @@ request
 ```
 body: {
     group_name,
-    group_discription,
+    group_description,
 }
 ```
 
@@ -371,7 +372,7 @@ request
 body: {
     group_id,
     group_name,
-    group_discription,
+    group_description,
 }
 ```
 

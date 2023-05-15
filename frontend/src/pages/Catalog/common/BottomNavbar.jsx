@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { BottomNavigation, BottomNavigationAction } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -24,23 +24,24 @@ const useStyles = makeStyles({
 const BottomNavbar = () => {
 
     const classes = useStyles();
-    const [value, setValue] = useState('travel');
+    const location = useLocation();
+    const [value, setValue] = useState(location.pathname);
     const navigate = useNavigate();
     const dispatcher = useDispatch();
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
         switch (newValue) {
-            case 'user':
+            case '/catalog/user':
                 navigate('/catalog/user');
                 break;
-            case 'spot':
+            case '/catalog/spot':
                 navigate('/catalog/spot');
                 break;
-            case 'group':
+            case '/catalog/group':
                 navigate('/catalog/group');
                 break;
-            case 'travel':
+            case '/catalog/travel':
                 navigate('/catalog/travel');
                 break;
             default:
@@ -58,22 +59,22 @@ const BottomNavbar = () => {
         >
             <BottomNavigationAction
                 label="User"
-                value="user"
+                value="/catalog/user"
                 icon={<Person2Icon sx={{ fontSize: 25 }} />}
             />
             <BottomNavigationAction
                 label="Travel"
-                value="travel"
+                value="/catalog/travel"
                 icon={<ConnectingAirportsIcon sx={{ fontSize: 35 }} />}
             />
             <BottomNavigationAction
                 label="Spot"
-                value="spot"
+                value="/catalog/spot"
                 icon={<LocationOnIcon sx={{ fontSize: 25 }} />}
             />
             <BottomNavigationAction 
                 label="Group" 
-                value="group" 
+                value="/catalog/group"
                 icon={<GroupsIcon sx={{ fontSize: 35 }} />} 
             />
         </BottomNavigation>

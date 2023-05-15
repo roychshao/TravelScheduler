@@ -10,7 +10,7 @@ export const create = async (req, res, next) => {
         travel_name,
         travel_date,
         travel_peoplenum,
-        travel_discription,
+        travel_description,
         travel_done,
         group_id,
     } = req.body;
@@ -24,7 +24,7 @@ export const create = async (req, res, next) => {
         travel_name,
         travel_date,
         travel_peoplenum,
-        travel_discription,
+        travel_description,
         travel_done,
     ).then((result) => {
         var data = {};

@@ -16,9 +16,7 @@ export const useTransaction = (sqls, values) => {
                         
                         // prevent sql injection
                         for(let i = 0; i < value.length; ++i) {
-                            if(sql.startsWith("SELECT"))
-                                break;
-                            if(isNaN(Number(value[i]))) {
+                            if(typeof value[i] === "string") {
                                 value[i] = conn.escape(value[i]);
                             }
                         }

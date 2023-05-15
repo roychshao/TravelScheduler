@@ -18,7 +18,7 @@ export const register = async (req, res, next) => {
 
     await User.authenticate(user_id)
         .then(result => {
-            if(result[0].length !== 0)
+            if(result.length !== 0)
                 isRegistered = true;
             else
                 isRegistered = false;
@@ -33,10 +33,6 @@ export const register = async (req, res, next) => {
                 var data = {
                     "user_id": user_id,
                 };
-                /*
-                 * 處理資料區,如果格式不對
-                 * 將data處理成response中data的格式
-                 */
                 req.data = JSON.stringify(data);
                 next();
             }).catch(err => {
