@@ -107,11 +107,11 @@ session: {
 
 body: {
     travel_name,
+    group_id,
     travel_date,
     travel_peoplenum,
     travel_discription,
     travel_done,
-    group_id,
 }
 ```
 
@@ -292,8 +292,8 @@ body: {
                 group_creator,
                 members: [
                     {
+                        user_id,
                         username,
-                        email,
                     }
                 ]
             }
@@ -309,7 +309,6 @@ request
 body: {
     group_name,
     group_discription,
-    group_peoplenum,    // initially 1
 }
 ```
 
