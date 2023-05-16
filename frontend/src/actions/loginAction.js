@@ -14,14 +14,15 @@ export const register = (displayName, email, photoURL) => {
         }, { withCredentials: true }).then(res => res = res.data)
         .then(res => {
             // 將user_id寫入localStorage
-            localStorage.setItem("user_id", res.data.user_id);
-
-            dispatch({
-                type: "Register",
-                payload: {
-                    userId: res.data.user_id
-                }
-            })
+            if(res.success === true) {
+                localStorage.setItem("user_id", res.data.user_id);:
+                dispatch({
+                    type: "Register",
+                    payload: {
+                        userId: res.data.user_id
+                    }
+                })
+            }
         }).catch(err => {
             console.log('error: ' + err.message);
         })
@@ -33,15 +34,17 @@ export const getUser = () => {
         const hostUrl = import.meta.env.VITE_HOST_URL;
         axios.get(`${hostUrl}/api/user`, { withCredentials: true }).then(res => res.data)
             .then(res => {
-                dispatch({
-                    type: "GetUser",
-                    payload: {
-                        userId: res.data.user_id,
-                        displayName: res.data.username,
-                        email: res.data.email,
-                        photoURL: res.data.photoURL
-                    }
-                })
+                if(res.success === true) {
+                    dispatch({
+                        type: "GetUser",
+                        payload: {
+                            userId: res.data.user_id,
+                            displayName: res.data.username,
+                            email: res.data.email,
+                            photoURL: res.data.photoURL
+                        }
+                    })
+                }
             }).catch(err => {
                 console.log('error: ' + err.message);
             })

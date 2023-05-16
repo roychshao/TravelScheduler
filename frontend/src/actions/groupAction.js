@@ -5,10 +5,12 @@ export const getgroup = () => {
         const hostUrl = import.meta.env.VITE_HOST_URL;
         axios.get(`${hostUrl}/api/group/`, { withCredentials: true }).then(res => res = res.data)
             .then(res => {
-                dispatch({
-                    type: "GetGroup",
-                    payload: res.data.groups
-                })
+                if(res.success === true) {
+                    dispatch({
+                        type: "GetGroup",
+                        payload: res.data.groups
+                    })
+                }
             }).catch(err => {
                 console.log('error: ' + err.message);
             })
@@ -23,12 +25,13 @@ export const creategroup = (groupName, groupDescription) => {
             group_description: groupDescription,
         }, { withCredentials: true }).then(res => res = res.data)
             .then(res => {
-                dispatch({
-                    type: "CreateGroup",
-                });
-
-                // create group後執行get group
-                dispatch(getgroup());
+                if(res.success === true) {
+                    dispatch({
+                        type: "CreateGroup",
+                    });
+                    // create group後執行get group
+                    dispatch(getgroup());
+                }
             }).catch(err => {
                 console.log('error: ' + err.message);
             })
