@@ -9,17 +9,14 @@ import BottomNavbar from './common/BottomNavbar.jsx'
 
 
 const Catalog = () => {
-    
+
     const navigate = useNavigate();
-    // const loginWithGoogle = useSelector(state => state.loginReducer.loginWithGoogle);
-    // const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-    const currentUser = localStorage.getItem("currentUser");
-    
-    useEffect(() => {
-        if(!JSON.parse(currentUser)) {
-            navigate('/');
+
+    window.addEventListener("storage", (e) => {
+        if(e.key === "user_id" && e.newValue != null) {
+            navigate('/catalog/travel');
         }
-    }, [navigate])
+    })
 
     return (
         <div>

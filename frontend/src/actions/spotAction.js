@@ -9,7 +9,7 @@ export const getSpots = (userId) => {
       .then(res => res = res.data)
       .then(res => {
         dispatch({
-          type: "Get",
+          type: "GetSpot",
           payload: res.data.data.spots
           //*
         });

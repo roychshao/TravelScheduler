@@ -5,8 +5,9 @@ dotenv.config();
 
 export const create = async (req, res, next) => {
 
-    const user_id = req?.session;
+    // const { user_id } = req?.session;
     const {
+        user_id,
         travel_name,
         travel_date,
         travel_peoplenum,

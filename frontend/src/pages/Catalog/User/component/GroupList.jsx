@@ -14,7 +14,7 @@ const GroupList = () => {
 
     return (
         <List>
-            {groups && groups[0] ? (
+            {groups.length > 0 ? (
                 groups[0].map((group) => (
                 <ListItem key={group.group_id}>
                     <ListItemText primary={group.group_id}/>

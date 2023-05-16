@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { getAuth, signOut } from 'firebase/auth'
-import { loggedoutwithgoogle } from './../../../actions/loginAction.js'
+import { loggedoutwithgoogle, getUser } from './../../../actions/loginAction.js'
 import { Button } from '@mui/material';
 import CreateGroup from './component/CreateGroup.jsx';
 import GroupList from './component/GroupList.jsx';
@@ -17,16 +17,19 @@ const User = () => {
     const photoURL = useSelector(state => state.loginReducer.photoURL);
     const userId = useSelector(state => state.loginReducer.userId);
 
+    useEffect(() => {
+        dispatcher(getUser());
+    }, [])
+
     const handleLogout = () => {
         // 確認是在登入狀態
         if(displayName && email && photoURL) {
             dispatcher(loggedoutwithgoogle());
             const auth = getAuth();
             signOut(auth).then(() => {
-                // 登出同時清除localStorage中的資料
-                if(localStorage.getItem("currentUser")) {
-                    localStorage.removeItem("currentUser");
-                }
+                // 登出同時清除Storage中的資料
+                window.localStorage.clear();
+                window.sessionStorage.clear();
                 console.log("successfully logout");
                 navigate('/');
             }).catch((err) => {

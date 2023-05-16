@@ -1,6 +1,27 @@
 # TravelScheduler api doc
 
 ## User
+#### GET /api/user
+request
+```
+session: {
+    user_id,
+}
+```
+
+response
+```
+body: {
+    success: true,
+    message: "",
+    data: {
+        user_id,
+        username,
+        email,
+        photoURL,
+    }
+}
+```
 #### POST /api/user/register  
 
 request

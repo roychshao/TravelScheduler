@@ -6,7 +6,7 @@ export const getgroup = () => {
         axios.get(`${hostUrl}/api/group/`, { withCredentials: true }).then(res => res = res.data)
             .then(res => {
                 dispatch({
-                    type: "Get",
+                    type: "GetGroup",
                     payload: res.data.groups
                 })
             }).catch(err => {
@@ -24,7 +24,7 @@ export const creategroup = (groupName, groupDescription) => {
         }, { withCredentials: true }).then(res => res = res.data)
             .then(res => {
                 dispatch({
-                    type: "Create",
+                    type: "CreateGroup",
                 });
 
                 // create group後執行get group

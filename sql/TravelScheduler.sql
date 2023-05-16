@@ -224,6 +224,8 @@ DROP TABLE IF EXISTS `USER`;
 CREATE TABLE `USER` (
   `user_id` varchar(256) NOT NULL,
   `name` varchar(20) DEFAULT NULL,
+  `email` varchar(256) DEFAULT NULL,
+  `photoURL` varchar(300) DEFAULT NULL,
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -270,4 +272,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-16  1:38:25
+-- Dump completed on 2023-05-16 18:45:35

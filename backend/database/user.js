@@ -29,16 +29,16 @@ const authenticate = (user_id) => {
 }
 
 
-const register = (user_id, username) => {
+const register = (user_id, username, email, photoURL) => {
 
     return new Promise( async (resolve, reject) => {
 
         var sqls = [
-            "INSERT INTO USER VALUE(?,?)",
+            "INSERT INTO USER VALUE(?,?,?,?)",
         ]
 
         var values = [
-            [user_id, username],
+            [user_id, username, email, photoURL],
         ]
 
         await useTransaction(sqls, values).then(results => {
@@ -50,4 +50,25 @@ const register = (user_id, username) => {
     })
 }
 
-export default { register, authenticate }
+const get = (user_id) => {
+
+    return new Promise( async (resolve, reject) => {
+
+        var sqls = [
+            "SELECT * FROM USER WHERE user_id = ?",
+        ]
+
+        var values = [
+            [user_id],
+        ]
+
+        await useTransaction(sqls, values).then(results => {
+            resolve(results);
+        }).catch(err => {
+            print_error(err);
+            reject(err);
+        })
+    })
+}
+
+export default { register, authenticate, get }
