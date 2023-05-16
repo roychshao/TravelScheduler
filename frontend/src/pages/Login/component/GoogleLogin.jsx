@@ -2,8 +2,8 @@ import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { auth, provide } from './../../../firebase.js'
 import { signInWithPopup, getAuth, setPersistence, inMemoryPersistence } from 'firebase/auth'
-import { useDispatch } from 'react-redux'
-import { loggedinwithgoogle, register } from './../../../actions/loginAction.js'
+import { useDispatch, useSelector } from 'react-redux'
+import { register } from './../../../actions/loginAction.js'
 import { FcGoogle } from 'react-icons/fc'
 import { createUseStyles } from 'react-jss'
 
@@ -44,18 +44,15 @@ const GoogleLogin = () => {
 
     const googleLogin = async () => {
        
-        // 登入持久化
-        const Auth = getAuth();
-        const result = await setPersistence(Auth, inMemoryPersistence)
-            .then(() => {
-                return signInWithPopup(auth, provide);
-            })
+        // 因不同瀏覽器登入持久化不一定都有效果,因此暫使用localStorage儲存必要資訊以達成登入持久化
+        const result = await signInWithPopup(auth, provide);
 
         if(result) {
             const user = result.user;
-            dispatcher(register(user.displayName, user.email));
-            dispatcher(loggedinwithgoogle(user.displayName, user.email, user.photoURL));
+            dispatcher(register(user.displayName, user.email, user.photoURL));
             navigate('/catalog/travel');
+        } else {
+            console.log(result);
         }
     }
 
