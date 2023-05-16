@@ -27,13 +27,13 @@ const create = (
           sql,
           [
             travel_id,
+            group_id,
             user_id,
             travel_name,
             travel_date,
             travel_peoplenum,
             travel_discription,
             travel_done,
-            group_id,
           ],
           (err, results, fields) => {
             // 檢查sql執行時錯誤
