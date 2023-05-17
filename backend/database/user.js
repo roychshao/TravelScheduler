@@ -1,4 +1,5 @@
 import { pool } from './pool.js';
+import { useTransaction } from './utils.js';
 
 const print_error = (err) => {
     console.log("error: " + err.message);
@@ -7,50 +8,67 @@ const print_error = (err) => {
 // TODO: transaction, prevent sql injection
 
 const authenticate = (user_id) => {
-    return new Promise((resolve, reject) => {
-        var sql = "SELECT user_id FROM USER WHERE user_id = ?";
-        pool.getConnection( async (err, conn) => {
-            if(err) {
-                print_error(err);
-                reject(err);
-            } else {
-                await conn.query(sql, user_id, (err, results, fields) => {
-                    if(err)
-                        reject(err);
-                    else {
-                        conn.release();
-                        resolve(results);
-                    }
-                })
-            }
+
+    return new Promise( async (resolve, reject) => {
+
+        var sqls = [
+            "SELECT user_id FROM USER WHERE user_id = ?",
+        ]
+
+        var values = [
+            [user_id],
+        ]
+
+        await useTransaction(sqls, values).then(results => {
+            resolve(results);
+        }).catch(err => {
+            print_error(err);
+            reject(err);
         })
     })
 }
 
 
-const register = (user_id, username, email) => {
-    return new Promise((resolve, reject) => {
-        var sql = "INSERT INTO USER VALUE(?,?)";
-        // 從pool中拿一條connection
-        pool.getConnection( async (err, conn) => {
-            // 檢查連線時錯誤
-            if(err) {
-                print_error(err);
-                reject(err);
-            } else {
-                await conn.query(sql, [user_id, username], (err, results, fields) => {
-                    // 檢查sql執行時錯誤
-                    if(err)
-                        reject(err);
-                    else {
-                        // 釋放connection回pool
-                        conn.release();
-                        resolve(results);
-                    }
-                })
-            }
+const register = (user_id, username, email, photoURL) => {
+
+    return new Promise( async (resolve, reject) => {
+
+        var sqls = [
+            "INSERT INTO USER VALUE(?,?,?,?)",
+        ]
+
+        var values = [
+            [user_id, username, email, photoURL],
+        ]
+
+        await useTransaction(sqls, values).then(results => {
+            resolve(results);
+        }).catch(err => {
+            print_error(err);
+            reject(err);
         })
     })
 }
 
-export default { register, authenticate }
+const get = (user_id) => {
+
+    return new Promise( async (resolve, reject) => {
+
+        var sqls = [
+            "SELECT * FROM USER WHERE user_id = ?",
+        ]
+
+        var values = [
+            [user_id],
+        ]
+
+        await useTransaction(sqls, values).then(results => {
+            resolve(results);
+        }).catch(err => {
+            print_error(err);
+            reject(err);
+        })
+    })
+}
+
+export default { register, authenticate, get }

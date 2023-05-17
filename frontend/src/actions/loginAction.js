@@ -1,26 +1,21 @@
 import axios from 'axios';
 
-export const loggedinwithgoogle = (displayName, email, photoURL) => ({
-    type: 'LoggedInWithGoogle',
-    payload: {
-        displayName: displayName,
-        email: email,
-        photoURL: photoURL
-    }
-})
-
 export const loggedoutwithgoogle = () => ({
     type: 'LoggedOutWithGoogle',
 })
 
-export const register = (displayName, email) => {
-    return (dispatch) => {
+export const register = (displayName, email, photoURL) => {
+    return async (dispatch) => {
         const hostUrl = import.meta.env.VITE_HOST_URL;
         axios.post(`${hostUrl}/api/user/register`, {
             username: displayName,
-            email: email
+            email: email,
+            photoURL: photoURL,
         }, { withCredentials: true }).then(res => res = res.data)
         .then(res => {
+            // 將user_id寫入localStorage
+            localStorage.setItem("user_id", res.data.user_id);
+
             dispatch({
                 type: "Register",
                 payload: {
@@ -30,5 +25,25 @@ export const register = (displayName, email) => {
         }).catch(err => {
             console.log('error: ' + err.message);
         })
+    }
+}
+
+export const getUser = () => {
+    return (dispatch) => {
+        const hostUrl = import.meta.env.VITE_HOST_URL;
+        axios.get(`${hostUrl}/api/user`, { withCredentials: true }).then(res => res.data)
+            .then(res => {
+                dispatch({
+                    type: "GetUser",
+                    payload: {
+                        userId: res.data.user_id,
+                        displayName: res.data.username,
+                        email: res.data.email,
+                        photoURL: res.data.photoURL
+                    }
+                })
+            }).catch(err => {
+                console.log('error: ' + err.message);
+            })
     }
 }
