@@ -345,7 +345,7 @@ body: {
 }
 ```
 
-#### PUT /api/group/join
+#### POST /api/group/join
 
 request
 ```
@@ -364,15 +364,12 @@ body: {
 }
 ```
 
-#### PUT /api/group/kick
+#### DELETE /api/group/kick
 
 request
 ```
-session: {
-    user_id,
-}
-
 body: {
+    user_id,
     group_id,
 }
 ```
