@@ -2,31 +2,6 @@
 
 ## User
 
-#### GET /api/user
-
-request
-
-```
-session: {
-    user_id,
-}
-```
-
-response
-
-```
-body: {
-    success: true,
-    message: "",
-    data: {
-        user_id,
-        username,
-        email,
-        photoURL,
-    }
-}
-```
-
 #### POST /api/user/register
 
 request
@@ -256,10 +231,7 @@ body: {
     spot_location,
     spot_rank,
     spot_openhour,
-    spot_transportation,
-    spot_start_time,
-    spot_arrive_time
-    spot_description,
+    spot_discription,
     spot_tag_id,
     spot_tag_name,
     spot_tag_color,
