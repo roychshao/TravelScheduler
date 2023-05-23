@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { getgroup, creategroup } from './../../../../actions/groupAction.js'
+import { joingroup } from './../../../../../actions/groupAction.js'
 import { useDispatch, useSelector } from 'react-redux'
 import {
     Button,
@@ -10,12 +10,11 @@ import {
     DialogActions
 } from '@mui/material';
 
-const CreateGroup = () => {
+const AddGroupMember = ({ groupId }) => {
 
     const dispatcher = useDispatch();
     const [open, setOpen] = useState(false);
-    const [groupName, setGroupName] = useState("");
-    const [groupDescription, setGroupDescription] = useState("");
+    const [memberId, setMemberId] = useState("");
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -25,46 +24,38 @@ const CreateGroup = () => {
         setOpen(false);
     };
 
-    const handleCreate = () => {
+    const handleUpdate = () => {
         // call api here
-        dispatcher(creategroup(groupName, groupDescription ));
+        dispatcher(joingroup(memberId, groupId));
         setOpen(false);
     };
 
     return (
         <div>
             <Button variant="contained" color="primary" onClick={handleClickOpen}>
-                Create Group
+                Add Member
             </Button>
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Create a new Group</DialogTitle>
+                <DialogTitle>Enter the userId of new member: </DialogTitle>
                 <DialogContent>
                     <form>
                         <TextField
-                            autoFocus
                             margin="dense"
-                            label="Group Name"
+                            label="New member userId"
                             type="text"
                             fullWidth
-                            value={groupName}
-                            onChange={(e) => setGroupName(e.target.value)}
-                        /><TextField
-                            margin="dense"
-                            label="Description"
-                            type="text"
-                            fullWidth
-                            value={groupDescription}
-                            onChange={(e) => setGroupDescription(e.target.value)}
+                            value={memberId}
+                            onChange={(e) => setMemberId(e.target.value)}
                         />
                     </form>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={handleCreate}>Create</Button>
+                    <Button onClick={handleUpdate}>Add</Button>
                 </DialogActions>
             </Dialog>
         </div>
     )
 }
 
-export default CreateGroup
+export default AddGroupMember

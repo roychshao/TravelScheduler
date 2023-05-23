@@ -18,12 +18,6 @@ const Catalog = () => {
         }
     }, [navigate])
 
-    window.addEventListener("storage", (e) => {
-        if(e.key === "user_id" && e.newValue != null) {
-            navigate('/catalog/travel');
-        }
-    })
-
     return (
         <div>
             <Routes>
