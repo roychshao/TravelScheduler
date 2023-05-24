@@ -1,6 +1,13 @@
 import { useState } from 'react';
 import { createUseStyles } from 'react-jss'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
+import UserNavIcon from './../../../assets/BottomNavbar/userNavIcon.png'
+import UserNavIconFc from './../../../assets/BottomNavbar/userNavIconFc.png'
+import TravelNavIcon from './../../../assets/BottomNavbar/travelNavIcon.png'
+import TravelNavIconFc from './../../../assets/BottomNavbar/travelNavIconFc.png'
+import SpotNavIcon from './../../../assets/BottomNavbar/spotNavIcon.png'
+import SpotNavIconFc from './../../../assets/BottomNavbar/spotNavIconFc.png'
 
 const BottomNavbar = () => {
 
@@ -21,7 +28,7 @@ const BottomNavbar = () => {
             /* Note: backdrop-filter has minimal browser support */
             borderRadius: '100px',
             // transform: 'matrix(1, 0, 0, -1, 0, 0)',
-        }
+        },
     })
 
     const classes = useStyles();
@@ -29,7 +36,7 @@ const BottomNavbar = () => {
     const [value, setValue] = useState(location.pathname);
     const navigate = useNavigate();
 
-    const handleChange = (event, newValue) => {
+    const Navigate = (newValue) => {
         setValue(newValue);
         switch (newValue) {
             case '/catalog/user':
@@ -49,9 +56,24 @@ const BottomNavbar = () => {
 
     return (
         <div className={classes.Container}>
-            <div>User</div>
-            <div>Travel</div>
-            <div>Spot</div>
+            <div onClick={() => {Navigate('/catalog/user')}}>
+                {(value === '/catalog/user') ?
+                    <img src={UserNavIconFc} alt="UserNavIconFc"/> :
+                    <img src={UserNavIcon} alt="UserNavIcon"/>
+                }
+            </div>
+            <div onClick={() => {Navigate('/catalog/travel')}}>
+                {(value === '/catalog/travel') ?
+                    <img src={TravelNavIconFc} alt="TravelNavIconFc"/> :
+                    <img src={TravelNavIcon} alt="TravelNavIcon"/>
+                }
+            </div>
+            <div onClick={() => {Navigate('/catalog/spot')}}>
+                {(value === '/catalog/spot') ?
+                    <img src={SpotNavIconFc} alt="SpotNavIconFc"/> :
+                    <img src={SpotNavIcon} alt="SpotNavIcon"/>
+                }
+            </div>
         </div>
     )
 }
