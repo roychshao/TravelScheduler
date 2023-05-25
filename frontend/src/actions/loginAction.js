@@ -15,7 +15,7 @@ export const register = (displayName, email, photoURL) => {
         .then(res => {
             // 將user_id寫入localStorage
             if(res.success === true) {
-                localStorage.setItem("user_id", res.data.user_id);:
+                localStorage.setItem("user_id", res.data.user_id);
                 dispatch({
                     type: "Register",
                     payload: {

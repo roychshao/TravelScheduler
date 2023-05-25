@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { getgroup, creategroup } from './../../../../actions/groupAction.js'
+import { getgroup, updategroup } from './../../../../../actions/groupAction.js'
 import { useDispatch, useSelector } from 'react-redux'
 import {
     Button,
@@ -10,10 +10,9 @@ import {
     DialogActions
 } from '@mui/material';
 
-const CreateGroup = () => {
+const UpdateGroup = ({ groupId }) => {
 
     const dispatcher = useDispatch();
-    const groups = useSelector(state => state.groupReducer.groups);
     const [open, setOpen] = useState(false);
     const [groupName, setGroupName] = useState("");
     const [groupDescription, setGroupDescription] = useState("");
@@ -26,32 +25,32 @@ const CreateGroup = () => {
         setOpen(false);
     };
 
-    const handleCreate = () => {
+    const handleUpdate = () => {
         // call api here
-        dispatcher(creategroup(groupName, groupDescription ));
+        dispatcher(updategroup(groupId, groupName, groupDescription ));
         setOpen(false);
     };
 
     return (
         <div>
             <Button variant="contained" color="primary" onClick={handleClickOpen}>
-                Create Group
+                Update
             </Button>
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Create a new Group</DialogTitle>
+                <DialogTitle>Update Group</DialogTitle>
                 <DialogContent>
                     <form>
                         <TextField
                             autoFocus
                             margin="dense"
-                            label="Group Name"
+                            label="New Group Name"
                             type="text"
                             fullWidth
                             value={groupName}
                             onChange={(e) => setGroupName(e.target.value)}
                         /><TextField
                             margin="dense"
-                            label="Description"
+                            label="New Description"
                             type="text"
                             fullWidth
                             value={groupDescription}
@@ -61,11 +60,11 @@ const CreateGroup = () => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={handleCreate}>Create</Button>
+                    <Button onClick={handleUpdate}>Update</Button>
                 </DialogActions>
             </Dialog>
         </div>
     )
 }
 
-export default CreateGroup
+export default UpdateGroup

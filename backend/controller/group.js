@@ -5,7 +5,7 @@ import {v4 as uuid} from "uuid";
 dotenv.config();
 
 const parseEscape = (value) => { 
-    return (typeof value === "string") ? value.slice(1, value.length-1) : value;
+    return (typeof value === "boolean") ? value.slice(1, value.length-1) : value;
 }
 
 export const get = async (req, res, next) => {
@@ -62,10 +62,7 @@ export const create = async (req, res, next) => {
 
     await Group.create(group_id, group_name, group_description, 1, user_id)
         .then(result => {
-            var data = {
-                "group_id": group_id
-            };
-            req.data = JSON.stringify(data);
+            req.data = JSON.stringify({});
             next();
         }).catch(err => {
             req.err = err;
@@ -73,3 +70,58 @@ export const create = async (req, res, next) => {
         })
 }
 
+export const update = async (req, res, next) => {
+
+    const { group_id, group_name, group_description } = req.body;
+
+    await Group.update(group_id, group_name, group_description)
+        .then(result => {
+            req.data = JSON.stringify({});
+            next();
+        }).catch(err => {
+            req.err = err;
+            next();
+        })
+}
+
+export const delete_ = async (req, res, next) => {
+
+    const { group_id } = req.body;
+
+    await Group.delete_(group_id)
+        .then(result => {
+            req.data = JSON.stringify({});
+            next();
+        }).catch(err => {
+            req.err = err;
+            next();
+        })
+}
+
+export const join = async (req, res, next) => {
+
+    const { user_id, group_id } = req.body;
+
+    await Group.join(user_id, group_id)
+        .then(result => {
+            req.data = JSON.stringify({});
+            next();
+        }).catch(err => {
+            req.err = err;
+            next();
+        })
+}
+
+export const kick = async (req, res, next) => {
+
+    const { user_id, group_id } = req.body;
+
+    await Group.kick(user_id, group_id)
+        .then(result => {
+            req.data = JSON.stringify({});
+            next();
+        }).catch(err => {
+            req.err = err;
+            next();
+        })
+}

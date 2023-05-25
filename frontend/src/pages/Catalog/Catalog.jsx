@@ -12,11 +12,11 @@ const Catalog = () => {
 
     const navigate = useNavigate();
 
-    window.addEventListener("storage", (e) => {
-        if(e.key === "user_id" && e.newValue != null) {
-            navigate('/catalog/travel');
+    useEffect(() => {
+        if(localStorage.getItem("user_id") === null) {
+            navigate('/');
         }
-    })
+    }, [navigate])
 
     return (
         <div>
