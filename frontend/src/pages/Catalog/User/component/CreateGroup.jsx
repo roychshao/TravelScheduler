@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { creategroup } from './../../../../actions/groupAction.js'
+import { getgroup, creategroup } from './../../../../actions/groupAction.js'
 import { useDispatch, useSelector } from 'react-redux'
 import {
     Button,
@@ -16,7 +16,6 @@ const CreateGroup = () => {
     const groups = useSelector(state => state.groupReducer.groups);
     const [open, setOpen] = useState(false);
     const [groupName, setGroupName] = useState("");
-    const [groupPeoplenum, setGroupPeoplenum] = useState("");
     const [groupDescription, setGroupDescription] = useState("");
 
     const handleClickOpen = () => {
@@ -29,10 +28,7 @@ const CreateGroup = () => {
 
     const handleCreate = () => {
         // call api here
-        // console.log("groupName:", groupName);
-        // console.log("groupPeoplenum:", groupPeoplenum);
-        // console.log("groupDescription:", groupDescription);
-        dispatcher(creategroup(groupName, groupDescription, groupPeoplenum ));
+        dispatcher(creategroup(groupName, groupDescription ));
         setOpen(false);
     };
 
@@ -53,14 +49,6 @@ const CreateGroup = () => {
                             fullWidth
                             value={groupName}
                             onChange={(e) => setGroupName(e.target.value)}
-                        />
-                        <TextField
-                            margin="dense"
-                            label="People"
-                            type="number"
-                            fullWidth
-                            value={groupPeoplenum}
-                            onChange={(e) => setGroupPeoplenum(e.target.value)}
                         /><TextField
                             margin="dense"
                             label="Description"

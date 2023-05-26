@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.32, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.33, for Linux (x86_64)
 --
 -- Host: localhost    Database: TravelScheduler
 -- ------------------------------------------------------
--- Server version	8.0.32-0ubuntu0.22.04.2
+-- Server version	8.0.33-0ubuntu0.22.04.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -51,12 +51,12 @@ DROP TABLE IF EXISTS `GROUP`;
 CREATE TABLE `GROUP` (
   `group_id` varchar(256) NOT NULL,
   `name` varchar(20) DEFAULT NULL,
-  `discription` varchar(100) DEFAULT NULL,
+  `description` varchar(100) DEFAULT NULL,
   `people_num` int DEFAULT NULL,
   `creator_id` varchar(256) NOT NULL,
   PRIMARY KEY (`group_id`),
-  KEY `FK_creator` (`creator_id`),
-  CONSTRAINT `FK_creator` FOREIGN KEY (`creator_id`) REFERENCES `USER` (`user_id`)
+  KEY `creator_id` (`creator_id`),
+  CONSTRAINT `GROUP_ibfk_1` FOREIGN KEY (`creator_id`) REFERENCES `USER` (`user_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -110,7 +110,7 @@ CREATE TABLE `SPOT` (
   `location` varchar(100) DEFAULT NULL,
   `ranking` float DEFAULT NULL,
   `open_hour` time DEFAULT NULL,
-  `discription` varchar(100) DEFAULT NULL,
+  `description` varchar(100) DEFAULT NULL,
   `transportation` varchar(20) DEFAULT NULL,
   `start_time` time DEFAULT NULL,
   `arrive_time` time DEFAULT NULL,
@@ -195,7 +195,7 @@ CREATE TABLE `TRAVEL` (
   `name` varchar(20) DEFAULT NULL,
   `date` date DEFAULT NULL,
   `people_num` int DEFAULT NULL,
-  `discription` varchar(100) DEFAULT NULL,
+  `description` varchar(100) DEFAULT NULL,
   `done` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`travel_id`),
   KEY `group_id` (`group_id`),
@@ -224,6 +224,8 @@ DROP TABLE IF EXISTS `USER`;
 CREATE TABLE `USER` (
   `user_id` varchar(256) NOT NULL,
   `name` varchar(20) DEFAULT NULL,
+  `email` varchar(256) DEFAULT NULL,
+  `photoURL` varchar(300) DEFAULT NULL,
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -270,4 +272,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-10 16:49:05
+-- Dump completed on 2023-05-16 18:45:35
