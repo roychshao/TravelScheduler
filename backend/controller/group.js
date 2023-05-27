@@ -59,9 +59,6 @@ export const create = async (req, res, next) => {
   const { user_id } = req?.session;
   const { group_name, group_description } = req.body;
 
-  const { user_id } = req?.session;
-  const { group_name, group_description } = req.body;
-
   const group_id = uuid();
 
   await Group.create(group_id, group_name, group_description, 1, user_id)
