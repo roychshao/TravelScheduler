@@ -4,7 +4,7 @@ import User from "./../database/user.js";
 dotenv.config();
 
 const parseEscape = (value) => {
-  return typeof value === "string" ? value.slice(1, value.length - 1) : value;
+  return typeof value === "boolean" ? value.slice(1, value.length - 1) : value;
 };
 
 export const register = async (req, res, next) => {

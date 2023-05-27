@@ -54,4 +54,74 @@ const create = (
   });
 };
 
-export default { get, create };
+const update = (group_id, group_name, group_description) => {
+  return new Promise(async (resolve, reject) => {
+    var sqls = [
+      "UPDATE `GROUP` SET name = ?, description = ? WHERE group_id = ?",
+    ];
+
+    var values = [[group_name, group_description, group_id]];
+
+    await useTransaction(sqls, values)
+      .then((results) => {
+        resolve(results);
+      })
+      .catch((err) => {
+        print_error(err);
+        reject(err);
+      });
+  });
+};
+
+const delete_ = (group_id) => {
+  return new Promise(async (resolve, reject) => {
+    var sqls = ["DELETE FROM `GROUP` WHERE group_id = ?"];
+
+    var values = [[group_id]];
+
+    await useTransaction(sqls, values)
+      .then((results) => {
+        resolve(results);
+      })
+      .catch((err) => {
+        print_error(err);
+        reject(err);
+      });
+  });
+};
+
+const join = (user_id, group_id) => {
+  return new Promise(async (resolve, reject) => {
+    var sqls = ["INSERT INTO CONTAIN VALUE(?,?)"];
+
+    var values = [[user_id, group_id]];
+
+    await useTransaction(sqls, values)
+      .then((results) => {
+        resolve(results);
+      })
+      .catch((err) => {
+        print_error(err);
+        reject(err);
+      });
+  });
+};
+
+const kick = (user_id, group_id) => {
+  return new Promise(async (resolve, reject) => {
+    var sqls = ["DELETE FROM CONTAIN WHERE user_id = ? AND group_id = ?"];
+
+    var values = [[user_id, group_id]];
+
+    await useTransaction(sqls, values)
+      .then((results) => {
+        resolve(results);
+      })
+      .catch((err) => {
+        print_error(err);
+        reject(err);
+      });
+  });
+};
+
+export default { get, create, update, delete_, join, kick };

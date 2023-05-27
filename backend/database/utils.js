@@ -16,7 +16,7 @@ export const useTransaction = (sqls, values) => {
                         
                         // prevent sql injection
                         for(let i = 0; i < value.length; ++i) {
-                            if(typeof value[i] === "string") {
+                            if(typeof value[i] === "boolean") {
                                 value[i] = conn.escape(value[i]);
                             }
                         }
@@ -24,7 +24,7 @@ export const useTransaction = (sqls, values) => {
                         const result = await new Promise((resolve, reject) => {
                             conn.query(sql, value, (err, result, fields) => {
                                 if(err)
-                                    reject(err);
+                                    throw err;
                                 else {
                                     resolve(result);
                                 }
