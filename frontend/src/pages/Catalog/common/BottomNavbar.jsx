@@ -11,6 +11,7 @@ import SpotNavIconFc from './../../../assets/BottomNavbar/spotNavIconFc.png'
 
 const BottomNavbar = () => {
 
+    
     const useStyles = createUseStyles({
         Container: {
             display: 'flex',
@@ -27,26 +28,48 @@ const BottomNavbar = () => {
             backdropFilter: 'blur(30px)',
             /* Note: backdrop-filter has minimal browser support */
             borderRadius: '100px',
-            // transform: 'matrix(1, 0, 0, -1, 0, 0)',
+        },
+        Slider: {
+            position: 'absolute',
+            background: 'rgba(255, 184, 0, 0.2)',
+            borderRadius: '100px',
+            height: '40px',
+            width: '18%',
+            transition: 'transform 0.3s ease-in-out',
+            zIndex: '-1',
+        },
+        Img: {
+            width: '25px',
+            height: '25px',
         },
     })
 
     const classes = useStyles();
     const location = useLocation();
     const [value, setValue] = useState(location.pathname);
+    const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+    const [sliderPosition, setSliderPosition] = useState('0%');
     const navigate = useNavigate();
 
+    const SlideTo = (index, position) => {
+        setSelectedImageIndex(index);
+        setSliderPosition(position);
+    }
+    
     const Navigate = (newValue) => {
         setValue(newValue);
         switch (newValue) {
             case '/catalog/user':
+                SlideTo(0, '-185%');
                 navigate('/catalog/user');
                 break;
-            case '/catalog/spot':
-                navigate('/catalog/spot');
-                break;
             case '/catalog/travel':
+                SlideTo(1, '0%');
                 navigate('/catalog/travel');
+                break;
+            case '/catalog/spot':
+                SlideTo(2, '185%');
+                navigate('/catalog/spot');
                 break;
             default:
                 console.log("no matched path to redirect");
@@ -56,23 +79,17 @@ const BottomNavbar = () => {
 
     return (
         <div className={classes.Container}>
+            <div className={classes.Slider}
+                style={{ transform: `translateX(${sliderPosition})` }}
+            ></div>
             <div onClick={() => {Navigate('/catalog/user')}}>
-                {(value === '/catalog/user') ?
-                    <img src={UserNavIconFc} alt="UserNavIconFc"/> :
-                    <img src={UserNavIcon} alt="UserNavIcon"/>
-                }
+                <img className={classes.Img} src={UserNavIcon} alt="UserNavIcon"/>
             </div>
             <div onClick={() => {Navigate('/catalog/travel')}}>
-                {(value === '/catalog/travel') ?
-                    <img src={TravelNavIconFc} alt="TravelNavIconFc"/> :
-                    <img src={TravelNavIcon} alt="TravelNavIcon"/>
-                }
+                <img className={classes.Img} src={TravelNavIcon} alt="TravelNavIcon"/>
             </div>
             <div onClick={() => {Navigate('/catalog/spot')}}>
-                {(value === '/catalog/spot') ?
-                    <img src={SpotNavIconFc} alt="SpotNavIconFc"/> :
-                    <img src={SpotNavIcon} alt="SpotNavIcon"/>
-                }
+                <img className={classes.Img} src={SpotNavIcon} alt="SpotNavIcon"/>
             </div>
         </div>
     )
