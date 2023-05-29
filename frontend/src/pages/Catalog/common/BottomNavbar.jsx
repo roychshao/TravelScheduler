@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { createUseStyles } from 'react-jss'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
@@ -10,7 +10,6 @@ import SpotNavIcon from './../../../assets/BottomNavbar/spotNavIcon.png'
 import SpotNavIconFc from './../../../assets/BottomNavbar/spotNavIconFc.png'
 
 const BottomNavbar = () => {
-
     
     const useStyles = createUseStyles({
         Container: {
@@ -47,8 +46,30 @@ const BottomNavbar = () => {
     const classes = useStyles();
     const location = useLocation();
     const [value, setValue] = useState(location.pathname);
-    const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-    const [sliderPosition, setSliderPosition] = useState('0%');
+
+    const getDefaultValues = () => {
+        switch(location.pathname) {
+            case '/catalog/user':
+                return {
+                    index: 0,
+                    position: '-185%',
+                }
+            case '/catalog/travel':
+                return {
+                    index: 1,
+                    position: '0%',
+                }
+            case '/catalog/spot':
+                return {
+                    index: 2,
+                    position: '185%',
+                }
+        }
+    }
+
+    const Default = getDefaultValues();
+    const [selectedImageIndex, setSelectedImageIndex] = useState(Default.index);
+    const [sliderPosition, setSliderPosition] = useState(Default.position);
     const navigate = useNavigate();
 
     const SlideTo = (index, position) => {
@@ -61,15 +82,15 @@ const BottomNavbar = () => {
         switch (newValue) {
             case '/catalog/user':
                 SlideTo(0, '-185%');
-                navigate('/catalog/user');
+                navigate('/catalog/user', { state: { from: location.pathname }});
                 break;
             case '/catalog/travel':
                 SlideTo(1, '0%');
-                navigate('/catalog/travel');
+                navigate('/catalog/travel', { state: { from: location.pathname }});
                 break;
             case '/catalog/spot':
                 SlideTo(2, '185%');
-                navigate('/catalog/spot');
+                navigate('/catalog/spot', { state: { from: location.pathname }});
                 break;
             default:
                 console.log("no matched path to redirect");

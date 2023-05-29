@@ -50,7 +50,5 @@ export const edit_response = async (req, res, next) => {
     };
     console.log(response);
     res.status(500).json(response);
-  } else {
-#######
   }
 }
