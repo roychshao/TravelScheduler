@@ -5,6 +5,7 @@ import { joingroup, kickgroup } from './../../../../../actions/groupAction.js'
 import GroupMark from './../../../../../assets/GroupList/groupMark.png'
 import CreateIcon from './../../../../../assets/CreateGroup/createIcon.png'
 import KickIcon from './../../../../../assets/GroupDetails/kickIcon.png'
+import KickDialog from './KickDialog.jsx'
 
 const GroupDetails = ({group_id, group_name, group_creator_name, group_peoplenum, members, handleClose}) => {
 
@@ -148,9 +149,24 @@ const GroupDetails = ({group_id, group_name, group_creator_name, group_peoplenum
     const classes = useStyles();
     const dispatcher = useDispatch();
     const [newMemerId, setNewMemberId] = useState("");
-    
+    const [openDialog, setOpenDialog] = useState(false);
+
     const handleInputChanged = (e) => {
         setNewMemberId(e.target.value);
+    }
+
+    const handleOpenDialog = (memberId) => {
+        setOpenDialog((prevState) => ({
+            ...prevState,
+            [memberId]: true,
+        }));
+    }
+
+    const handleCloseDialog = (memberId) => {
+        setOpenDialog((prevState) => ({
+            ...prevState,
+            [memberId]: false,
+        }));
     }
 
     const handleJoin = () => {
@@ -174,22 +190,30 @@ const GroupDetails = ({group_id, group_name, group_creator_name, group_peoplenum
                         <div className={classes.DetailedInfo}>{group_creator_name}, {members[0].length} people</div>
                     </div>
                 </div>
+                <input type="text" value={newMemerId} onChange={handleInputChanged}/>
                 <div className={classes.CreateMemberWrapper}>
                     <div className={classes.GroupMemberText}>Group Members</div>
                     <button className={classes.JoinBtn} onClick={handleJoin}>
                         <img className={classes.JoinIcon} src={CreateIcon} alt="join member icon"/>
                     </button>
                 </div>
-                <input type="text" value={newMemerId} onChange={handleInputChanged}/>
                 <div className={classes.MemberList}>
                 {members[0].map((member) => {
                     return (
                         <div className={classes.MemberWrapper} key={member.user_id}>
-                            <img className={classes.KickIcon} src={KickIcon} alt="kick icon" onClick={() => handleKick(member.user_id)}/>
+                            <img className={classes.KickIcon} src={KickIcon} alt="kick icon" onClick={() => handleOpenDialog(member.user_id)}/>
                             <div className={classes.MemberInfoWrapper}>
                                 <div className={classes.MemberName}>{member.username}</div>
                                 <div className={classes.MemberEmail}>{member.email}</div>
                             </div>
+                            { openDialog[member.user_id] ? 
+                                <KickDialog
+                                    user_id={member.user_id}
+                                    username={member.username}
+                                    group_name={group_name}
+                                    handleCloseDialog={() => handleCloseDialog(member.user_id)}
+                                    handleKick={() => handleKick(member.user_id)}
+                            /> : <></>}
                         </div>
                     )
                 })}

@@ -92,7 +92,7 @@ const InfoCard = () => {
     const photoURL = useSelector(state => state.loginReducer.photoURL);
     const userId = useSelector(state => state.loginReducer.userId);
 
-    // TODO: fix the display if name is too long
+    // TODO: clipoard btn
 
     return (
         <div className={classes.Container}>
@@ -110,7 +110,7 @@ const InfoCard = () => {
                     </div>
                     <div className={classes.Container}>
                         <img src={UserIcon} alt="user icon"/>
-                        <div className={classes.IdandMail}>123456</div>
+                        <div className={classes.IdandMail}>copy userId</div>
                     </div>
                 </div>
             </div>
