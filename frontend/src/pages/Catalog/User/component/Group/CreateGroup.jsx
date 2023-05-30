@@ -191,33 +191,6 @@ const CreateGroup = () => {
                     <img src={CreateIcon} alt="create group icon"/>
                 </button>
             </div>
-            {/* <Dialog open={open} onClose={handleClose}> */}
-            {/*     <DialogTitle>Create a new Group</DialogTitle> */}
-            {/*     <DialogContent> */}
-            {/*         <form> */}
-            {/*             <TextField */}
-            {/*                 autoFocus */}
-            {/*                 margin="dense" */}
-            {/*                 label="Group Name" */}
-            {/*                 type="text" */}
-            {/*                 fullWidth */}
-            {/*                 value={groupName} */}
-            {/*                 onChange={(e) => setGroupName(e.target.value)} */}
-            {/*             /><TextField */}
-            {/*                 margin="dense" */}
-            {/*                 label="Description" */}
-            {/*                 type="text" */}
-            {/*                 fullWidth */}
-            {/*                 value={groupDescription} */}
-            {/*                 onChange={(e) => setGroupDescription(e.target.value)} */}
-            {/*             /> */}
-            {/*         </form> */}
-            {/*     </DialogContent> */}
-            {/*     <DialogActions> */}
-            {/*         <Button onClick={handleClose}>Cancel</Button> */}
-            {/*         <Button onClick={handleCreate}>Create</Button> */}
-            {/*     </DialogActions> */}
-            {/* </Dialog> */}
             <div className={open ? classes.Overlay: classes.Closed} onClick={handleClose}></div>
             <div className={open ? classes.Dialog : classes.Closed}>
                 <div className={classes.ContentWrapper}>

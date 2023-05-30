@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { createUseStyles } from 'react-jss'
 // import { List, ListItem, ListItemText } from "@mui/material"
@@ -10,6 +10,7 @@ import MemberList from './MemberList.jsx'
 import UpdateGroup from './UpdateGroup.jsx'
 import DeleteGroup from './DeleteGroup.jsx'
 import AddGroupMember from './AddGroupMember.jsx'
+import GroupDetails from './GroupDetails.jsx'
 
 const GroupList = () => {
    
@@ -72,9 +73,6 @@ const GroupList = () => {
             alignItems: 'center',
             height: '100%',
         },
-        EditGroup: {
-
-        }
     })
 
     const classes = useStyles();
@@ -85,6 +83,23 @@ const GroupList = () => {
         dispatcher(getgroup());
     }, [])
 
+    const [openMap, setOpenMap] = useState({});
+
+    const handleOpen = (groupId) => {
+        // console.log(groups[0][0].members);
+        setOpenMap((prevState) => ({
+            ...prevState,
+            [groupId]: true,
+        }));
+    };
+
+    const handleClose = (groupId) => {
+        setOpenMap((prevState) => ({
+            ...prevState,
+            [groupId]: false,
+        }));
+    };
+
     return (
         <div className={classes.Container}>
             <div className={classes.Wrapper}>
@@ -93,15 +108,23 @@ const GroupList = () => {
                         <div className={classes.Group} key={group.group_id}>
                             <div className={classes.InfoWrapper}>
                                 <img src={GroupMark} className={classes.GroupMark}/>
-                                <div className={classes.GroupInfo}>
+                                <div>
                                     <div className={classes.GroupName}>{group.group_name}</div>
-                                    <div className={classes.DetailedInfo}>{group.group_creator_name}, { group.group_peoplenum} people</div>
+                                    <div className={classes.DetailedInfo}>{group.group_creator_name}, {group.members[0].length} people</div>
                                 </div>
                             </div>
                             <div className={classes.EditGroupWrapper}>
-                                <img src={EditGroup} alt="edit group icon"/>
+                                <img src={EditGroup} alt="edit group icon" onClick={() => handleOpen(group.group_id)}/>
                             </div>
-                        </div>
+                            {openMap[group.group_id] ? <GroupDetails
+                                group_id={group.group_id}
+                                group_name={group.group_name}
+                                group_creator_name={group.group_creator_name}
+                                group_peoplenum={group.group_peoplenum}
+                                members={group.members}
+                                handleClose={() => handleClose(group.group_id)}
+                            /> : <></>}
+                        </div> 
                     ))
                 ):(
                     <div>
