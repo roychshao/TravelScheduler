@@ -182,7 +182,7 @@ body: {
 
 ## Spot
 
-#### GET /api/spot
+#### GET1 /api/spot/get1
 
 request
 
@@ -199,24 +199,76 @@ body: {
     success: true,
     message: "",
     data: {
-        spots: [
+        undone_spots: [
             {
                 spot_id,
                 spot_name,
                 spot_location,
                 spot_rank,
                 spot_openhour,
-                spot_star,
+                spot_description,
+
+            }
+        ],
+        done_spots: [
+            {
+                spot_id,
+                spot_name,
+                spot_location,
+                spot_rank,
+                spot_openhour,
+                spot_description,
+
+            }
+        ],
+        star_spots: [
+            {
+                spot_id,
+                spot_name,
+                spot_location,
+                spot_rank,
+                spot_openhour,
+                spot_description,
+
+            }
+        ],
+    }
+
+```
+#### GET2 /api/spot/get2
+request
+
+```
+session: {
+    travel_id,
+}
+```
+
+response
+
+```
+body: {
+    success: true,
+    message: "",
+    data: {
+        spots: [
+            {
+                spot_id,
+                spot_name,
+                spot_location,
+                spot_transportation,
+                spot_rank,
+                spot_openhour,
                 spot_description,
                 spot_tag_id,
                 spot_tag_name,
                 spot_tag_color,
+                spot_done
             }
         ]
     }
 }
 ```
-
 #### POST /api/spot/create
 
 request
@@ -254,6 +306,7 @@ request
 
 ```
 body: {
+    spot_id,
     spot_star,
     spot_description,
     spot_tag_name,
