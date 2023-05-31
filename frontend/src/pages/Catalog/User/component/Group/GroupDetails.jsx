@@ -215,7 +215,7 @@ const GroupDetails = ({group_id, group_name, group_creator_name, group_peoplenum
                 </div>
                 <div className={classes.JoinWrapper}>
                     <input className={classes.JoinInput} type="text" value={newMemerId} placeholder="new member's userId" onChange={handleInputChanged}/>
-                    <img className={classes.JoinIcon} src={JoinIcon} alt="join member icon"/>
+                    <img className={classes.JoinIcon} src={JoinIcon} onClick={handleJoin} alt="join member icon"/>
                 </div>
                 <div className={classes.CreateMemberWrapper}>
                     <div className={classes.GroupMemberText}>Group Members</div>
