@@ -3,7 +3,7 @@ import { createUseStyles } from 'react-jss'
 import { useDispatch } from 'react-redux'
 import { joingroup, kickgroup } from './../../../../../actions/groupAction.js'
 import GroupMark from './../../../../../assets/GroupList/groupMark.png'
-import CreateIcon from './../../../../../assets/CreateGroup/createIcon.png'
+import JoinIcon from './../../../../../assets/GroupDetails/joinBtn.png'
 import KickIcon from './../../../../../assets/GroupDetails/kickIcon.png'
 import KickDialog from './KickDialog.jsx'
 
@@ -86,20 +86,43 @@ const GroupDetails = ({group_id, group_name, group_creator_name, group_peoplenum
             color: '#F9F8F4',
             textShadow: '0px 1px 4px rgba(210, 188, 131, 0.15)',
         },
-        JoinBtn: {
+        JoinWrapper: {
             display: 'flex',
-            justifyContent: 'center',
+            height: '38px',
+            width: '90%',
             alignItems: 'center',
-            height: '26px',
-            width: '26px',
-            background: '#F9F8F4',
-            boxShadow: '0px 3px 4px rgba(210, 188, 131, 0.15), inset 0px -5px 10px rgba(245, 245, 245, 0.55), inset 0px -10px 10px rgba(255, 184, 0, 0.4)',
+            justifyContent: 'space-between',
+            background: 'linear-gradient(180deg, rgba(255, 184, 0, 0.08) 0%, rgba(255, 184, 0, 0.2) 100%)',
             borderRadius: '5px',
+            marginTop: '5px',
+            marginBottom: '2px',
+        },
+        JoinInput: {
+            width: '90%',
+            height: '70%',
             border: '0px',
+            background: 'transparent',
+            fontFamily: 'Paytone One',
+            fontStyle: 'normal',
+            fontWeight: '400',
+            fontSize: '12px',
+            lineHeight: '15px',
+            letterSpacing: '0.1rem',
+            color: '#FFB800',
+            textAlign: 'center',
+            paddingLeft: '10px',
+            '&:focus': {
+                border: '0px',
+                outline: 'none',
+            },
+            '&::placeholder': {
+                color: '#FFB800',
+            },
         },
         JoinIcon: {
-            width: '15px',
-            height: '15px',
+            width: '30px',
+            height: '30px',
+            marginRight: '10px',
         },
         MemberList: {
             overflowY: 'auto',
@@ -190,12 +213,12 @@ const GroupDetails = ({group_id, group_name, group_creator_name, group_peoplenum
                         <div className={classes.DetailedInfo}>{group_creator_name}, {members[0].length} people</div>
                     </div>
                 </div>
-                <input type="text" value={newMemerId} onChange={handleInputChanged}/>
+                <div className={classes.JoinWrapper}>
+                    <input className={classes.JoinInput} type="text" value={newMemerId} placeholder="new member's userId" onChange={handleInputChanged}/>
+                    <img className={classes.JoinIcon} src={JoinIcon} alt="join member icon"/>
+                </div>
                 <div className={classes.CreateMemberWrapper}>
                     <div className={classes.GroupMemberText}>Group Members</div>
-                    <button className={classes.JoinBtn} onClick={handleJoin}>
-                        <img className={classes.JoinIcon} src={CreateIcon} alt="join member icon"/>
-                    </button>
                 </div>
                 <div className={classes.MemberList}>
                 {members[0].map((member) => {
@@ -218,6 +241,9 @@ const GroupDetails = ({group_id, group_name, group_creator_name, group_peoplenum
                     )
                 })}
                 </div>
+                <button>Update Group</button>
+                <button>Delete Group</button>
+                <button>Cancel</button>
             </div>
         </div>
     )
