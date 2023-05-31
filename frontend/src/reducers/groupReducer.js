@@ -9,10 +9,6 @@ const groupReducer = (state = initialState, action) => {
                 ...state,
                 groups: [action.payload]
             }
-        case 'CreateGroup':
-            return {
-                ...state
-            }
         default:
             return state;
     }

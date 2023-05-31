@@ -2,6 +2,10 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { List, ListItem, ListItemText } from "@mui/material"
 import { getgroup } from './../../../../actions/groupAction.js'
+import MemberList from './MemberList.jsx'
+import UpdateGroup from './UpdateGroup.jsx'
+import DeleteGroup from './DeleteGroup.jsx'
+import AddGroupMember from './AddGroupMember.jsx'
 
 const GroupList = () => {
     
@@ -10,6 +14,7 @@ const GroupList = () => {
 
     useEffect(() => {
         dispatcher(getgroup());
+        // console.log(groups[0][0].members);
     }, [])
 
     return (
@@ -23,6 +28,10 @@ const GroupList = () => {
                     <ListItemText primary={group.group_peoplenum}/>
                     <ListItemText primary={group.group_creator_id}/>
                     <ListItemText primary={group.group_creator_name}/>
+                    <MemberList members={group.members[0]}/>
+                    <AddGroupMember groupId={group.group_id}/>
+                    <UpdateGroup groupId={group.group_id}/>
+                    <DeleteGroup groupId={group.group_id} groupName={group.group_name}/>
                 </ListItem>
                 ))
             ):(
