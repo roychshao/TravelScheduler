@@ -17,6 +17,7 @@ import userRouter from "./routes/user.js";
 import spotRouter from "./routes/spot.js";
 import groupRouter from "./routes/group.js";
 import travelRouter from "./routes/travel.js";
+import tagRouter from "./routes/tag.js";
 
 const app = express();
 dotenv.config();
@@ -103,6 +104,7 @@ app.use("/api/user/", userRouter);
 app.use("/api/spot/", spotRouter);
 app.use("/api/travel", travelRouter);
 app.use("/api/group/", groupRouter);
+app.use("/api/tag/", tagRouter);
 
 // root router
 app.get("/", (req, res) => {

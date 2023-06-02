@@ -84,7 +84,6 @@ CREATE TABLE `HAS` (
   `start_time` time DEFAULT NULL,
   `arrive_time` time DEFAULT NULL,
   `arrive_id` varchar(256) DEFAULT NULL,
-
   PRIMARY KEY (`travel_id`,`spot_id`),
   KEY `spot_id` (`spot_id`),
   KEY `tag_id` (`tag_id`),
@@ -179,6 +178,7 @@ CREATE TABLE `TAG` (
 
 LOCK TABLES `TAG` WRITE;
 /*!40000 ALTER TABLE `TAG` DISABLE KEYS */;
+INSERT INTO `TAG` VALUES ('1','Restaurant','#BEBEBE'),('10','Park','#BEBEBE'),('11','Zoo','#BEBEBE'),('12','Museum','#BEBEBE'),('13','Art Gallery','#BEBEBE'),('14','Library','#BEBEBE'),('15','School','#BEBEBE'),('16','University','#BEBEBE'),('17','Hospital','#BEBEBE'),('18','Bank','#BEBEBE'),('19','Post Office','#BEBEBE'),('2','Cafe','#BEBEBE'),('20','Airport','#BEBEBE'),('21','Train Station','#BEBEBE'),('22','Bus Stop','#BEBEBE'),('23','Subway Station','#BEBEBE'),('24','Port','#BEBEBE'),('25','Playground','#BEBEBE'),('26','Hotel','#BEBEBE'),('27','Bookstore','#BEBEBE'),('28','Stadium','#BEBEBE'),('29','FashionBoutique','#BEBEBE'),('3','Bar','#BEBEBE'),('30','TouristAttraction','#BEBEBE'),('4','Supermarket','#BEBEBE'),('5','Department Store','#BEBEBE'),('6','Market','#BEBEBE'),('7','Beauty Salon','#BEBEBE'),('8','Gym','#BEBEBE'),('9','Cinema','#BEBEBE');
 /*!40000 ALTER TABLE `TAG` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -273,4 +273,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-16 18:45:35
+-- Dump completed on 2023-06-03  3:10:57
