@@ -196,7 +196,7 @@ CREATE TABLE `TRAVEL` (
   `date` date DEFAULT NULL,
   `people_num` int DEFAULT NULL,
   `description` varchar(100) DEFAULT NULL,
-  `done` tinyint(1) DEFAULT NULL,
+  `done` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`travel_id`),
   KEY `group_id` (`group_id`),
   KEY `user_id` (`user_id`),

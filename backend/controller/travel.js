@@ -6,13 +6,13 @@ dotenv.config();
 export const create = async (req, res, next) => {
   // const { user_id } = req?.session;
   const {
+    group_id,
     user_id,
     travel_name,
     travel_date,
     travel_peoplenum,
     travel_description,
-    travel_done,
-    group_id,
+    travel_done
   } = req.body;
 
   const travel_id = uuid();
@@ -28,6 +28,7 @@ export const create = async (req, res, next) => {
     travel_done
   )
     .then((result) => {
+      console.log(result);
       var data = {};
       req.data = JSON.stringify(data);
       next();
@@ -42,11 +43,11 @@ export const delete_ = async (req, res, next) => {
   const { travel_id } = req.body;
 
   await Travel.delete_(travel_id)
-    .then((result) => {
+    .then(result => {
       req.data = JSON.stringify({});
       next();
     })
-    .catch((err) => {
+    .catch(err => {
       req.err = err;
       next();
     });
@@ -64,20 +65,24 @@ export const edit = async (req, res, next) => {
   } = req.body;
 
   await Travel.edit(
-    travel_id,
-    group_id,
-    travel_name,
-    travel_date,
-    travel_peoplenum,
+    travel_id,group_id,
+    travel_name,travel_date,
+    travel_peoplenum, 
     travel_description,
-    travel_done
-  )
-    .then((result) => {
+    travel_done)
+    .then(result => {
       req.data = JSON.stringify({});
       next();
     })
-    .catch((err) => {
+    .catch(err => {
       req.err = err;
       next();
     });
+};
+
+
+export const get = async (req, res, next) => {
+  
+
+     
 };

@@ -42,15 +42,47 @@ export const delete_response = async (req, res, next) => {
 
 export const edit_response = async (req, res, next) => {
   var response = {};
-  if(req.err) {
+  if (req.err) {
     response = {
-      "success": false,
-      "message": "Travel更新失敗" + req.err.message,
-      "data": {}
+      success: false,
+      message: "Travel更新失敗" + req.err.message,
+      data: {},
     };
     console.log(response);
     res.status(500).json(response);
   } else {
-#######
+    req.data = JSON.parse(req.data);
+    response = {
+      success: true,
+      message: "Travel更新成功",
+      data: {},
+    };
+    response.data = req.data;
+    res.status(201).json(response);
   }
-}
+};
+
+export const get_response = async (req, res, next) => {
+  var response = {};
+
+  var response = {};
+
+  if (req.err) {
+    response = {
+      success: false,
+      message: "獲得travel失敗 err: " + req.err.message,
+      data: {},
+    };
+    console.log(response);
+    res.status(500).json(response);
+  } else {
+    req.data = JSON.parse(req.data);
+    response = {
+      success: true,
+      message: "獲得travel成功",
+      data: {},
+    };
+    response.data = req.data;
+    res.status(201).json(response);
+  }
+};

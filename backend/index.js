@@ -95,7 +95,7 @@ app.use(session({
 
 // Routes
 app.use("/api/user/", userRouter);
-app.use("/api/travel", travelRouter);
+app.use("/api/travel/", travelRouter);
 app.use('/api/group/', groupRouter);
 
 // root router
