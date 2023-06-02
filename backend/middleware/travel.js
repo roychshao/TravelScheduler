@@ -65,8 +65,6 @@ export const edit_response = async (req, res, next) => {
 export const get_response = async (req, res, next) => {
   var response = {};
 
-  var response = {};
-
   if (req.err) {
     response = {
       success: false,

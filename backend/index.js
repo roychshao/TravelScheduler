@@ -14,6 +14,7 @@ import { pool } from "./database/pool.js";
 
 // import Routers
 import userRouter from "./routes/user.js";
+import spotRouter from "./routes/spot.js";
 import groupRouter from "./routes/group.js";
 import travelRouter from "./routes/travel.js";
 
@@ -69,10 +70,12 @@ app.use(bodyParser.json());
 
 // cors
 // app.use(cors());
-app.use(cors({
-  origin: true,
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
 
 // express
 app.use(express.json({ limit: "30mb", extended: true }));
@@ -81,22 +84,25 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }));
 
 // session
 const MySQLStore = mysqlSession(session);
-var sessionStore = new MySQLStore({}, pool)
+var sessionStore = new MySQLStore({}, pool);
 
-app.use(session({
-  secret: process.env.SECRET,
-  resave: false,
-  saveUninitialized: false,
-  store: sessionStore,
-  cookie: {
-    maxAge: 86400000
-  }
-}));
+app.use(
+  session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: sessionStore,
+    cookie: {
+      maxAge: 86400000,
+    },
+  })
+);
 
 // Routes
 app.use("/api/user/", userRouter);
-app.use("/api/travel/", travelRouter);
-app.use('/api/group/', groupRouter);
+app.use("/api/spot/", spotRouter);
+app.use("/api/travel", travelRouter);
+app.use("/api/group/", groupRouter);
 
 // root router
 app.get("/", (req, res) => {
@@ -104,5 +110,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`App listening on port ${port}`);
+  console.log(`App listening on port ${port}`);
 });

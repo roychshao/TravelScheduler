@@ -79,10 +79,20 @@ DROP TABLE IF EXISTS `HAS`;
 CREATE TABLE `HAS` (
   `travel_id` varchar(256) NOT NULL,
   `spot_id` varchar(256) NOT NULL,
+  `tag_id` varchar(256) DEFAULT NULL,
+  `transportation` varchar(20) DEFAULT NULL,
+  `start_time` time DEFAULT NULL,
+  `arrive_time` time DEFAULT NULL,
+  `arrive_id` varchar(256) DEFAULT NULL,
+
   PRIMARY KEY (`travel_id`,`spot_id`),
   KEY `spot_id` (`spot_id`),
+  KEY `tag_id` (`tag_id`),
+  KEY `arrive_id` (`arrive_id`),
   CONSTRAINT `HAS_ibfk_1` FOREIGN KEY (`travel_id`) REFERENCES `TRAVEL` (`travel_id`) ON DELETE CASCADE,
-  CONSTRAINT `HAS_ibfk_2` FOREIGN KEY (`spot_id`) REFERENCES `SPOT` (`spot_id`) ON DELETE CASCADE
+  CONSTRAINT `HAS_ibfk_2` FOREIGN KEY (`spot_id`) REFERENCES `SPOT` (`spot_id`) ON DELETE CASCADE,
+  CONSTRAINT `HAS_ibfk_3` FOREIGN KEY (`tag_id`) REFERENCES `TAG` (`tag_id`) ON DELETE SET NULL,
+  CONSTRAINT `HAS_ibfk_4` FOREIGN KEY (`arrive_id`) REFERENCES `HAS` (`spot_id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -104,21 +114,12 @@ DROP TABLE IF EXISTS `SPOT`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `SPOT` (
   `spot_id` varchar(256) NOT NULL,
-  `tag_id` varchar(256) DEFAULT NULL,
-  `arrive_id` varchar(256) DEFAULT NULL,
   `name` varchar(20) DEFAULT NULL,
   `location` varchar(100) DEFAULT NULL,
   `ranking` float DEFAULT NULL,
   `open_hour` time DEFAULT NULL,
   `description` varchar(100) DEFAULT NULL,
-  `transportation` varchar(20) DEFAULT NULL,
-  `start_time` time DEFAULT NULL,
-  `arrive_time` time DEFAULT NULL,
-  PRIMARY KEY (`spot_id`),
-  KEY `tag_id` (`tag_id`),
-  KEY `arrive_id` (`arrive_id`),
-  CONSTRAINT `SPOT_ibfk_1` FOREIGN KEY (`tag_id`) REFERENCES `TAG` (`tag_id`) ON DELETE SET NULL,
-  CONSTRAINT `SPOT_ibfk_2` FOREIGN KEY (`arrive_id`) REFERENCES `SPOT` (`spot_id`) ON DELETE SET NULL
+  PRIMARY KEY (`spot_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

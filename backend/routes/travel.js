@@ -9,7 +9,7 @@ import {
 
 const router = express.Router();
 
-router.get("/", get, get_response);
+router.get("/get", get, get_response);
 router.post("/create", create, create_response);
 router.delete("/delete", delete_, delete_response);
 router.put("/edit", edit, edit_response);
