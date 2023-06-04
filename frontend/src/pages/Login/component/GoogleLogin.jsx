@@ -50,7 +50,7 @@ const GoogleLogin = () => {
         if(result) {
             const user = result.user;
             dispatcher(register(user.displayName, user.email, user.photoURL));
-            navigate('/catalog/travel');
+            navigate('/catalog/travel', { state: { from: '/' } });
         } else {
             console.log(result);
         }

@@ -19,3 +19,36 @@ export const create_response = async (req, res, next) => {
     res.status(201).json(response);
   }
 };
+
+export const delete_response = async (req, res, next) => {
+  var response = {};
+  if (req.err) {
+    response = {
+      success: false,
+      message: "Travel刪除失敗 err: " + req.err.message,
+      data: {},
+    };
+    console.log(response);
+    res.status(500).json(response);
+  } else {
+    response = {
+      success: true,
+      message: "Travel刪除成功",
+      data: {},
+    };
+    res.status(201).json(response);
+  }
+};
+
+export const edit_response = async (req, res, next) => {
+  var response = {};
+  if(req.err) {
+    response = {
+      "success": false,
+      "message": "Travel更新失敗" + req.err.message,
+      "data": {}
+    };
+    console.log(response);
+    res.status(500).json(response);
+  }
+}

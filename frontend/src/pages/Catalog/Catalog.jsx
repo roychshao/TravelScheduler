@@ -1,5 +1,5 @@
-import { useEffect } from 'react'
-import { Routes, Route, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import Group from './Group/Group.jsx'
 import Travel from './Travel/Travel.jsx'
@@ -10,31 +10,38 @@ import BottomNavbar from './common/BottomNavbar.jsx'
 
 const Catalog = () => {
 
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
-        if(localStorage.getItem("user_id") === null) {
+
+        // 如果沒有previousPath, 代表不是走設定好的路徑進入應用,一定尚未登入,打回登入頁
+        const delay = 500;
+        const previousPath = location.state?.from;
+
+        if(previousPath === undefined) {
             navigate('/');
         }
+        setLoading(false);
     }, [navigate])
 
-    window.addEventListener("storage", (e) => {
-        if(e.key === "user_id" && e.newValue != null) {
-            navigate('/catalog/travel');
-        }
-    })
-
-    return (
-        <div>
-            <Routes>
-                <Route path="/user" element={<User/>}/>
-                <Route path="/travel" element={<Travel/>}/>
-                <Route path="/spot" element={<Spot/>}/>
-                <Route path="/group" element={<Group/>}/>
-            </Routes>
-            <BottomNavbar/>
-        </div>
-    )
+    if(loading) {
+        return (
+            <div></div>
+        )
+    } else {
+        return (<div>
+                <Routes>
+                    <Route path="/user" element={<User/>}/>
+                    <Route path="/travel" element={<Travel/>}/>
+                    <Route path="/spot" element={<Spot/>}/>
+                    <Route path="/group" element={<Group/>}/>
+                </Routes>
+                <BottomNavbar/>
+            </div>
+        )
+    }
 }
 
 export default Catalog
