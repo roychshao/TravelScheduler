@@ -25,12 +25,18 @@ dependencies:
   firebase:
     specifier: ^9.21.0
     version: 9.21.0
+  google-maps-react:
+    specifier: ^2.0.6
+    version: 2.0.6(react-dom@18.2.0)(react@18.2.0)
   react:
     specifier: ^18.2.0
     version: 18.2.0
   react-dom:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
+  react-helmet:
+    specifier: ^6.1.0
+    version: 6.1.0(react@18.2.0)
   react-icons:
     specifier: ^4.8.0
     version: 4.8.0(react@18.2.0)
@@ -51,6 +57,12 @@ dependencies:
     version: 2.4.2(redux@4.2.1)
 
 devDependencies:
+  '@types/google.maps':
+    specifier: ^3.53.1
+    version: 3.53.1
+  '@types/googlemaps':
+    specifier: ^3.43.3
+    version: 3.43.3
   '@types/react':
     specifier: ^18.0.28
     version: 18.0.28
@@ -1482,6 +1494,15 @@ packages:
     engines: {node: '>=14'}
     dev: false
 
+  /@types/google.maps@3.53.1:
+    resolution: {integrity: sha512-+7JVpq+kFzTU3TweSz6huYuFedZ4s60WeABaXYU6rDZczdpfoQ5DuZNCDc/eAAcdFJpxMMDpzf3d9YTMNodBFg==}
+    dev: true
+
+  /@types/googlemaps@3.43.3:
+    resolution: {integrity: sha512-ZWNoz/O8MPEpiajvj7QiqCY8tTLFNqNZ/a+s+zTV58wFVNAvvqV4bdGfnsjTb5Cs4V6wEsLrX8XRhmnyYJ2Tdg==}
+    deprecated: 'Types for the Google Maps browser API have moved to @types/google.maps. Note: these types are not for the googlemaps npm package, which is a Node API.'
+    dev: true
+
   /@types/hoist-non-react-statics@3.3.1:
     resolution: {integrity: sha512-iMIqiko6ooLrTh1joXodJK5X9xeEALT1kM5G3ZLhD3hszxBdIEd5C75U834D9mLcINgD4OyZf5uQXjkuYydWvA==}
     dependencies:
@@ -2314,6 +2335,16 @@ packages:
       define-properties: 1.2.0
     dev: true
 
+  /google-maps-react@2.0.6(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-M8Eo9WndfQEfxcmm6yRq03qdJgw1x6rQmJ9DN+a+xPQ3K7yNDGkVDbinrf4/8vcox7nELbeopbm4bpefKewWfQ==}
+    peerDependencies:
+      react: ~0.14.8 || ^15.0.0 || ^16.0.0
+      react-dom: ~0.14.8 || ^15.0.0 || ^16.0.0
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
   /gopd@1.0.1:
     resolution: {integrity: sha512-d65bNlIadxvpb/A2abVdlqKqV563juRnZ1Wtk6s1sIR8uNsXR70xqIzVqxVf1eTqDunwT2MkczEeaezCKTZhwA==}
     dependencies:
@@ -3035,6 +3066,22 @@ packages:
       scheduler: 0.23.0
     dev: false
 
+  /react-fast-compare@3.2.2:
+    resolution: {integrity: sha512-nsO+KSNgo1SbJqJEYRE9ERzo7YtYbou/OqjSQKxV7jcKox7+usiUVZOAC+XnDOABXggQTno0Y1CpVnuWEc1boQ==}
+    dev: false
+
+  /react-helmet@6.1.0(react@18.2.0):
+    resolution: {integrity: sha512-4uMzEY9nlDlgxr61NL3XbKRy1hEkXmKNXhjbAIOVw5vcFrsdYbH2FEwcNyWvWinl103nXgzYNlns9ca+8kFiWw==}
+    peerDependencies:
+      react: '>=16.3.0'
+    dependencies:
+      object-assign: 4.1.1
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-fast-compare: 3.2.2
+      react-side-effect: 2.1.2(react@18.2.0)
+    dev: false
+
   /react-icons@4.8.0(react@18.2.0):
     resolution: {integrity: sha512-N6+kOLcihDiAnj5Czu637waJqSnwlMNROzVZMhfX68V/9bu9qHaMIJC4UdozWoOk57gahFCNHwVvWzm0MTzRjg==}
     peerDependencies:
@@ -3128,6 +3175,14 @@ packages:
       react: '>=16.8'
     dependencies:
       '@remix-run/router': 1.5.0
+      react: 18.2.0
+    dev: false
+
+  /react-side-effect@2.1.2(react@18.2.0):
+    resolution: {integrity: sha512-PVjOcvVOyIILrYoyGEpDN3vmYNLdy1CajSFNt4TDsVQC5KpTijDvWVoR+/7Rz2xT978D8/ZtFceXxzsPwZEDvw==}
+    peerDependencies:
+      react: ^16.3.0 || ^17.0.0 || ^18.0.0
+    dependencies:
       react: 18.2.0
     dev: false
 
