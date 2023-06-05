@@ -1,10 +1,28 @@
-import { resolve } from "path";
 import { pool } from "./pool.js";
 import { useTransaction } from "./utils.js";
 
 const print_error = (err) => {
   console.log("error: " + err.message);
 };
+
+const get = (travel_id) => {
+  return new Promise(async (resolve, reject) => {
+    var sqls = [
+
+    ];
+    var values = [ ];
+
+    await useTransaction(sqls, values)
+    .then((results) => {
+      resolve(results);
+    })
+    .catch((err) => {
+      print_error(err);
+      reject(err);
+    });
+  });
+};
+
 
 const create = (
   travel_id,
@@ -14,10 +32,10 @@ const create = (
   travel_date,
   travel_peoplenum,
   travel_description,
-  trvel_done
+  travel_done
 ) => {
   return new Promise(async (resolve, reject) => {
-    var sqls = ["INSERT INTO travel VALUE(?,?,?,?,?,?,?,?,?)"];
+    var sqls = ["INSERT INTO travel VALUE(?,?,?,?,?,?,?,?)"];
 
     var values = [
       [
@@ -82,8 +100,9 @@ const edit = (
         travel_description,
         travel_done,
         travel_id,
-      ],
+      ]
     ];
+    
     await useTransaction(sqls, values)
       .then((results) => {
         resolve(results);
@@ -95,4 +114,4 @@ const edit = (
   });
 };
 
-export default { create };
+export default { create, delete_, edit };
