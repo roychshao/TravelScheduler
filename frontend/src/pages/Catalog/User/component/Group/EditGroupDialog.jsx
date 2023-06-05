@@ -17,10 +17,20 @@ const EditGroupDialog = ({ group_id, handleCloseDialog }) => {
         },
         Container: {
             position: 'fixed',
+            width: '100%',
+            height: '100%',
+            top: '0px',
+            left: '0px',
+            zIndex: 1001,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+        Dialog: {
+            position: 'fixed',
             width: '80%',
             height: '32%',
-            left: '10%',
-            top: '34%',
+            maxHeight: '215px',
             zIndex: 1001,
             background: 'linear-gradient(180deg, rgba(249, 249, 244) 0%, rgba(241, 238, 230) 100%)',
             border: '0.5px solid #F9F8F4',
@@ -125,9 +135,9 @@ const EditGroupDialog = ({ group_id, handleCloseDialog }) => {
     };
 
     return (
-        <div>
+        <div className={classes.Container}>
             <div className={classes.Overlay} onClick={handleCloseDialog}></div>
-            <div className={classes.Container}>
+            <div className={classes.Dialog}>
                 <div className={classes.Title}>Edit Group Name</div>
                 <div className={classes.Content}>
                     <input className={classes.InputBox} type="text" placeholder="New Group Name" value={groupName} onChange={handleChange}/>

@@ -11,6 +11,17 @@ import DeleteDialog from './DeleteDialog.jsx'
 const GroupDetails = ({group_id, group_name, group_creator_name, group_peoplenum, members, handleClose}) => {
 
     const useStyles = createUseStyles({
+        Container: {
+            position: 'fixed',
+            width: '100%',
+            height: '100%',
+            top: '0px',
+            left: '0px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1001,
+        },
         Overlay: {
             position: 'fixed',
             top: 0,
@@ -26,9 +37,8 @@ const GroupDetails = ({group_id, group_name, group_creator_name, group_peoplenum
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            left: '10%',
+            // top: '15%',
+            // left: '10%',
             width: '80%',
             height: '70%',
             maxHeight: '468px',
@@ -275,25 +285,25 @@ const GroupDetails = ({group_id, group_name, group_creator_name, group_peoplenum
                     <div className={classes.GroupMemberText}>Group Members</div>
                 </div>
                 <div className={classes.MemberList}>
-                {members[0].map((member) => {
-                    return (
-                        <div className={classes.MemberWrapper} key={member.user_id}>
-                            <img className={classes.KickIcon} src={KickIcon} alt="kick icon" onClick={() => handleOpenDialog(member.user_id)}/>
-                            <div className={classes.MemberInfoWrapper}>
-                                <div className={classes.MemberName}>{member.username}</div>
-                                <div className={classes.MemberEmail}>{member.email}</div>
+                    {members[0].map((member) => {
+                        return (
+                            <div className={classes.MemberWrapper} key={member.user_id}>
+                                <img className={classes.KickIcon} src={KickIcon} alt="kick icon" onClick={() => handleOpenDialog(member.user_id)}/>
+                                <div className={classes.MemberInfoWrapper}>
+                                    <div className={classes.MemberName}>{member.username}</div>
+                                    <div className={classes.MemberEmail}>{member.email}</div>
+                                </div>
+                                { openDialog[member.user_id] ? 
+                                    <KickDialog
+                                        user_id={member.user_id}
+                                        username={member.username}
+                                        group_name={group_name}
+                                        handleCloseDialog={() => handleCloseDialog(member.user_id)}
+                                        handleKick={() => handleKick(member.user_id)}
+                                    /> : <></>}
                             </div>
-                            { openDialog[member.user_id] ? 
-                                <KickDialog
-                                    user_id={member.user_id}
-                                    username={member.username}
-                                    group_name={group_name}
-                                    handleCloseDialog={() => handleCloseDialog(member.user_id)}
-                                    handleKick={() => handleKick(member.user_id)}
-                            /> : <></>}
-                        </div>
-                    )
-                })}
+                        )
+                    })}
                 </div>
                 {/* <button className={classes.SaveBtn}>Save</button> */}
                 <button className={classes.DeleteBtn} onClick={() => setOpenDeleteDialog(true)}>Delete Group</button>
@@ -303,7 +313,7 @@ const GroupDetails = ({group_id, group_name, group_creator_name, group_peoplenum
                     group_name={group_name}
                     handleDelete={() => handleDelete(group_id)}
                     handleCloseDialog={() => setOpenDeleteDialog(false)}
-                    /> : <></>
+                /> : <></>
                 }
             </div>
         </div>
