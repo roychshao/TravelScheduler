@@ -6,10 +6,6 @@ import { getgroup } from './../../../../../actions/groupAction.js'
 import GroupMark from './../../../../../assets/GroupList/groupMark.png'
 import EditGroup from './../../../../../assets/GroupList/editGroup.png'
 import EditGroupName from './../../../../../assets/GroupList/editGroupName.png'
-
-import MemberList from './MemberList.jsx'
-import DeleteGroup from './DeleteGroup.jsx'
-import AddGroupMember from './AddGroupMember.jsx'
 import GroupDetails from './GroupDetails.jsx'
 import EditGroupDialog from './EditGroupDialog.jsx'
 
@@ -83,6 +79,11 @@ const GroupList = () => {
             alignItems: 'center',
             height: '100%',
         },
+        Empty: {
+            position: 'absolute',
+            height: '0px',
+            width: '0px',
+        }
     })
 
     const classes = useStyles();
@@ -148,7 +149,7 @@ const GroupList = () => {
                             {openDialog[group.group_id] ? <EditGroupDialog
                                 group_id={group.group_id}
                                 handleCloseDialog={() => handleCloseDialog(group.group_id)}
-                            /> : <></>}
+                            /> : <div className={classes.Empty}></div>}
                             {openMap[group.group_id] ? <GroupDetails
                                 group_id={group.group_id}
                                 group_name={group.group_name}
@@ -156,7 +157,7 @@ const GroupList = () => {
                                 group_peoplenum={group.group_peoplenum}
                                 members={group.members}
                                 handleClose={() => handleClose(group.group_id)}
-                            /> : <></>}
+                            /> : <div className={classes.Empty}></div>}
                         </div> 
                     ))
                 ):(
