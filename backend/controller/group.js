@@ -6,7 +6,7 @@ import { v4 as uuid } from "uuid";
 dotenv.config();
 
 const parseEscape = (value) => {
-    return typeof value === "boolean" ? value.slice(1, value.length - 1) : value;
+    return typeof value.slice(1, value.length - 1) === "boolean" ? value.slice(1, value.length - 1) : value;
 };
 
 export const get = async (req, res, next) => {

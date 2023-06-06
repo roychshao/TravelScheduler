@@ -1,16 +1,19 @@
 import { pool } from "./pool.js";
+import user from "./user.js";
 import { useTransaction } from "./utils.js";
 
 const print_error = (err) => {
   console.log("error: " + err.message);
 };
 
-const get = (travel_id) => {
+const get = (user_id) => {
   return new Promise(async (resolve, reject) => {
     var sqls = [
-
+      "SELECT * FROM `TRAVEL` WHERE user_id = ? OR group_id IN (SELECT group_id FROM `CONTAIN` WHERE user_id = ?)"
     ];
-    var values = [ ];
+    var values = [ 
+      [user_id, user_id]
+    ];
 
     await useTransaction(sqls, values)
     .then((results) => {
@@ -36,6 +39,9 @@ const create = (
 ) => {
   return new Promise(async (resolve, reject) => {
     var sqls = ["INSERT INTO travel VALUE(?,?,?,?,?,?,?,?)"];
+
+    if(group_id)
+      user_id = null;
 
     var values = [
       [
@@ -114,4 +120,4 @@ const edit = (
   });
 };
 
-export default { create, delete_, edit };
+export default { create, delete_, edit, get };
