@@ -4,7 +4,8 @@ const initialState = {
 
 const spotReducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'GetSpot':
+        case 'GetUserSpot':
+        case 'GetTravelSpot':
             return {
                 ...state,
                 spots: action.payload

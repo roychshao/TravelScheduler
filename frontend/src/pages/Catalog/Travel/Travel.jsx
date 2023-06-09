@@ -3,7 +3,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@mui/material';
 import CreateTravel from './component/CreateTravel';
-import TravelList from './component/TravelList';
+import DeleteTravel from './component/DeleteTravel';
+// import TravelList from './component/TravelList';
+import EditTravel from './component/EditTravel';
 const Travel = () => {
 
     const navigate = useNavigate();
@@ -15,7 +17,18 @@ const Travel = () => {
             <p>Travel</p>
             <br />
             <br />
+
             <CreateTravel />
+
+            <br />
+            <br />
+
+            <EditTravel />
+
+            <br />
+            <br />
+
+            <DeleteTravel />
             {/* <TravelList /> */}
         </div>
     )

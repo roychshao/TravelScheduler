@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { gettravel, createtravel } from './../../../../actions/travelAction.js'
+import { createtravel } from './../../../../actions/travelAction.js'
 import { useDispatch, useSelector } from 'react-redux'
 import { getgroup } from './../../../../actions/groupAction.js'
 
@@ -11,14 +11,14 @@ import {
     TextField,
     DialogActions,
     Select,
-    MenuItem
+    MenuItem,
 } from '@mui/material';
 
 
 const CreateTravel = () => {
 
     const dispatcher = useDispatch();
-    const travels = useSelector(state => state.travelReducer.travels);
+    // const travels = useSelector(state => state.travelReducer.travels);
     const [open, setOpen] = useState(false);
     const [travelName, setTravelName] = useState("");
     const [groupId, setGroupId] = useState("");
@@ -51,7 +51,7 @@ const CreateTravel = () => {
             // travelPeoplenum,
             travelDescription,
             // travelDone
-            ));
+        ));
         setOpen(false);
     };
 
@@ -73,22 +73,39 @@ const CreateTravel = () => {
                             value={travelName}
                             onChange={(e) => setTravelName(e.target.value)}
                         />
+                        {/* <Select
+                            margin="dense" s
+                            label="Group Name"
+                            type="text"
+                            fullWidth
+                            value={groupId}
+                            onChange={(e) => setGroupId(e.target.value)}
+
+                        >
+                            <MenuItem value="">Select Group</MenuItem> 
+                            {groups[0].map(group => (
+                                group.group_name && group.group_id ? (
+                                    <MenuItem key={group.group_id} value={group.group_id}>
+                                        {group.group_name}
+                                    </MenuItem>
+                                ) : null
+                            ))}
+                        </Select> */}
                         <Select
                             margin="dense"
-                            label="Group Id"
+                            label="Group Name"
                             type="text"
                             fullWidth
                             value={groupId}
                             onChange={(e) => setGroupId(e.target.value)}
                         >
-                            {groups[0].map(group => (
-                                 group.group_name && group.group_id ? (
+                            {Array.isArray(groups) && Array.isArray(groups[0]) && groups[0].map(group => (
+                                group.group_name && group.group_id ? (
                                     <MenuItem key={group.group_id} value={group.group_id}>
-                                      {group.group_name}
+                                        {group.group_name}
                                     </MenuItem>
-                                  ) : null
+                                ) : null
                             ))}
-
                         </Select>
                         <TextField
                             margin="dense"

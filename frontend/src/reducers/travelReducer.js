@@ -9,10 +9,6 @@ const travelReducer = (state = initialState, action) => {
                 ...state,
                 travels: [action.payload]
             }
-        case 'Create':
-            return {
-                ...state
-            }
         default:
             return state;
     }
