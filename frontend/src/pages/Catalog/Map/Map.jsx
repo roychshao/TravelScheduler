@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import '../../../../config.js';
 import Map_Detail from './MapDetail';
 import { makeStyles } from '@mui/styles';
 
@@ -35,17 +36,22 @@ const useStyles = makeStyles({
   }
 });
 
-const Map = () => {
+const Map = ({close}) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchLocation, setSearchLocation] = useState(null);
   const [showMap, setShowMap] = useState(false);
   const [showPanel, setShowPanel] = useState(false);
+  const [clickPlace, setClickPlace] = useState(null);
   const classes = useStyles();
 
   const panelClose = () => {
     setShowPanel(false);
   };
 
+  const modalClose = () => {
+    close();
+  };
+  
   const handleSearch = async () => {
     if (!searchLocation) return;
 
@@ -92,13 +98,7 @@ const Map = () => {
 
   const handleMapClick = (place) => {
     setShowPanel(true);
-    console.log('點擊的店家名稱:', place.name);
-    console.log('點擊位置的經度:', place.geometry.location.lng());
-    console.log('點擊位置的緯度:', place.geometry.location.lat());
-    console.log('店家的地址:', place.formatted_address);
-    console.log('店家的類型:', place.types);
-    console.log('店家的評價:', place.rating);
-    console.log('店家的營業時間:', place.opening_hours);
+    setClickPlace(place);
   };
   
 
@@ -118,7 +118,7 @@ const Map = () => {
   useEffect(() => {
     const script = document.createElement('script');
     script.src =
-      'https://maps.googleapis.com/maps/api/js?key=AIzaSyC_Sct7uHnPVrkCRLtKW45MdjrL3-QZCoA&libraries=places';
+    `https://maps.googleapis.com/maps/api/js?key=${window.REACT_APP_API_KEY}&libraries=places`;     
     script.defer = true;
     document.head.appendChild(script);
 
@@ -174,7 +174,7 @@ const Map = () => {
       {showPanel &&(
         <div className={classes.modal}>
           <div className={classes.modalContent}>
-            <Map_Detail onCancel={panelClose}/>
+            <Map_Detail onCancel={panelClose} place={clickPlace} onCancelAll={modalClose}/>
           </div>
         </div>
       )}

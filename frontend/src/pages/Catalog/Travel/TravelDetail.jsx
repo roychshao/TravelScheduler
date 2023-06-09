@@ -60,7 +60,7 @@ const TravelDetail = () => {
                 <div className={classes.modal}>
                     <span className={classes.closeButton} onClick={closeModal}>&times;</span>
                     <div className={classes.modalContent}>
-                        <Map/>
+                        <Map close={closeModal}/>
                     </div>
                 </div>
             )}

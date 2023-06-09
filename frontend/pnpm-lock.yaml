@@ -22,6 +22,9 @@ dependencies:
   axios:
     specifier: ^1.4.0
     version: 1.4.0
+  dotenv:
+    specifier: ^16.1.3
+    version: 16.1.3
   firebase:
     specifier: ^9.21.0
     version: 9.21.0
@@ -1874,6 +1877,11 @@ packages:
     dependencies:
       '@babel/runtime': 7.21.0
       csstype: 3.1.2
+    dev: false
+
+  /dotenv@16.1.3:
+    resolution: {integrity: sha512-FYssxsmCTtKL72fGBSvb1K9dRz0/VZeWqFme/vSb7r7323x4CRaHu4LvQ5JG3+s6yt2YPbBrkpiEODktfyjI9A==}
+    engines: {node: '>=12'}
     dev: false
 
   /electron-to-chromium@1.4.371:
