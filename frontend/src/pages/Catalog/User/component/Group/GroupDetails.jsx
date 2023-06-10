@@ -1,15 +1,27 @@
 import { useState } from 'react'
 import { createUseStyles } from 'react-jss'
 import { useDispatch } from 'react-redux'
-import { joingroup, kickgroup } from './../../../../../actions/groupAction.js'
+import { joingroup, kickgroup, deletegroup } from './../../../../../actions/groupAction.js'
 import GroupMark from './../../../../../assets/GroupList/groupMark.png'
 import JoinIcon from './../../../../../assets/GroupDetails/joinBtn.png'
 import KickIcon from './../../../../../assets/GroupDetails/kickIcon.png'
 import KickDialog from './KickDialog.jsx'
+import DeleteDialog from './DeleteDialog.jsx'
 
 const GroupDetails = ({group_id, group_name, group_creator_name, group_peoplenum, members, handleClose}) => {
 
     const useStyles = createUseStyles({
+        Container: {
+            position: 'fixed',
+            width: '100%',
+            height: '100%',
+            top: '0px',
+            left: '0px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1001,
+        },
         Overlay: {
             position: 'fixed',
             top: 0,
@@ -25,10 +37,11 @@ const GroupDetails = ({group_id, group_name, group_creator_name, group_peoplenum
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            top: '18%',
-            left: '10%',
+            // top: '15%',
+            // left: '10%',
             width: '80%',
-            height: '64%',
+            height: '70%',
+            maxHeight: '468px',
             zIndex: 1001,
             background: 'linear-gradient(180deg, rgba(249, 249, 244) 0%, rgba(241, 238, 230) 100%)',
             border: '0.5px solid #F9F8F4',
@@ -166,6 +179,52 @@ const GroupDetails = ({group_id, group_name, group_creator_name, group_peoplenum
             /* identical to box height */
             letterSpacing: '0.15em',
             color: 'rgba(152, 152, 152, 0.6)',
+        },
+        SaveBtn: {
+            width: '90%',
+            height: '45px',
+            background: 'linear-gradient(180deg, rgba(255, 184, 0, 0.6) 0%, #FFB800 100%)',
+            borderRadius: '5px',
+            border: '0px',
+            fontFamily: 'Paytone One',
+            fontStyle: 'normal',
+            fontWeight: 400,
+            fontSize: '14px',
+            lineHeight: '20px',
+            textAlign: 'center',
+            letterSpacing: '0.15em',
+            color: '#F5F5F5',
+            textShadow: '0px 1px 4px rgba(210, 188, 131, 0.15)',
+            marginTop: '5%',
+        },
+        DeleteBtn: {
+            width: '90%',
+            height: '45px',
+            background: 'linear-gradient(180deg, rgba(255, 61, 0, 0.6) 0%, #FF3D00 100%)',
+            borderRadius: '5px',
+            border: '0px',
+            fontFamily: 'Paytone One',
+            fontStyle: 'normal',
+            fontWeight: 400,
+            fontSize: '14px',
+            lineHeight: '20px',
+            textAlign: 'center',
+            letterSpacing: '0.15em',
+            color: '#F5F5F5',
+            textShadow: '0px 1px 4px rgba(210, 188, 131, 0.15)',
+            marginTop: '5%',
+        },
+        CancelBtn: {
+            fontFamily: 'Paytone One',
+            fontStyle: 'normal',
+            fontWeight: 400,
+            fontSize: '14px',
+            lineHeight: '20px',
+            textAlign: 'center',
+            letterSpacing: '0.15em',
+            color: '#FFB800',
+            border: '0px',
+            marginTop: '5%',
         }
     })
 
@@ -173,6 +232,7 @@ const GroupDetails = ({group_id, group_name, group_creator_name, group_peoplenum
     const dispatcher = useDispatch();
     const [newMemerId, setNewMemberId] = useState("");
     const [openDialog, setOpenDialog] = useState(false);
+    const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
     const handleInputChanged = (e) => {
         setNewMemberId(e.target.value);
@@ -202,6 +262,10 @@ const GroupDetails = ({group_id, group_name, group_creator_name, group_peoplenum
         dispatcher(kickgroup(memberId, group_id));
     }
 
+    const handleDelete = (group_id) => {
+        dispatcher(deletegroup(group_id));
+    }
+
     return (
         <div className={classes.Container}>
             <div className={classes.Overlay} onClick={handleClose}></div>
@@ -221,29 +285,36 @@ const GroupDetails = ({group_id, group_name, group_creator_name, group_peoplenum
                     <div className={classes.GroupMemberText}>Group Members</div>
                 </div>
                 <div className={classes.MemberList}>
-                {members[0].map((member) => {
-                    return (
-                        <div className={classes.MemberWrapper} key={member.user_id}>
-                            <img className={classes.KickIcon} src={KickIcon} alt="kick icon" onClick={() => handleOpenDialog(member.user_id)}/>
-                            <div className={classes.MemberInfoWrapper}>
-                                <div className={classes.MemberName}>{member.username}</div>
-                                <div className={classes.MemberEmail}>{member.email}</div>
+                    {members[0].map((member) => {
+                        return (
+                            <div className={classes.MemberWrapper} key={member.user_id}>
+                                <img className={classes.KickIcon} src={KickIcon} alt="kick icon" onClick={() => handleOpenDialog(member.user_id)}/>
+                                <div className={classes.MemberInfoWrapper}>
+                                    <div className={classes.MemberName}>{member.username}</div>
+                                    <div className={classes.MemberEmail}>{member.email}</div>
+                                </div>
+                                { openDialog[member.user_id] ? 
+                                    <KickDialog
+                                        user_id={member.user_id}
+                                        username={member.username}
+                                        group_name={group_name}
+                                        handleCloseDialog={() => handleCloseDialog(member.user_id)}
+                                        handleKick={() => handleKick(member.user_id)}
+                                    /> : <></>}
                             </div>
-                            { openDialog[member.user_id] ? 
-                                <KickDialog
-                                    user_id={member.user_id}
-                                    username={member.username}
-                                    group_name={group_name}
-                                    handleCloseDialog={() => handleCloseDialog(member.user_id)}
-                                    handleKick={() => handleKick(member.user_id)}
-                            /> : <></>}
-                        </div>
-                    )
-                })}
+                        )
+                    })}
                 </div>
-                <button>Update Group</button>
-                <button>Delete Group</button>
-                <button>Cancel</button>
+                {/* <button className={classes.SaveBtn}>Save</button> */}
+                <button className={classes.DeleteBtn} onClick={() => setOpenDeleteDialog(true)}>Delete Group</button>
+                <button className={classes.CancelBtn} onClick={handleClose}>Cancel</button>
+                { openDeleteDialog ? <DeleteDialog
+                    group_id={group_id}
+                    group_name={group_name}
+                    handleDelete={() => handleDelete(group_id)}
+                    handleCloseDialog={() => setOpenDeleteDialog(false)}
+                /> : <></>
+                }
             </div>
         </div>
     )

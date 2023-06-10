@@ -489,6 +489,33 @@ body: {
 }
 ```
 
+## TAG
+
+#### GET /api/tag/
+
+request
+```
+none
+```
+
+response
+```
+body: {
+    success: true,
+    message: "",
+    data: {
+        tags: [
+            {
+                tag_id,
+                tag_name,
+                tag_color,
+            }
+        ]
+    }
+}
+
+```
+
 ## Error return
 
 response

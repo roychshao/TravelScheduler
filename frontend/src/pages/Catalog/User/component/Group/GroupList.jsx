@@ -5,12 +5,9 @@ import { createUseStyles } from 'react-jss'
 import { getgroup } from './../../../../../actions/groupAction.js'
 import GroupMark from './../../../../../assets/GroupList/groupMark.png'
 import EditGroup from './../../../../../assets/GroupList/editGroup.png'
-
-import MemberList from './MemberList.jsx'
-import UpdateGroup from './UpdateGroup.jsx'
-import DeleteGroup from './DeleteGroup.jsx'
-import AddGroupMember from './AddGroupMember.jsx'
+import EditGroupName from './../../../../../assets/GroupList/editGroupName.png'
 import GroupDetails from './GroupDetails.jsx'
+import EditGroupDialog from './EditGroupDialog.jsx'
 
 const GroupList = () => {
    
@@ -47,6 +44,15 @@ const GroupList = () => {
             height: '30px',
             marginRight: '10px',
         },
+        GroupNameWrapper: {
+            display: 'flex',
+            justifyContent: 'left',
+            alignItems: 'center',
+        },
+        EditGroupNameIcon: {
+            marginLeft: '5px',
+            cursor: 'pointer',
+        },
         GroupName: {
             fontFamily: 'Paytone One',
             fontStyle: 'normal',
@@ -73,6 +79,11 @@ const GroupList = () => {
             alignItems: 'center',
             height: '100%',
         },
+        Empty: {
+            position: 'absolute',
+            height: '0px',
+            width: '0px',
+        }
     })
 
     const classes = useStyles();
@@ -84,6 +95,7 @@ const GroupList = () => {
     }, [])
 
     const [openMap, setOpenMap] = useState({});
+    const [openDialog, setOpenDialog] = useState({});
 
     const handleOpen = (groupId) => {
         // console.log(groups[0][0].members);
@@ -100,6 +112,21 @@ const GroupList = () => {
         }));
     };
 
+    const handleOpenDialog = (groupId) => {
+        // console.log(groups[0][0].members);
+        setOpenDialog((prevState) => ({
+            ...prevState,
+            [groupId]: true,
+        }));
+    };
+
+    const handleCloseDialog = (groupId) => {
+        setOpenDialog((prevState) => ({
+            ...prevState,
+            [groupId]: false,
+        }));
+    };
+
     return (
         <div className={classes.Container}>
             <div className={classes.Wrapper}>
@@ -109,13 +136,20 @@ const GroupList = () => {
                             <div className={classes.InfoWrapper}>
                                 <img src={GroupMark} className={classes.GroupMark}/>
                                 <div>
-                                    <div className={classes.GroupName}>{group.group_name}</div>
+                                    <div className={classes.GroupNameWrapper}>
+                                        <div className={classes.GroupName}>{group.group_name}</div>
+                                        <img className={classes.EditGroupNameIcon} src={EditGroupName} onClick={() => handleOpenDialog(group.group_id)} alt="editGroupName icon"/>
+                                    </div>
                                     <div className={classes.DetailedInfo}>{group.group_creator_name}, {group.members[0].length} people</div>
                                 </div>
                             </div>
                             <div className={classes.EditGroupWrapper}>
                                 <img src={EditGroup} alt="edit group icon" onClick={() => handleOpen(group.group_id)}/>
                             </div>
+                            {openDialog[group.group_id] ? <EditGroupDialog
+                                group_id={group.group_id}
+                                handleCloseDialog={() => handleCloseDialog(group.group_id)}
+                            /> : <div className={classes.Empty}></div>}
                             {openMap[group.group_id] ? <GroupDetails
                                 group_id={group.group_id}
                                 group_name={group.group_name}
@@ -123,7 +157,7 @@ const GroupList = () => {
                                 group_peoplenum={group.group_peoplenum}
                                 members={group.members}
                                 handleClose={() => handleClose(group.group_id)}
-                            /> : <></>}
+                            /> : <div className={classes.Empty}></div>}
                         </div> 
                     ))
                 ):(

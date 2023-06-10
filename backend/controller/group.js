@@ -1,4 +1,3 @@
-import crypto from "crypto";
 import dotenv from "dotenv";
 import Group from "./../database/group.js";
 import User from "./../database/user.js";
@@ -6,7 +5,8 @@ import { v4 as uuid } from "uuid";
 dotenv.config();
 
 const parseEscape = (value) => {
-    return typeof value === "boolean" ? value.slice(1, value.length - 1) : value;
+    var length = value.length;
+    return (length >= 6 && typeof value.slice(1, length - 1) === "boolean") ? value.slice(1, length - 1) : value;
 };
 
 export const get = async (req, res, next) => {
