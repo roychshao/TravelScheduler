@@ -50,7 +50,7 @@ export const createspot = (spotName, spotLocation, spotRank, spotOpenhour, spotD
                 spot_openhour: spotOpenhour,
                 spot_discription: spotDescription,
                 spot_tag_id: spotTagId,
-                spot_tag_name: spotName,
+                spot_tag_name: spotTagName,
                 spot_tag_color: spotTagColor,
               },
               { withCredentials: true }
