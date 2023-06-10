@@ -55,6 +55,17 @@ const CreateGroup = () => {
         Closed: {
             display: 'none',
         },
+        DialogContainer: {
+            position: 'fixed',
+            width: '100%',
+            height: '100%',
+            top: '0px',
+            left: '0px',
+            display:'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 1001,
+        },
         Overlay: {
             position: 'fixed',
             top: 0,
@@ -68,10 +79,9 @@ const CreateGroup = () => {
             display: 'flex',
             justifyContent: 'center',
             position: 'fixed',
-            top: '21%',
-            left: '15%',
             width: '70%',
             height: '58%',
+            maxHeight: '388px',
             background: 'linear-gradient(180deg, rgba(249, 249, 244) 0%, rgba(241, 238, 230) 100%)',
             border: '0.5px solid #F9F8F4',
             boxShadow: 'inset 1px 1px 1px rgba(244, 249, 249, 0.55)',
@@ -191,20 +201,22 @@ const CreateGroup = () => {
                     <img src={CreateIcon} alt="create group icon"/>
                 </button>
             </div>
-            <div className={open ? classes.Overlay: classes.Closed} onClick={handleClose}></div>
-            <div className={open ? classes.Dialog : classes.Closed}>
-                <div className={classes.ContentWrapper}>
-                    <img src={CreateGroupIcon} className={classes.CreateGroupIcon} alt="create group icon"/>
-                    <div className={classes.TitleWrapper}>
-                        <div className={classes.Title}>Group Name</div>
+            <div className={open ? classes.DialogContainer : classes.Closed}>
+                <div className={open ? classes.Overlay : classes.Closed} onClick={handleClose}></div>
+                <div className={open ? classes.Dialog : classes.Closed}>
+                    <div className={classes.ContentWrapper}>
+                        <img src={CreateGroupIcon} className={classes.CreateGroupIcon} alt="create group icon"/>
+                        <div className={classes.TitleWrapper}>
+                            <div className={classes.Title}>Group Name</div>
+                        </div>
+                        <input className={classes.Input} type="text" placeholder="New Group" onChange={(e) => setGroupName(e.target.value)}/>
+                        <div className={classes.TitleWrapper}>
+                            <div className={classes.Title}>Group Description</div>
+                        </div>
+                        <input className={classes.Input} type="text" placeholder="Description" onChange={(e) => setGroupDescription(e.target.value)}/>
+                        <div className={classes.SaveBtn} onClick={handleCreate}>Save Group</div>
+                        <div className={classes.CancelBtn} onClick={handleClose}>Cancel</div>
                     </div>
-                    <input className={classes.Input} type="text" placeholder="New Group" onChange={(e) => setGroupName(e.target.value)}/>
-                    <div className={classes.TitleWrapper}>
-                        <div className={classes.Title}>Group Description</div>
-                    </div>
-                    <input className={classes.Input} type="text" placeholder="Description" onChange={(e) => setGroupDescription(e.target.value)}/>
-                    <div className={classes.SaveBtn} onClick={handleCreate}>Save Group</div>
-                    <div className={classes.CancelBtn} onClick={handleClose}>Cancel</div>
                 </div>
             </div>
         </div>

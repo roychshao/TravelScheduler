@@ -1,5 +1,5 @@
 import express from "express";
-import { get, create, delete_, edit } from "./../controller/travel.js";
+import { get1, get2, create, delete_, edit } from "./../controller/travel.js";
 import {
   get_response,
   create_response,
@@ -9,7 +9,8 @@ import {
 
 const router = express.Router();
 
-router.get("/get", get, get_response);
+router.get("/get1", get1, get_response);
+router.get("/get2", get2, get_response)
 router.post("/create", create, create_response);
 router.delete("/delete", delete_, delete_response);
 router.put("/edit", edit, edit_response);
