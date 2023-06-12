@@ -5,3 +5,4 @@ frontend/.env.local
 frontend/config.js
 frontend/src/firebase.js
 /view/dist
+node_modules
