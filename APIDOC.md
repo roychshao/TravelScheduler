@@ -349,7 +349,7 @@ request
 
 ```
 body: {
-    spot_id,
+    has_id: (string)
 }
 ```
 
