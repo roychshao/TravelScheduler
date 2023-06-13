@@ -77,20 +77,20 @@ DROP TABLE IF EXISTS `HAS`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `HAS` (
+  `has_id` varchar(256) NOT NULL,
   `travel_id` varchar(256) NOT NULL,
   `spot_id` varchar(256) NOT NULL,
-  `tag_name` varchar(50) NOT NULL,
+  `tag_name` varchar(50) DEFAULT NULL,
   `transportation` varchar(20) DEFAULT NULL,
   `start_time` datetime DEFAULT NULL,
   `arrive_time` datetime DEFAULT NULL,
   `arrive_id` varchar(256) DEFAULT NULL,
-  PRIMARY KEY (`travel_id`,`spot_id`),
+  PRIMARY KEY (`has_id`),
   KEY `spot_id` (`spot_id`),
-  KEY `tag_id` (`tag_name`),
   KEY `arrive_id` (`arrive_id`),
   CONSTRAINT `HAS_ibfk_1` FOREIGN KEY (`travel_id`) REFERENCES `TRAVEL` (`travel_id`) ON DELETE CASCADE,
   CONSTRAINT `HAS_ibfk_2` FOREIGN KEY (`spot_id`) REFERENCES `SPOT` (`spot_id`) ON DELETE CASCADE,
-  CONSTRAINT `HAS_ibfk_3` FOREIGN KEY (`tag_name`) REFERENCES `TAG` (`name`),
+  CONSTRAINT `HAS_ibfk_3` FOREIGN KEY (`tag_name`) REFERENCES `TAG` (`name`) ON DELETE SET NULL,
   CONSTRAINT `HAS_ibfk_4` FOREIGN KEY (`arrive_id`) REFERENCES `HAS` (`spot_id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;

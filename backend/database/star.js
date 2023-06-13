@@ -1,9 +1,8 @@
-import { pool } from "'./pool'";
 import { useTransaction } from "./utils.js";
 
 const print_error = (err) => {
     console.log("error: " + err.message);
-}
+};
 
 const create = (user_id, spot_id) => {
     return new Promise( async (resolve, reject) => {
@@ -26,7 +25,7 @@ const create = (user_id, spot_id) => {
     });
 }
 
-const delete = (user_id, spot_id) => {
+const delete_ = (user_id, spot_id) => {
     return new Promise( async (resolve, reject) => {
         var sqls = [
             "DELETE FROM STAR WHERE user_id = ? AND spot_id = ?"
@@ -47,4 +46,4 @@ const delete = (user_id, spot_id) => {
     });
 }
 
-export default { create, delete };
+export default { create, delete_ };
