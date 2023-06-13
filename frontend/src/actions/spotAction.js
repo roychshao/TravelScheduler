@@ -38,20 +38,24 @@ export const getTravelSpots = () => {
   };
 };
 
-export const createspot = (spotName, spotLocation, spotRank, spotOpenhour, spotDescription, spotTagId, spotTagName, spotTagColor) => {
+export const createspot = (spotName, spotLatitude, spotLongitude, spotRank, spotOpenhour, spotTagName, spotStartTime, spotArriveTime) => {
   return (dispatch) => {
       const hostUrl = import.meta.env.VITE_HOST_URL;
       axios.post(
               `${hostUrl}/api/spot/create`,
               {
                 spot_name: spotName,
-                spot_location: spotLocation,
+                spot_latitude: spotLatitude,
+                spot_longitude: spotLongitude,
                 spot_rank: spotRank,
                 spot_openhour: spotOpenhour,
-                spot_discription: spotDescription,
-                spot_tag_id: spotTagId,
-                spot_tag_name: spotName,
-                spot_tag_color: spotTagColor,
+                spot_discription: "",
+                spot_tag_name: spotTagName,
+                arrive_id: null,
+                spot_transportation: "",
+                spot_start_time: spotStartTime,
+                spot_arrive_time: spotArriveTime,
+                travel_id: 1
               },
               { withCredentials: true }
           )
@@ -67,16 +71,21 @@ export const createspot = (spotName, spotLocation, spotRank, spotOpenhour, spotD
   };
 };
 
-export const updatespot = (spotId, spotStar, spotDescription, spotTagName) => {
+export const updatespot = (spotId, spotTagId, spotDescription, spotTagName, spotTransportation, spotStartTime, spotArriveTime, spotArriveId, spotTravelId) => {
   return (dispatch) => {
       const hostUrl = import.meta.env.VITE_HOST_URL;
       axios.put(
               `${hostUrl}/api/spot/update`,
               {
                   spot_id: spotId,
-                  spot_star: spotStar,
+                  spot_tag_id: spotTagId,
                   spot_description: spotDescription,
                   spot_tag_name: spotTagName,
+                  spot_transportation: spotTransportation,
+                  spot_start_time: "18:06:00",
+                  spot_arrive_time: "20:15:00",
+                  spot_arrive_id: "spot2_id",
+                  spot_travel_id: "travel_id1"
               },
               { withCredentials: true }
           )
