@@ -79,18 +79,18 @@ DROP TABLE IF EXISTS `HAS`;
 CREATE TABLE `HAS` (
   `travel_id` varchar(256) NOT NULL,
   `spot_id` varchar(256) NOT NULL,
-  `tag_id` varchar(256) DEFAULT NULL,
+  `tag_name` varchar(50) NOT NULL,
   `transportation` varchar(20) DEFAULT NULL,
-  `start_time` time DEFAULT NULL,
-  `arrive_time` time DEFAULT NULL,
+  `start_time` datetime DEFAULT NULL,
+  `arrive_time` datetime DEFAULT NULL,
   `arrive_id` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`travel_id`,`spot_id`),
   KEY `spot_id` (`spot_id`),
-  KEY `tag_id` (`tag_id`),
+  KEY `tag_id` (`tag_name`),
   KEY `arrive_id` (`arrive_id`),
   CONSTRAINT `HAS_ibfk_1` FOREIGN KEY (`travel_id`) REFERENCES `TRAVEL` (`travel_id`) ON DELETE CASCADE,
   CONSTRAINT `HAS_ibfk_2` FOREIGN KEY (`spot_id`) REFERENCES `SPOT` (`spot_id`) ON DELETE CASCADE,
-  CONSTRAINT `HAS_ibfk_3` FOREIGN KEY (`tag_id`) REFERENCES `TAG` (`tag_id`) ON DELETE SET NULL,
+  CONSTRAINT `HAS_ibfk_3` FOREIGN KEY (`tag_name`) REFERENCES `TAG` (`name`),
   CONSTRAINT `HAS_ibfk_4` FOREIGN KEY (`arrive_id`) REFERENCES `HAS` (`spot_id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -114,10 +114,12 @@ DROP TABLE IF EXISTS `SPOT`;
 CREATE TABLE `SPOT` (
   `spot_id` varchar(256) NOT NULL,
   `name` varchar(20) DEFAULT NULL,
-  `location` varchar(100) DEFAULT NULL,
   `ranking` float DEFAULT NULL,
-  `open_hour` time DEFAULT NULL,
   `description` varchar(100) DEFAULT NULL,
+  `longtitude` float DEFAULT NULL,
+  `latitude` float DEFAULT NULL,
+  `open_hour` varchar(100) DEFAULT NULL,
+  `location` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`spot_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -128,6 +130,7 @@ CREATE TABLE `SPOT` (
 
 LOCK TABLES `SPOT` WRITE;
 /*!40000 ALTER TABLE `SPOT` DISABLE KEYS */;
+INSERT INTO `SPOT` VALUES ('yIADybgv2S/xwuEANM0OfmRCMG6wWlImQjsy3IV865g=','test_roy',5.5,'none',1.2,1.1,'7-11','123456879');
 /*!40000 ALTER TABLE `SPOT` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -165,10 +168,9 @@ DROP TABLE IF EXISTS `TAG`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `TAG` (
-  `tag_id` varchar(256) NOT NULL,
-  `name` varchar(20) DEFAULT NULL,
+  `name` varchar(50) NOT NULL,
   `color` varchar(20) DEFAULT NULL,
-  PRIMARY KEY (`tag_id`)
+  PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -178,7 +180,6 @@ CREATE TABLE `TAG` (
 
 LOCK TABLES `TAG` WRITE;
 /*!40000 ALTER TABLE `TAG` DISABLE KEYS */;
-INSERT INTO `TAG` VALUES ('1','Restaurant','#BEBEBE'),('10','Park','#BEBEBE'),('11','Zoo','#BEBEBE'),('12','Museum','#BEBEBE'),('13','Art Gallery','#BEBEBE'),('14','Library','#BEBEBE'),('15','School','#BEBEBE'),('16','University','#BEBEBE'),('17','Hospital','#BEBEBE'),('18','Bank','#BEBEBE'),('19','Post Office','#BEBEBE'),('2','Cafe','#BEBEBE'),('20','Airport','#BEBEBE'),('21','Train Station','#BEBEBE'),('22','Bus Stop','#BEBEBE'),('23','Subway Station','#BEBEBE'),('24','Port','#BEBEBE'),('25','Playground','#BEBEBE'),('26','Hotel','#BEBEBE'),('27','Bookstore','#BEBEBE'),('28','Stadium','#BEBEBE'),('29','FashionBoutique','#BEBEBE'),('3','Bar','#BEBEBE'),('30','TouristAttraction','#BEBEBE'),('4','Supermarket','#BEBEBE'),('5','Department Store','#BEBEBE'),('6','Market','#BEBEBE'),('7','Beauty Salon','#BEBEBE'),('8','Gym','#BEBEBE'),('9','Cinema','#BEBEBE');
 /*!40000 ALTER TABLE `TAG` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -273,4 +274,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-03  3:10:57
+-- Dump completed on 2023-06-13 16:49:27

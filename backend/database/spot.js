@@ -4,19 +4,19 @@ const print_error = (err) => {
     console.log("error: " + err.message);
 };
 
-const get1 = () => {
+const get1 = (user_id) => {
     return new Promise( async (resolve, reject) => {
 
         var sqls = [
-            "SELECT * FROM SPOT WHERE spot_id in (SELECT spot_id FROM HAS WHERE spot_id NOT IN (SELECT spot_id FROM HAS INNER JOIN travel ON HAS.travel_id = travel.travel_id WHERE travel.done = true)GROUP BY spot_id);",
-            "SELECT * FROM SPOT WHERE spot_id in (SELECT spot_id FROM HAS WHERE spot_id IN (SELECT spot_id FROM HAS INNER JOIN travel ON HAS.travel_id = travel.travel_id WHERE travel.done = true)GROUP BY spot_id);",
-            "SELECT * FROM SPOT WHERE spot_id in (SELECT spot_id FROM STAR);"
+            "SELECT * FROM SPOT WHERE spot_id in (SELECT spot_id FROM HAS WHERE spot_id NOT IN (SELECT spot_id FROM HAS INNER JOIN travel ON HAS.travel_id = travel.travel_id WHERE travel.done = true AND travel.user_id = ?)GROUP BY spot_id);",
+            "SELECT * FROM SPOT WHERE spot_id in (SELECT spot_id FROM HAS WHERE spot_id IN (SELECT spot_id FROM HAS INNER JOIN travel ON HAS.travel_id = travel.travel_id WHERE travel.done = true AND travel.user_id = ?)GROUP BY spot_id);",
+            "SELECT * FROM SPOT WHERE spot_id in (SELECT spot_id FROM STAR WHERE user_id = ?);"
         ]
 
         var values = [
-            [],
-            [],
-            []
+            [user_id],
+            [user_id],
+            [user_id]
         ]
 
         await useTransaction(sqls, values).then(results => {
@@ -32,7 +32,7 @@ const get2 = (travel_id) => {
     return new Promise( async (resolve, reject) => {
 
         var sqls = [
-            "SELECT SPOT.spot_id, SPOT.name as spot_name, SPOT.location, HAS.transportation, SPOT.ranking, SPOT.open_hour, SPOT.description, HAS.tag_id, TAG.name as tag_name, TAG.color, TRAVEL.done from SPOT JOIN HAS ON HAS.spot_id = SPOT.spot_id JOIN TAG ON HAS.tag_id = TAG.tag_id JOIN TRAVEL ON TRAVEL.travel_id = HAS.travel_id where TRAVEL.travel_id = ?;"
+            "SELECT SPOT.spot_id, SPOT.name as spot_name, SPOT.location, HAS.transportation, SPOT.ranking, SPOT.open_hour, SPOT.description, SPOT.longtitude, SPOT.latitude, HAS.tag_id, TAG.name as tag_name, TAG.color, TRAVEL.done from SPOT JOIN HAS ON HAS.spot_id = SPOT.spot_id JOIN TAG ON HAS.tag_id = TAG.tag_id JOIN TRAVEL ON TRAVEL.travel_id = HAS.travel_id where TRAVEL.travel_id = ?;"
         ]
 
         var values = [
@@ -46,6 +46,7 @@ const get2 = (travel_id) => {
             reject(err);
         })
     });
+
 }
 const check_spot_exist = (spot_id) => {
     return new Promise(async(resolve, reject) => {
@@ -65,14 +66,17 @@ const check_spot_exist = (spot_id) => {
         })
     });
 }
-const create = (spot_id, spot_name, spot_location, spot_rank, spot_openhour, spot_description) => {
+
+
+// await Spot.create(spot_id, spot_name, spot_rank, spot_description, spot_longtitude, spot_latitude, spot_openhour, spot_location)
+const create = (spot_id, spot_name, spot_rank, spot_description, spot_longtitude, spot_latitude, spot_openhour, spot_location) => {
     return new Promise(async(resolve, reject) => {
         var sqls = [
-            "INSERT INTO SPOT VALUE(?,?,?,?,?,?)"
+            "INSERT INTO SPOT VALUE(?,?,?,?,?,?,?,?)"
         ];
         
         var values = [
-            [spot_id, spot_name, spot_location, spot_rank, spot_openhour, spot_description],
+            [spot_id, spot_name, spot_rank, spot_description, spot_longtitude, spot_latitude, spot_openhour, spot_location],
         ];
 
         await useTransaction(sqls, values).then(results => {
@@ -84,7 +88,8 @@ const create = (spot_id, spot_name, spot_location, spot_rank, spot_openhour, spo
     });
 }
 
-const add_to_has = (spot_id, tag_id, arrive_id, transportation, spot_start_time, spot_arrive_time, travel_id) => {
+// await Spot.add_to_has(travel_id, spot_id, spot_tag_name, spot_transportation, spot_start_time, spot_arrive_time, arrive_id)
+const add_to_has = (travel_id, spot_id, spot_tag_name, spot_transportation, spot_start_time, spot_arrive_time, arrive_id) => {
     return new Promise(async(resolve, reject) => {
         var sqls = [
             "INSERT INTO HAS VALUE(?,?,?,?,?,?,?)",
@@ -92,7 +97,7 @@ const add_to_has = (spot_id, tag_id, arrive_id, transportation, spot_start_time,
         ];
         
         var values = [
-            [travel_id, spot_id, tag_id, transportation, spot_start_time, spot_arrive_time, arrive_id],   
+            [travel_id, spot_id, spot_tag_name, spot_transportation, spot_start_time, spot_arrive_time, arrive_id],   
             [spot_id, travel_id, spot_id]
         ];
 
@@ -105,7 +110,8 @@ const add_to_has = (spot_id, tag_id, arrive_id, transportation, spot_start_time,
     });
 }
 
-const update = (spot_id, spot_description, tag_id, transportation, start_time, arrive_time, arrive_id, travel_id) => {
+// await Spot.update(spot_id, spot_description, spot_tag_name, spot_transportation, spot_start_time, spot_arrive_time, arrive_id, travel_id)
+const update = (spot_id, spot_description, spot_tag_name, spot_transportation, spot_start_time, spot_arrive_time, arrive_id, travel_id) => {
     return new Promise( async (resolve, reject) => {
 
         var sqls = [
@@ -146,4 +152,6 @@ const delete_ = (spot_id, travel_id) => {
         })
     })
 };
+
+
 export default { get1, get2, check_spot_exist, create, add_to_has, update, delete_ };
