@@ -204,6 +204,8 @@ body: {
                 spot_id,
                 spot_name,
                 spot_location,
+                spot_longtitude,
+                spot_latitude,
                 spot_rank,
                 spot_openhour,
                 spot_description,
@@ -215,6 +217,8 @@ body: {
                 spot_id,
                 spot_name,
                 spot_location,
+                spot_longtitude,
+                spot_latitude,
                 spot_rank,
                 spot_openhour,
                 spot_description,
@@ -226,6 +230,8 @@ body: {
                 spot_id,
                 spot_name,
                 spot_location,
+                spot_longtitude,
+                spot_latitude,
                 spot_rank,
                 spot_openhour,
                 spot_description,
@@ -239,7 +245,7 @@ body: {
 request
 
 ```
-session: {
+body: {
     travel_id,
 }
 ```
@@ -256,11 +262,12 @@ body: {
                 spot_id,
                 spot_name,
                 spot_location,
+                spot_longtitude,
+                spot_latitude,
                 spot_transportation,
                 spot_rank,
                 spot_openhour,
                 spot_description,
-                spot_tag_id,
                 spot_tag_name,
                 spot_tag_color,
                 spot_done
@@ -279,14 +286,20 @@ session: {
 }
 
 body: {
-    spot_name,
-    spot_location,
-    spot_rank,
-    spot_openhour,
-    spot_discription,
-    spot_tag_id,
-    spot_tag_name,
-    spot_tag_color,
+    spot_name: (string),
+    spot_latitude: (float),
+    spot_longtitude: (float),
+    spot_location: (string),
+    spot_rank: (float),
+    spot_openhour: (string),
+    spot_description: (string),
+    spot_tag_name: (string),
+    spot_tag_color: (string),
+    arrive_id: (string),
+    spot_transportation: (string),
+    spot_start_time: (datetime),
+    spot_arrive_time: (datetime),
+    travel_id: (string)
 }
 ```
 
@@ -306,10 +319,17 @@ request
 
 ```
 body: {
-    spot_id,
-    spot_star,
-    spot_description,
-    spot_tag_name,
+    spot_id: (string),
+    spot_description: (string),
+    spot_tag_name: (string),
+    spot_transportation: (string),
+    spot_start_time: (datetime),
+    spot_arrive_time: (datetime),
+    arrive_id: (string),
+    travel_id: (string),
+    spot_star: (將spot納入star: true;
+                將spot移除star: false;
+                與star無關: null)
 }
 ```
 
