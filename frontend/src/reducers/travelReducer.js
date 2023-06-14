@@ -4,7 +4,7 @@ const initialState = {
 
 const travelReducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'Get':
+        case 'GetTravels':
             return {
                 ...state,
                 travels: [action.payload]

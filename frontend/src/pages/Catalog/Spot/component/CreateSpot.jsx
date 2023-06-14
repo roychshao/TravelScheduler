@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react'
-import { createtravel } from './../../../../actions/travelAction.js'
+import { createspot } from '../../../../actions/spotAction.js';
 import { useDispatch, useSelector } from 'react-redux'
-import { getgroup } from './../../../../actions/groupAction.js'
-
+import { getTravelSpots } from '../../../../actions/spotAction.js';
 import {
     Button,
     Dialog,
@@ -15,23 +14,16 @@ import {
 } from '@mui/material';
 
 
-const CreateTravel = () => {
+const CreateSpot = () => {
 
     const dispatcher = useDispatch();
-    // const travels = useSelector(state => state.travelReducer.travels);
+    // const spots = useSelector(state => state.spotReducer.spots);
     const [open, setOpen] = useState(false);
-    const [travelName, setTravelName] = useState("");
-    const [groupId, setGroupId] = useState("");
-    const [travelDate, setTravelDate] = useState("");
-    // const [travelPeoplenum, setTravelPeoplenum] = useState("");
-    const [travelDescription, setTravelDescription] = useState("");
-    // const [travelDone, setTravelDone] = useState("");
+    const [spotName, setSpotName] = useState("");
 
-    const groups = useSelector(state => state.groupReducer.groups);
     useEffect(() => {
-        dispatcher(getgroup());
+        dispatcher(getTravelSpots());
     }, [])
-    // console.log(groups);
 
 
     const handleClickOpen = () => {
@@ -44,13 +36,9 @@ const CreateTravel = () => {
 
     const handleCreate = () => {
         // call api here
-        dispatcher(createtravel(
-            travelName,
-            groupId,
-            travelDate,
-            // travelPeoplenum,
-            travelDescription,
-            // travelDone
+        dispatcher(createspot(
+            spotName,
+   
         ));
         setOpen(false);
     };
@@ -58,10 +46,10 @@ const CreateTravel = () => {
     return (
         <div>
             <Button variant="contained" color="primary" onClick={handleClickOpen}>
-                Create Travel
+                Create spot
             </Button>
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Create a new Travel</DialogTitle>
+                <DialogTitle>Create a new spot</DialogTitle>
                 <DialogContent>
                     <form>
                         <TextField
@@ -70,8 +58,8 @@ const CreateTravel = () => {
                             label="Name"
                             type="text"
                             fullWidth
-                            value={travelName}
-                            onChange={(e) => setTravelName(e.target.value)}
+                            value={spotName}
+                            onChange={(e) => setspotName(e.target.value)}
                         />
                         {/* <Select
                             margin="dense" s
@@ -112,8 +100,8 @@ const CreateTravel = () => {
                             label="Date"
                             type="date"
                             fullWidth
-                            value={travelDate}
-                            onChange={(e) => setTravelDate(e.target.value)}
+                            value={spotDate}
+                            onChange={(e) => setspotDate(e.target.value)}
                             InputLabelProps={{
                                 shrink: true,
                             }} />
@@ -122,24 +110,24 @@ const CreateTravel = () => {
                             label="Number of People"
                             type="text"
                             fullWidth
-                            value={travelPeoplenum}
-                            onChange={(e) => setTravelPeoplenum(e.target.value)}
+                            value={spotPeoplenum}
+                            onChange={(e) => setspotPeoplenum(e.target.value)}
                         /> */}
                         <TextField
                             margin="dense"
                             label="Description"
                             type="text"
                             fullWidth
-                            value={travelDescription}
-                            onChange={(e) => setTravelDescription(e.target.value)}
+                            value={spotDescription}
+                            onChange={(e) => setspotDescription(e.target.value)}
                         />
                         {/* <TextField
                             margin="dense"
                             label="Done"
                             type="text"
                             fullWidth
-                            value={travelDone}
-                            onChange={(e) => setTravelDone(e.target.value)}
+                            value={spotDone}
+                            onChange={(e) => setspotDone(e.target.value)}
                         /> */}
                     </form>
                 </DialogContent>
@@ -152,4 +140,4 @@ const CreateTravel = () => {
     )
 }
 
-export default CreateTravel
+export default Createspot
