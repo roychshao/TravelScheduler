@@ -8,10 +8,10 @@ const parseEscape = (value) => {
 };
 
 export const create = async (req, res, next) => {
-  // const { user_id } = req?.session;
+  const { user_id } = req?.session;
   const {
     group_id,
-    user_id,
+    // user_id,
     travel_name,
     travel_date,
     travel_peoplenum,

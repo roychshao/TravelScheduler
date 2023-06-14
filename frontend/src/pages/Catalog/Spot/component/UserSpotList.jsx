@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { List, ListItem, ListItemText, Button, Dialog, DialogTitle, DialogActions, DialogContent, TextField } from "@mui/material"
 import { deletespot, getUserSpots, updatespot } from '../../../../actions/spotAction'
+
+
 const UserSpotList = () => {
 
     const dispatcher = useDispatch();
@@ -32,7 +34,7 @@ const UserSpotList = () => {
         setOpen(false);
     };
 
-    // ===============================update spot
+    // ====================update spot====================
     const [spotId, setSpotId] = useState("");
     const [spotDescription, setSpotDescription] = useState("");
     const [tagId, setTagId] = useState("")
@@ -57,14 +59,14 @@ const UserSpotList = () => {
             travel_id,
         ))
     };
-    // ============================update spot
+    // ====================update spot====================
 
     const handleDelete = (SpotID) => {
         dispatcher(deletespot(SpotID));
         setConfirmDialogOpen(false);
         setOpen(false);
-
     };
+
     const confirmDelete = () => {
         setConfirmDialogOpen(true);
     };
@@ -144,7 +146,7 @@ const UserSpotList = () => {
                                         // value="spotDescription"
                                         onChange={(e) => setSpotDescription(e.target.value)}
                                     />
-                                       <TextField
+                                    <TextField
                                         autoFocus
                                         margin="dense"
                                         label="Tag Id"
@@ -153,7 +155,7 @@ const UserSpotList = () => {
                                         // value="TagId"
                                         onChange={(e) => setTagId(e.target.value)}
                                     />
-                                       <TextField
+                                    <TextField
                                         autoFocus
                                         margin="dense"
                                         label="Transportation"

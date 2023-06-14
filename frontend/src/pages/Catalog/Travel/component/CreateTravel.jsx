@@ -73,24 +73,7 @@ const CreateTravel = () => {
                             value={travelName}
                             onChange={(e) => setTravelName(e.target.value)}
                         />
-                        {/* <Select
-                            margin="dense" s
-                            label="Group Name"
-                            type="text"
-                            fullWidth
-                            value={groupId}
-                            onChange={(e) => setGroupId(e.target.value)}
 
-                        >
-                            <MenuItem value="">Select Group</MenuItem> 
-                            {groups[0].map(group => (
-                                group.group_name && group.group_id ? (
-                                    <MenuItem key={group.group_id} value={group.group_id}>
-                                        {group.group_name}
-                                    </MenuItem>
-                                ) : null
-                            ))}
-                        </Select> */}
                         <Select
                             margin="dense"
                             label="Group Name"
@@ -99,6 +82,7 @@ const CreateTravel = () => {
                             value={groupId}
                             onChange={(e) => setGroupId(e.target.value)}
                         >
+                            <MenuItem value="">無</MenuItem>
                             {Array.isArray(groups) && Array.isArray(groups[0]) && groups[0].map(group => (
                                 group.group_name && group.group_id ? (
                                     <MenuItem key={group.group_id} value={group.group_id}>
@@ -117,14 +101,6 @@ const CreateTravel = () => {
                             InputLabelProps={{
                                 shrink: true,
                             }} />
-                        {/* <TextField
-                            margin="dense"
-                            label="Number of People"
-                            type="text"
-                            fullWidth
-                            value={travelPeoplenum}
-                            onChange={(e) => setTravelPeoplenum(e.target.value)}
-                        /> */}
                         <TextField
                             margin="dense"
                             label="Description"
@@ -133,14 +109,6 @@ const CreateTravel = () => {
                             value={travelDescription}
                             onChange={(e) => setTravelDescription(e.target.value)}
                         />
-                        {/* <TextField
-                            margin="dense"
-                            label="Done"
-                            type="text"
-                            fullWidth
-                            value={travelDone}
-                            onChange={(e) => setTravelDone(e.target.value)}
-                        /> */}
                     </form>
                 </DialogContent>
                 <DialogActions>

@@ -24,12 +24,12 @@ const Travel = () => {
             <br />
             <br />
 
-            <EditTravel />
+            {/* <EditTravel /> */}
 
             <br />
             <br />
 
-            <DeleteTravel />
+            {/* <DeleteTravel /> */}
             <TravelList />
         </div>
     )
