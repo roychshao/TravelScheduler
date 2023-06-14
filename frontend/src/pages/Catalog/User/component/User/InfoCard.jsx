@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { createUseStyles } from 'react-jss'
 import UserIcon from './../../../../../assets/InfoCard/userIdIcon.png'
 import EmailIcon from './../../../../../assets/InfoCard/emailIcon.png'
+import CopyIcon from './../../../../../assets/copy.png'
 
 const InfoCard = () => {
 
@@ -83,6 +84,7 @@ const InfoCard = () => {
             letterSpacing: '0.15em',
             color: '#F9F8F4',
             textShadow: '0px 1px 4px rgba(210, 188, 131, 0.15)',
+            marginRight: '5px',
         }
     })
 
@@ -92,7 +94,13 @@ const InfoCard = () => {
     const photoURL = useSelector(state => state.loginReducer.photoURL);
     const userId = useSelector(state => state.loginReducer.userId);
 
-    // TODO: clipoard btn
+    const copyUserId = () => {
+        navigator.clipboard.writeText(userId).then(() => {
+            console.log("write to clipboard successfully");
+        }).catch(err => {
+            console.log(err);
+        })
+    }
 
     return (
         <div className={classes.Container}>
@@ -110,7 +118,8 @@ const InfoCard = () => {
                     </div>
                     <div className={classes.Container}>
                         <img src={UserIcon} alt="user icon"/>
-                        <div className={classes.IdandMail}>copy userId</div>
+                        <div className={classes.IdandMail}>copy userId to clipboard</div>
+                        <img src={CopyIcon} alt="CopyIcon" onClick={copyUserId}/>
                     </div>
                 </div>
             </div>

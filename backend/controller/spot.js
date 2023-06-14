@@ -3,9 +3,11 @@ import dotenv from 'dotenv';
 import Spot from "./../database/spot.js";
 dotenv.config();
 
-const parseEscape = (value) => { 
-    return (typeof value === "boolean") ? value.slice(1, value.length-1) : value;
-}
+const parseEscape = (value) => {
+    var length = value.length;
+    return (length >= 6 && typeof value.slice(1, length - 1) === "boolean") ? value.slice(1, length - 1) : value;
+};
+
 export const get1 = async (req, res, next) => {
 
     await Spot.get1()

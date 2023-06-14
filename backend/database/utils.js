@@ -22,10 +22,11 @@ export const useTransaction = (sqls, values) => {
                         }
 
                         const result = await new Promise((resolve, reject) => {
-                            conn.query(sql, value, (err, result, fields) => {
-                                if(err)
-                                    throw err;
-                                else {
+                            conn.query(sql, value, async (err, result, fields) => {
+                                if(err) {
+                                    await conn.rollback();
+                                    reject(err);
+                                } else {
                                     resolve(result);
                                 }
                             });

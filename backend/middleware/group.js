@@ -23,11 +23,9 @@ export const create_response = async (req, res, next) => {
 };
 
 export const get_response = async (req, res, next) => {
-  var response = {};
-
-  var response = {};
-
-  if (req.err) {
+    var response = {};
+  
+    if (req.err) {
     response = {
       success: false,
       message: "獲得群組失敗 err: " + req.err.message,
