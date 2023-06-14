@@ -32,7 +32,7 @@ const get2 = (travel_id) => {
     return new Promise( async (resolve, reject) => {
 
         var sqls = [
-            "SELECT SPOT.spot_id, SPOT.name as spot_name, SPOT.location, HAS.transportation, SPOT.ranking, SPOT.open_hour, SPOT.description, SPOT.longtitude, SPOT.latitude, HAS.tag_id, TAG.name as tag_name, TAG.color, TRAVEL.done from SPOT JOIN HAS ON HAS.spot_id = SPOT.spot_id JOIN TAG ON HAS.tag_id = TAG.tag_id JOIN TRAVEL ON TRAVEL.travel_id = HAS.travel_id where TRAVEL.travel_id = ?;"
+            "SELECT SPOT.spot_id, SPOT.name as spot_name, SPOT.location, longtitude, latitude, HAS.transportation, SPOT.ranking, SPOT.open_hour, SPOT.description, TAG.name as spot_tag_name, TAG.color, TRAVEL.done from SPOT JOIN HAS ON HAS.spot_id = SPOT.spot_id JOIN TAG ON HAS.tag_name = TAG.name JOIN TRAVEL ON TRAVEL.travel_id = HAS.travel_id where TRAVEL.travel_id = ?;"
         ]
 
         var values = [
@@ -89,16 +89,22 @@ const create = (spot_id, spot_name, spot_rank, spot_description, spot_longtitude
 }
 
 // await Spot.add_to_has(travel_id, spot_id, spot_tag_name, spot_transportation, spot_start_time, spot_arrive_time, arrive_id)
-const add_to_has = (travel_id, spot_id, spot_tag_name, spot_transportation, spot_start_time, spot_arrive_time, arrive_id) => {
+const add_to_has = (has_id, travel_id, spot_id, spot_tag_name, spot_transportation, spot_start_time, spot_arrive_time, arrive_id) => {
+    var sql 
+    if (arrive_id === null) {
+        sql = "UPDATE HAS SET arrive_id = ? WHERE travel_id = ? AND arrive_id is ? AND has_id != ?;"
+    } else (
+        sql = "UPDATE HAS SET arrive_id = ? WHERE travel_id = ? AND arrive_id = ? AND has_id != ?;"
+    )
     return new Promise(async(resolve, reject) => {
         var sqls = [
-            "INSERT INTO HAS VALUE(?,?,?,?,?,?,?)",
-            "UPDATE HAS SET arrive_id = ? WHERE travel_id = ? AND arrive_id IS NULL AND spot_id != ?;"
+            "INSERT INTO HAS VALUE(?,?,?,?,?,?,?,?)",
+            sql
         ];
         
         var values = [
-            [travel_id, spot_id, spot_tag_name, spot_transportation, spot_start_time, spot_arrive_time, arrive_id],   
-            [spot_id, travel_id, spot_id]
+            [has_id, travel_id, spot_id, spot_tag_name, spot_transportation, spot_start_time, spot_arrive_time, arrive_id],   
+            [has_id, travel_id, arrive_id, has_id]
         ];
 
         await useTransaction(sqls, values).then(results => {
@@ -111,17 +117,16 @@ const add_to_has = (travel_id, spot_id, spot_tag_name, spot_transportation, spot
 }
 
 // await Spot.update(spot_id, spot_description, spot_tag_name, spot_transportation, spot_start_time, spot_arrive_time, arrive_id, travel_id)
-const update = (spot_id, spot_description, spot_tag_name, spot_transportation, spot_start_time, spot_arrive_time, arrive_id, travel_id) => {
+const find_next_spot = () => {
     return new Promise( async (resolve, reject) => {
 
         var sqls = [
-            "UPDATE SPOT SET description = ? WHERE spot_id = ?;",
-            "UPDATE HAS SET tag_id = ?, transportation = ?, start_time = ?, arrive_time = ?, arrive_id = ? WHERE spot_id = ? AND travel_id = ?;"
+            "SELECT  WHERE spot_id = ?;",
+            
         ];
 
         var values = [
-            [spot_description, spot_id], 
-            [tag_id, transportation, start_time, arrive_time, arrive_id, spot_id, travel_id]
+            [spot_description, spot_id]
         ];
 
         await useTransaction(sqls, values).then(results => {
@@ -133,15 +138,58 @@ const update = (spot_id, spot_description, spot_tag_name, spot_transportation, s
     })
 }
 
-const delete_ = (spot_id, travel_id) => {
+const update_has = () => {
     return new Promise( async (resolve, reject) => {
 
         var sqls = [
-            "DELETE FROM HAS WHERE spot_id = ? and travel_id = ?;"
+            "SELECT  WHERE spot_id = ?;",
+            
         ];
 
         var values = [
-            [spot_id, travel_id]
+            [spot_description, spot_id]
+        ];
+
+        await useTransaction(sqls, values).then(results => {
+            resolve(results);
+        }).catch(err => {
+            print_error(err);
+            reject(err);
+        })
+    })
+}
+
+const update_spot = (spot_id, spot_description, spot_tag_name, spot_transportation, spot_start_time, spot_arrive_time, arrive_id, travel_id) => {
+    return new Promise( async (resolve, reject) => {
+
+        var sqls = [
+            "UPDATE SPOT SET description = ? WHERE spot_id = ?;",
+            // "UPDATE HAS SET tag_id = ?, transportation = ?, start_time = ?, arrive_time = ?, arrive_id = ? WHERE spot_id = ? AND travel_id = ?;"
+        ];
+
+        var values = [
+            [spot_description, spot_id], 
+            // [spot_tag_name, spot_transportation, spot_start_time, spot_arrive_time, arrive_id, spot_id, travel_id]
+        ];
+
+        await useTransaction(sqls, values).then(results => {
+            resolve(results);
+        }).catch(err => {
+            print_error(err);
+            reject(err);
+        })
+    })
+}
+
+const delete_ = (has_id) => {
+    return new Promise( async (resolve, reject) => {
+
+        var sqls = [
+            "DELETE FROM `HAS` WHERE has_id = ?;"
+        ];
+
+        var values = [
+            [has_id]
         ];
 
         await useTransaction(sqls, values).then(results => {
@@ -154,4 +202,4 @@ const delete_ = (spot_id, travel_id) => {
 };
 
 
-export default { get1, get2, check_spot_exist, create, add_to_has, update, delete_ };
+export default { get1, get2, check_spot_exist, create, add_to_has, find_next_spot, update_has, update_spot, delete_ };

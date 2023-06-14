@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 import Spot from "./../database/spot.js";
 import Tag from "./../database/tag.js";
 import Star from "./../database/star.js";
+import { v4 as uuid } from "uuid";
+
 
 dotenv.config();
 
@@ -91,9 +93,9 @@ export const get2 = async (req, res, next) => {
                     "spot_id": parseEscape(element.spot_id),
                     "spot_name": parseEscape(element.spot_name),
                     "spot_location": parseEscape(element.location),
-                    "spot_transportation": parseEscape(element.transportation),
                     "spot_longtitude": parseEscape(element.longtitude),
                     "spot_latitude": parseEscape(element.latitude),
+                    "spot_transportation": parseEscape(element.transportation),
                     "spot_rank": parseEscape(element.ranking),
                     "spot_openhour": parseEscape(element.open_hour),
                     "spot_description": parseEscape(element.description),
@@ -131,6 +133,8 @@ export const create = async (req, res, next) => {
     } = req.body;
     const sha256Hasher = crypto.createHmac("sha256", process.env.SECRET);
     const spot_id = sha256Hasher.update(spot_location).digest("base64");
+    const has_id = uuid();
+
     var spot_exist = false;
     var tag_exist = false;
 
@@ -144,7 +148,6 @@ export const create = async (req, res, next) => {
             req.err = err;
             next();
         })
-    
     if(!spot_exist) {
         await Tag.check_tag(spot_tag_name)
             .then(result => {
@@ -174,14 +177,13 @@ export const create = async (req, res, next) => {
                 req.err = err;
                 next();
             })
-
     } else {
         var data = {};
         req.data = JSON.stringify(data);
         next();
     }
     
-    await Spot.add_to_has(travel_id, spot_id, spot_tag_name, spot_transportation, spot_start_time, spot_arrive_time, arrive_id)
+    await Spot.add_to_has(has_id, travel_id, spot_id, spot_tag_name, spot_transportation, spot_start_time, spot_arrive_time, arrive_id)
     .then(result => {
         var data = {};
         req.data = JSON.stringify(data);
@@ -204,7 +206,7 @@ export const update = async (req, res, next) => {
             next();
         })
     } else if(spot_star === false)(
-        await Star.delete(user_id, spot_id).then().catch(err => {
+        await Star.delete_(user_id, spot_id).then().catch(err => {
             req.err = err;
             next();
         })
@@ -222,9 +224,8 @@ export const update = async (req, res, next) => {
 
 export const delete_ = async (req, res, next) => {
 
-    const { spot_id, travel_id } = req.body;
-    
-    await Spot.delete_(spot_id, travel_id)
+    const { has_id } = req.body;
+    await Spot.delete_(has_id)
         .then(result => {
             req.data = JSON.stringify({});
             next();
