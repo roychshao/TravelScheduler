@@ -102,11 +102,12 @@ const useStyles = makeStyles({
 
 
 
-const TravelDetail = () => {
+const TravelDetail = ({travel}) => {
   const navigate = useNavigate();
   const dispatcher = useDispatch();
   const loginWithGoogle = useSelector(state => state.loginReducer.loginWithGoogle);
   const [showMap, setShowMap] = useState(false);
+  const [selectedTravel, setSelectedTravel] = useState(null); 
   const [travelMode, setTravelMode] = useState('');
   const [showTrace, setShowTrace] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
@@ -117,6 +118,7 @@ const TravelDetail = () => {
 
   const callMap = () => {
     setShowMap(true);
+    setSelectedTravel(travel);
   };
   const closeMap = () => {
     setShowMap(false);

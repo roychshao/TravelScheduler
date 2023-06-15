@@ -6,6 +6,7 @@ import StartTime from '../Time/StartTime.jsx';
 import { makeStyles } from '@mui/styles';
 import Button from '@mui/material/Button'
 import { createspot } from '../../../../../actions/spotAction.js';
+import { gettravel } from '../../../../../actions/travelAction.js';
 import { useDispatch, useSelector } from 'react-redux'
 import moment from 'moment';
 
@@ -85,6 +86,9 @@ const Map = ({close, insertPlace}) => {
   const classes = useStyles();  
 
   const dispatcher = useDispatch();
+
+    
+
   const passToBackend = () => {
     const openingHoursString = JSON.stringify(selectedPlaceInfo.openingHours);
     const startTimeStr = moment(startTime, 'h:mm A');
@@ -93,20 +97,26 @@ const Map = ({close, insertPlace}) => {
     const arriveTimeFormatted = arriveTimeStr.format('YYYY-MM-DD HH:mm:ss');
     console.log(startTimeFormatted);
     console.log(arriveTimeFormatted);
-
-    // dispatcher(
-    //   createspot(
-    //     selectedPlaceInfo.name,       //(string)
-    //     selectedPlaceInfo.lat,        //(float)
-    //     selectedPlaceInfo.lng,        //(float)
-    //     selectedPlaceInfo.location,   //(string)
-    //     selectedPlaceInfo.rating,     //(float)
-    //     openingHoursString,           //填寫適當的 spotOpenhour 值    (string)
-    //     selectedPlaceInfo.types,      //填寫適當的 spotTagName 值     (string)
-    //     startTimeFormatted,          //填寫適當的 spotStartTime 值   (datetime)
-    //     arriveTimeFormatted          //填寫適當的 spotArriveTime 值  (datetime)
-    //   )
-    // );
+    const travels = useSelector(state => state.travelReducer.travels);
+    useEffect(() => {
+        dispatcher(gettravel());
+    }, [])
+    console.log(travels[0][0].travel_id);
+    
+    dispatcher(
+      createspot(
+        selectedPlaceInfo.name,       //(string)
+        selectedPlaceInfo.lat,        //(float)
+        selectedPlaceInfo.lng,        //(float)
+        selectedPlaceInfo.location,   //(string)
+        selectedPlaceInfo.rating,     //(float)
+        openingHoursString,           //填寫適當的 spotOpenhour 值    (string)
+        selectedPlaceInfo.types,      //填寫適當的 spotTagName 值     (string)
+        startTimeFormatted,           //填寫適當的 spotStartTime 值   (datetime)
+        arriveTimeFormatted,          //填寫適當的 spotArriveTime 值  (datetime)
+        travels[0][0].travel_id
+      )
+    );
     insertPlace(selectedPlaceInfo);
     close();
   }
