@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Map from './component/Map/Map.jsx'
 import Trace from './component/Trace/Trace.jsx'
+import EditSpot from './component/Map/EditSpot.jsx'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
@@ -68,6 +69,34 @@ const useStyles = makeStyles({
     boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
     width: 1200,
     height: 500
+  },
+  travelContent: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 4,
+    width: 1470,
+    height: 800,
+    maxHeight: '2000px', /* 容器的最大高度 */
+    overflowY: 'auto', /* 添加垂直滾動條 */
+  },
+  editSpot: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', /* 半透明黑色背景 */
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  editSpotContent: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 4,
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+    width: 1200,
+    height: 500
   }
 });
 
@@ -82,29 +111,8 @@ const TravelDetail = () => {
   const [showTrace, setShowTrace] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
   const [spotTransportation, setSpotTransportation] = useState('');
-  const [steps, setSteps] = useState(
-    [
-      {
-        label: '地點一',
-        description: `For each ad campaign that you create, you can control how much
-                    you're willing to spend on clicks and conversions, which networks
-                    and geographical locations you want your ads to show on, and more.`,
-      },
-      {
-        label: '地點二',
-        description:
-          'An ad group contains one or more ads which target a shared set of keywords.',
-      },
-      {
-        label: '地點三',
-        description: `Try out different ad text to see what brings in the most customers,
-                    and learn how to enhance your ads using features like ad extensions.
-                    If you run into any problems with your ads, find out how to tell if
-                    they're running and how to resolve approval issues.`,
-      },
-    ]
-  );
-
+  const [steps, setSteps] = useState([]);
+  const [showEditSpot, setShowEditSpot] = useState(false);
   const classes = useStyles();
 
   const callMap = () => {
@@ -114,7 +122,11 @@ const TravelDetail = () => {
     setShowMap(false);
   };
 
+  const onPlaceConfirmed = (selectedPlaceInfo) => {
+    const newStep = { label: selectedPlaceInfo.name }; // 创建新的步骤对象
   
+    setSteps((prevSteps) => [...prevSteps, newStep]); // 将新步骤添加到步骤数组中
+  };
 
   //改交通工具資訊
   const handleChange = (event) => {
@@ -122,12 +134,20 @@ const TravelDetail = () => {
     setSpotTransportation(event.target.value);
   };
 
-  //開關路徑
+  //進入查看路徑
   const callTrace = () => {
     setShowTrace(true);
   };
   const closeTrace = () => {
     setShowTrace(false);
+  };
+
+  //進入編輯地點頁面
+  const callEditSpot = () => {
+    setShowEditSpot(true);
+  };
+  const closeEditSpot = () => {
+    setShowEditSpot(false);
   };
 
   //整個行程架構
@@ -142,80 +162,81 @@ const TravelDetail = () => {
   };
 
   return (
-    <div>
+    <div className={classes.travelContent}> 
       <p>This is the Travel detail page</p>
-      <Box sx={{ maxWidth: 400 }}>
-        <Stepper activeStep={activeStep} orientation="vertical">
-          {steps.map((step, index) => (
-            <Step key={step.label}>
-              <StepLabel
-                optional={
-                  index === 2 ? (
-                    <Typography variant="caption">Last step</Typography>
-                  ) : null
-                }
-              >
-                {step.label}
-              </StepLabel>
-              <StepContent>
-                <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                  <InputLabel id="demo-select-small-label">Travel Mode</InputLabel>
-                  <Select
-                    labelId="demo-select-small-label"
-                    id="demo-select-small"
-                    value={travelMode}
-                    label="TravelMode"
-                    onChange={handleChange}
+
+      <Stepper activeStep={activeStep} orientation="vertical">
+        {steps.map((step, index) => (
+          <Step key={index}>
+            <StepLabel>{step.label}</StepLabel>
+            <StepContent>
+              {activeStep !== steps.length - 1 && (
+                <div>
+                  <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                    <InputLabel id="demo-select-small-label">Travel Mode</InputLabel>
+                    <Select
+                      labelId="demo-select-small-label"
+                      id="demo-select-small"
+                      value={travelMode}
+                      label="TravelMode"
+                      onChange={handleChange}
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      <MenuItem value={'DRIVING'}>開車</MenuItem>
+                      <MenuItem value={'WALKING'}>步行</MenuItem>
+                      <MenuItem value={'BICYCLING'}>腳踏車</MenuItem>
+                      <MenuItem value={'TRANSIT'}>大眾運輸</MenuItem>
+                      <MenuItem value={'TWO_WHEELER'}>機車</MenuItem>
+                    </Select>
+                  </FormControl>
+                  <br/>
+                  <Button onClick={callTrace} variant="outlined" color="info" size="small" style={{ marginLeft: '10px', marginBottom: '10px' }}>查看路徑</Button>
+                </div>  
+              )}
+              <Button onClick={callEditSpot} variant="outlined" color="warning" size="small" style={{ marginLeft: '10px' }}>編輯地點</Button>
+              <Button  variant="outlined" color="error" size="small" style={{ marginLeft: '10px' }}>刪除地點</Button>
+              <Box sx={{ mb: 2 }}>
+                <div>
+                  <Button
+                    variant="contained"
+                    onClick={handleNext}
+                    sx={{ mt: 1, mr: 1 }}
                   >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={'DRIVING'}>開車</MenuItem>
-                    <MenuItem value={'WALKING'}>步行</MenuItem>
-                    <MenuItem value={'BICYCLING'}>腳踏車</MenuItem>
-                    <MenuItem value={'TRANSIT'}>大眾運輸</MenuItem>
-                    <MenuItem value={'TWO_WHEELER'}>機車</MenuItem>
-                  </Select>
-                </FormControl>
-                <Box sx={{ mb: 2 }}>
-                  <div>
-                    <Button
-                      variant="contained"
-                      onClick={handleNext}
-                      sx={{ mt: 1, mr: 1 }}
-                    >
-                      {index === steps.length - 1 ? 'Finish' : 'Continue'}
-                    </Button>
-                    <Button
-                      disabled={index === 0}
-                      onClick={handleBack}
-                      sx={{ mt: 1, mr: 1 }}
-                    >
-                      Back
-                    </Button>
-                  </div>
-                </Box>
-              </StepContent>
-            </Step>
-          ))}
-        </Stepper>
-        {activeStep === steps.length && (
+                    {index === steps.length - 1 ? '完成' : '下一個地點'}
+                  </Button>
+                  <Button
+                    disabled={index === 0}
+                    onClick={handleBack}
+                    sx={{ mt: 1, mr: 1 }}
+                  >
+                    前一個地點
+                  </Button>
+                </div>
+              </Box>
+            </StepContent>
+          </Step>
+        ))}
+      </Stepper>
+      {activeStep === steps.length &&  steps.length !=0 && (
           <Paper square elevation={0} sx={{ p: 3 }}>
-            <Typography>All steps completed - you&apos;re finished</Typography>
+            <Typography>恭喜你完成旅程</Typography>
             <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
               Reset
             </Button>
           </Paper>
-        )}
-      </Box>
+      )}
+      <Button onClick={callMap} variant="outlined" color="secondary" style={{ marginBottom: '10px' }}>新增地點</Button>
+      <br/>
+      <Button variant="contained" color="success" size="large" style={{ marginRight: '10px' }}>確定</Button>
+      <Button variant="contained" color="error" size="large">取消</Button>
 
-      <button onClick={callMap}>新增地點</button>
-      <button onClick={callTrace}>查看路徑</button>
       {showMap && (
         <div className={classes.map}>
           <span className={classes.closeButton} onClick={closeMap}>&times;</span>
           <div className={classes.mapContent}>
-            <Map close={closeMap} />
+            <Map close={closeMap} insertPlace={onPlaceConfirmed}/>
           </div>
         </div>
       )}
@@ -225,6 +246,15 @@ const TravelDetail = () => {
           <span className={classes.closeButton} onClick={closeTrace}>&times;</span>
           <div className={classes.traceContent}>
             <Trace />
+          </div>
+        </div>
+      )}
+
+      {showEditSpot && (
+        <div className={classes.editSpot}>
+          <span className={classes.closeButton} onClick={closeEditSpot}>&times;</span>
+          <div className={classes.editSpotContent}>
+            <EditSpot close={closeEditSpot}/>
           </div>
         </div>
       )}

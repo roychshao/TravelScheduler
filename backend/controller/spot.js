@@ -115,6 +115,7 @@ export const get2 = async (req, res, next) => {
 }
 
 export const create = async (req, res, next) => {
+    
     const {
         spot_name,
         spot_latitude,

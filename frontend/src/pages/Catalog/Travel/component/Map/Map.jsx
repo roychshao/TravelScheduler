@@ -4,8 +4,10 @@ import Map_Detail from './MapDetail.jsx';
 import ArriveTime from '../Time/ArriveTime.jsx';
 import StartTime from '../Time/StartTime.jsx';
 import { makeStyles } from '@mui/styles';
+import Button from '@mui/material/Button'
 import { createspot } from '../../../../../actions/spotAction.js';
 import { useDispatch, useSelector } from 'react-redux'
+import moment from 'moment';
 
 const useStyles = makeStyles({
   modal: {
@@ -24,7 +26,7 @@ const useStyles = makeStyles({
     padding: 20,
     borderRadius: 4,
     boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-    width: 400,
+    width: 300,
     height: 100
   },
   closeButton: {
@@ -59,7 +61,7 @@ const useStyles = makeStyles({
   }
 });
 
-const Map = ({close}) => {
+const Map = ({close, insertPlace}) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchLocation, setSearchLocation] = useState(null);
   const [showMap, setShowMap] = useState(false);
@@ -68,6 +70,7 @@ const Map = ({close}) => {
     name: null,
     lat: null,
     lng: null,
+    location: null,
     rating: null,
     openingHours: null,
     types: []
@@ -79,21 +82,35 @@ const Map = ({close}) => {
   const [selectedPlaceInfo, setSelectedPlaceInfo] = useState(null);
   const [showSelectedPlaceInfo, setShowSelectedPlaceInfo] = useState(false);
 
-  const classes = useStyles();
-  //const openingHoursString = JSON.stringify(selectedPlaceInfo.openingHours);
+  const classes = useStyles();  
 
-  // dispatcher(
-  //           createspot(
-  //             selectedPlaceInfo.name,   //(string)
-  //             selectedPlaceInfo.lat,    //(float)
-  //             selectedPlaceInfo.lng,    //(float)
-  //             selectedPlaceInfo.rating, //(float)
-  //             openingHoursString, //填寫適當的 spotOpenhour 值    (string)
-  //             selectedPlaceInfo.types, //填寫適當的 spotTagName 值     (string)
-  //             startTime, //填寫適當的 spotStartTime 值   (string)
-  //             arriveTime  //填寫適當的 spotArriveTime 值  (string)
-  //           )
-  //);
+  const dispatcher = useDispatch();
+  const passToBackend = () => {
+    const openingHoursString = JSON.stringify(selectedPlaceInfo.openingHours);
+    const startTimeStr = moment(startTime, 'h:mm A');
+    const arriveTimeStr = moment(arriveTime, 'h:mm A');
+    const startTimeFormatted = startTimeStr.format('YYYY-MM-DD HH:mm:ss');
+    const arriveTimeFormatted = arriveTimeStr.format('YYYY-MM-DD HH:mm:ss');
+    console.log(startTimeFormatted);
+    console.log(arriveTimeFormatted);
+
+    // dispatcher(
+    //   createspot(
+    //     selectedPlaceInfo.name,       //(string)
+    //     selectedPlaceInfo.lat,        //(float)
+    //     selectedPlaceInfo.lng,        //(float)
+    //     selectedPlaceInfo.location,   //(string)
+    //     selectedPlaceInfo.rating,     //(float)
+    //     openingHoursString,           //填寫適當的 spotOpenhour 值    (string)
+    //     selectedPlaceInfo.types,      //填寫適當的 spotTagName 值     (string)
+    //     startTimeFormatted,          //填寫適當的 spotStartTime 值   (datetime)
+    //     arriveTimeFormatted          //填寫適當的 spotArriveTime 值  (datetime)
+    //   )
+    // );
+    insertPlace(selectedPlaceInfo);
+    close();
+  }
+  
 
   const panelClose = () => {
     setShowPanel(false);
@@ -113,6 +130,7 @@ const Map = ({close}) => {
   //更新Start的時間
   const updateStartTime = (time) => {
     setStartTime(time);
+    console.log(time);
   };
 
   //ArriveTime介面
@@ -125,6 +143,7 @@ const Map = ({close}) => {
   //更新Arrive的時間
   const updateArriveTime = (time) => {
     setArriveTime(time);
+    console.log(time);
   };
 
   const handleSearch = async () => {
@@ -177,24 +196,17 @@ const Map = ({close}) => {
     const placesService = new window.google.maps.places.PlacesService(map);
     const request = {
       placeId: place.place_id,
-      fields: ['name', 'geometry', 'rating', 'opening_hours', 'types']
+      fields: ['name', 'geometry', 'rating', 'opening_hours', 'types', 'formatted_address']
     };
 
     placesService.getDetails(request, (placeDetails, status) => {
       if (status === window.google.maps.places.PlacesServiceStatus.OK) {
         const openingHours = placeDetails.opening_hours;
-        // if (openingHours) {
-        //   console.log('營業時間：');
-        //   openingHours.weekday_text.forEach((weekdayText) => {
-        //     console.log(weekdayText);
-        //   });
-        // } else {
-        //   console.log('沒有提供營業時間資訊。');
-        // }
         const clickPlace = {
           name: place.name,
           lat: placeDetails.geometry.location.lat(),
           lng: placeDetails.geometry.location.lng(),
+          location: placeDetails.formatted_address,
           rating: placeDetails.rating,
           openingHours: openingHours ? openingHours.weekday_text : '無營業時間',
           types: placeDetails.types[0]
@@ -206,6 +218,7 @@ const Map = ({close}) => {
           name: place.name,
           lat: placeDetails.geometry.location.lat(),
           lng: placeDetails.geometry.location.lng(),
+          location: placeDetails.formatted_address,
           rating: placeDetails.rating,
           types: placeDetails.types[0],
           openingHours: openingHours ? openingHours.weekday_text : '無營業時間'
@@ -284,7 +297,7 @@ const Map = ({close}) => {
           onChange={(e) => setSearchQuery(e.target.value)}
           style={{ marginRight: '10px' }}
         />
-        <button onClick={handleSearch}>搜尋</button>
+        <Button onClick={handleSearch} variant="outlined" color="secondary" size="small">搜尋</Button>
       </div>
 
       {selectedPlaceInfo && showSelectedPlaceInfo && (
@@ -292,16 +305,17 @@ const Map = ({close}) => {
           <p>地點名稱: {selectedPlaceInfo.name}</p>
           <p>地點經度: {selectedPlaceInfo.lng}</p>
           <p>地點緯度: {selectedPlaceInfo.lat}</p>
+          <p>地點地址: {selectedPlaceInfo.location}</p>
           <p>地點評價: {selectedPlaceInfo.rating}</p>
           <p>地點營業時間: {selectedPlaceInfo.openingHours}</p>
           <p>地點類型: {selectedPlaceInfo.types}</p>
           <p>抵達時間: {startTime}</p>
           <p>離開時間: {arriveTime}</p>
-          <button onClick={callStartTime}>選擇抵達時間</button>
-          <button onClick={callArriveTime}>選擇離開時間</button>
+          <Button onClick={callStartTime} variant="outlined" color="info" style={{ marginRight: '10px' }}>選擇抵達時間</Button>
+          <Button onClick={callArriveTime} variant="outlined" color="info">選擇離開時間</Button>
           <br/>
           {startTime && arriveTime && (
-            <button onClick={close}>確定</button>
+            <Button onClick={passToBackend} variant="outlined" color="success" style={{ marginTop: '10px' }}>確定</Button>
           )}
         </div>
       )}
@@ -320,18 +334,16 @@ const Map = ({close}) => {
       
       {showStartTime && (
         <div className={classes.time}>
-          <span className={classes.closeButton} onClick={closeStartTime}>&times;</span>
           <div className={classes.timeContent}>
-            <StartTime Close={closeStartTime} updateStartTime={updateStartTime}/>
+              <StartTime Close={closeStartTime} updateStartTime={updateStartTime}/>
           </div>
         </div>
       )}
 
       {showArriveTime && (
         <div className={classes.time}>
-          <span className={classes.closeButton} onClick={closeArriveTime}>&times;</span>
           <div className={classes.timeContent}>
-            <ArriveTime Close={closeArriveTime} updateArriveTime={updateArriveTime}/>
+              <ArriveTime Close={closeArriveTime} updateArriveTime={updateArriveTime}/>
           </div>
         </div>
       )}

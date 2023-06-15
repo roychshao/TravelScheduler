@@ -1,32 +1,38 @@
 import React, { useEffect, useState } from 'react';
-import { DesktopTimePicker } from '@mui/x-date-pickers/DesktopTimePicker';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs from 'dayjs';
-import { Close } from '@mui/icons-material';
+import { DesktopTimePicker } from '@mui/x-date-pickers/DesktopTimePicker';
+import Button from '@mui/material/Button'
+import moment from 'moment';
 
 const ArriveTime = ({ Close, updateArriveTime }) => {
-    const [selectedTime, setSelectedTime] = useState(dayjs('15:30', 'HH:mm'));
+    const [selectedTime, setSelectedTime] = useState(new Date());
 
     const handleTimeChange = (newTime) => {
-        setSelectedTime(newTime);
+        const updatedTime = new Date();
+        updatedTime.setHours(newTime.getHours(), newTime.getMinutes(), 0);
+        setSelectedTime(updatedTime);
     };
 
     const handleConfirmClick = () => {
-        const timeString = selectedTime.format('HH:mm');
-        updateArriveTime(timeString);
-        Close();      
+        if(selectedTime){
+            const timeString = moment(selectedTime).format('h:mm A');
+            updateArriveTime(timeString);
+            Close();
+        }      
     };
 
     return(
         <div>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DesktopTimePicker 
                     value={selectedTime}
                     onChange={handleTimeChange}
                 />
             </LocalizationProvider>
-            <button style={{ marginTop: '10px' }} onClick={handleConfirmClick}>確定</button>
+            
+            <Button style={{ marginTop: '10px' }} onClick={handleConfirmClick} variant="contained" color="success" size="small">確定</Button>
+            <Button style={{ marginLeft: '10px', marginTop: '10px' }} onClick={Close} variant="contained" color="error" size="small">取消</Button>
         </div>
     );
 }

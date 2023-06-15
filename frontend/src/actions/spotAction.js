@@ -38,7 +38,7 @@ export const getTravelSpots = () => {
   };
 };
 
-export const createspot = (spotName, spotLatitude, spotLongitude, spotRank, spotOpenhour, spotTagName, spotStartTime, spotArriveTime) => {
+export const createspot = (spotName, spotLatitude, spotLongitude, spotLocation, spotRank, spotOpenhour, spotTagName, spotStartTime, spotArriveTime) => {
   return (dispatch) => {
       const hostUrl = import.meta.env.VITE_HOST_URL;
       axios.post(
@@ -46,13 +46,15 @@ export const createspot = (spotName, spotLatitude, spotLongitude, spotRank, spot
               {
                 spot_name: spotName,
                 spot_latitude: spotLatitude,
-                spot_longitude: spotLongitude,
+                spot_longtitude: spotLongitude,
+                spot_location: spotLocation,
                 spot_rank: spotRank,
                 spot_openhour: spotOpenhour,
-                spot_discription: "",
+                spot_description: "hello",
                 spot_tag_name: spotTagName,
-                arrive_id: null,
-                spot_transportation: "",
+                spot_tag_color: "purple",
+                arrive_id: "null",
+                spot_transportation: "null",
                 spot_start_time: spotStartTime,
                 spot_arrive_time: spotArriveTime,
                 travel_id: 1
@@ -71,21 +73,23 @@ export const createspot = (spotName, spotLatitude, spotLongitude, spotRank, spot
   };
 };
 
-export const updatespot = (spotId, spotTagId, spotDescription, spotTagName, spotTransportation, spotStartTime, spotArriveTime, spotArriveId, spotTravelId) => {
+
+export const updatespot = (hasId, spotId, spotDescription, spotTagName, spotTransportation, spotStartTime, spotArriveTime, spotArriveId, spotTravelId, spotStar) => {
   return (dispatch) => {
       const hostUrl = import.meta.env.VITE_HOST_URL;
       axios.put(
               `${hostUrl}/api/spot/update`,
               {
-                  spot_id: spotId,
-                  spot_tag_id: spotTagId,
-                  spot_description: spotDescription,
-                  spot_tag_name: spotTagName,
-                  spot_transportation: spotTransportation,
-                  spot_start_time: "18:06:00",
-                  spot_arrive_time: "20:15:00",
-                  spot_arrive_id: "spot2_id",
-                  spot_travel_id: "travel_id1"
+                has_id: hasId,
+                spot_id: spotId,
+                spot_description: spotDescription,
+                spot_tag_name: spotTagName,
+                spot_transportation: spotTransportation,
+                spot_start_time: spotStartTime,
+                spot_arrive_time: spotArriveTime,
+                arrive_id: spotArriveId,
+                travel_id: spotTravelId,
+                spot_star: spotStar
               },
               { withCredentials: true }
           )
