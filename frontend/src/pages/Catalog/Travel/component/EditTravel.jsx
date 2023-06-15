@@ -59,6 +59,11 @@ const EditTravel = ({ targetTravel }) => {
     };
 
     const handleUpdate = () => {
+           // 將 travelDate 轉換為指定格式
+        //    const formattedDate = new Date(targetTravelDate).toISOString().slice(0, 16);
+        //    const doneValue = targetTravelDone.toString(); // 將目標旅遊的 done 值轉換為字串
+
+        //    console.log(targetGroupId);
         // call api here
         dispatcher(
             edittravel(
@@ -67,8 +72,9 @@ const EditTravel = ({ targetTravel }) => {
                 targetTravelDate,
                 targetTravelPeoplenum,
                 targetTravelDescription,
+                targetTravelDone,
                 targetGroupId,
-                targetTravelDone
+
             )
         );
         setOpen(false);
@@ -107,7 +113,7 @@ const EditTravel = ({ targetTravel }) => {
                             autoFocus
                             margin="dense"
                             label="New Date"
-                            type="date"
+                            type="datetime-local"
                             fullWidth
                             value={targetTravelDate}
                             onChange={(e) => setTargetTravelDate(e.target.value)}
@@ -134,8 +140,8 @@ const EditTravel = ({ targetTravel }) => {
                             label="Group Name"
                             type="text"
                             fullWidth
-                            value={targetGroupId}
-                            onChange={(e) => setGroupId(e.target.value)}
+                            value={targetGroupId || ""}
+                            onChange={(e) => setTargetGroupId(e.target.value)}
                         >
                             <MenuItem value="">無</MenuItem>
                             {Array.isArray(groups) && Array.isArray(groups[0]) && groups[0].map(group => (

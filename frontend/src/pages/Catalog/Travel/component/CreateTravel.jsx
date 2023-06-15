@@ -43,6 +43,10 @@ const CreateTravel = () => {
     };
 
     const handleCreate = () => {
+        // 將 travelDate 轉換為指定格式
+        // const formattedDate = new Date(travelDate).toISOString().slice(0, 16);
+        // console.log(formattedDate);
+
         // call api here
         dispatcher(createtravel(
             travelName,
@@ -94,7 +98,7 @@ const CreateTravel = () => {
                         <TextField
                             margin="dense"
                             label="Date"
-                            type="date"
+                            type="datetime-local"
                             fullWidth
                             value={travelDate}
                             onChange={(e) => setTravelDate(e.target.value)}
