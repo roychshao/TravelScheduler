@@ -4,8 +4,9 @@ import { useNavigate } from 'react-router-dom'
 import { Button } from '@mui/material';
 import CreateTravel from './component/CreateTravel';
 import DeleteTravel from './component/DeleteTravel';
-// import TravelList from './component/TravelList';
+import TravelList from './component/TravelList';
 import EditTravel from './component/EditTravel';
+
 const Travel = () => {
 
     const navigate = useNavigate();
@@ -23,13 +24,13 @@ const Travel = () => {
             <br />
             <br />
 
-            <EditTravel />
+            {/* <EditTravel /> */}
 
             <br />
             <br />
 
-            <DeleteTravel />
-            {/* <TravelList /> */}
+            {/* <DeleteTravel /> */}
+            <TravelList />
         </div>
     )
 }
