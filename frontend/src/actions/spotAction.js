@@ -9,7 +9,7 @@ export const getUserSpots = () => {
         if (res.success === true) {
           dispatch({
             type: "GetUserSpots",
-            payload: res.data.spots,
+            payload: res.data,
           });
         }
       })
@@ -105,14 +105,14 @@ export const updatespot = (hasId, spotId, spotDescription, spotTagName, spotTran
   };
 };
 
-export const deletespot = (spotId) => {
+export const deletespot = (hasId) => {
   return (dispatch) => {
       const hostUrl = import.meta.env.VITE_HOST_URL;
       axios.delete(
               `${hostUrl}/api/spot/delete`,
               {
                   data: {
-                      spot_id: spotId,
+                      has_id: hasId,
                   },
               },
               { withCredentials: true }
