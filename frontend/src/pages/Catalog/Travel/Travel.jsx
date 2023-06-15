@@ -6,6 +6,8 @@ import CreateTravel from './component/CreateTravel';
 import DeleteTravel from './component/DeleteTravel';
 import TravelList from './component/TravelList';
 import EditTravel from './component/EditTravel';
+import TravelDetail from './TravelDetail';
+import { useState } from 'react';
 
 const Travel = () => {
 
@@ -13,8 +15,21 @@ const Travel = () => {
     const dispatcher = useDispatch();
     const loginWithGoogle = useSelector(state => state.loginReducer.loginWithGoogle);
 
+    // ====================SET==================== 
+    const [selectedTravel, setSelectedTravel] = useState(null);  
+    const [showTravelDetail, setShowTravelDetail] = useState(false);
+    const handleSetButton = () => {
+        setShowTravelDetail(true);
+    };
+    // ====================SET====================
     return (
         <div>
+            {showTravelDetail && (
+            <div>
+                <TravelDetail travel={selectedTravel}/>
+            </div>
+            )}
+
             <p>Travel</p>
             <br />
             <br />
@@ -30,7 +45,7 @@ const Travel = () => {
             <br />
 
             {/* <DeleteTravel /> */}
-            <TravelList />
+            <TravelList open={handleSetButton}/>
         </div>
     )
 }

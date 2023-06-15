@@ -55,7 +55,7 @@ const create = (
   travel_done
 ) => {
   return new Promise(async (resolve, reject) => {
-    var sqls = ["INSERT INTO travel VALUE(?,?,?,?,?,?,?,?)"];
+    var sqls = ["INSERT INTO TRAVEL VALUE(?,?,?,?,?,?,?,?)"];
 
     if(group_id)
       user_id = null;

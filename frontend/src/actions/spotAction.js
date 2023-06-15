@@ -38,7 +38,7 @@ export const getTravelSpots = () => {
   };
 };
 
-export const createspot = (spotName, spotLatitude, spotLongitude, spotLocation, spotRank, spotOpenhour, spotTagName, spotStartTime, spotArriveTime) => {
+export const createspot = (spotName, spotLatitude, spotLongitude, spotLocation, spotRank, spotOpenhour, spotTagName, spotStartTime, spotArriveTime, travelId) => {
   return (dispatch) => {
       const hostUrl = import.meta.env.VITE_HOST_URL;
       axios.post(
@@ -57,7 +57,7 @@ export const createspot = (spotName, spotLatitude, spotLongitude, spotLocation, 
                 spot_transportation: "null",
                 spot_start_time: spotStartTime,
                 spot_arrive_time: spotArriveTime,
-                travel_id: 1
+                travel_id: travelId
               },
               { withCredentials: true }
           )
