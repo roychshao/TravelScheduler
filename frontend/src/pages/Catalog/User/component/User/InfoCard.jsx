@@ -30,6 +30,7 @@ const InfoCard = () => {
             justifyContent: 'space-around',
             alignItems: 'center',
             paddingTop: '85px',
+            marginBottom: '10px',
         },
         HstickerWrapper: {
             position: 'absolute',
