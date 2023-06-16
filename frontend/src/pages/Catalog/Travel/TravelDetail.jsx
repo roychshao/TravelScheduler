@@ -96,7 +96,9 @@ const useStyles = makeStyles({
     borderRadius: 4,
     boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
     width: 1200,
-    height: 500
+    height: 500,
+    maxHeight: '1000px', /* 容器的最大高度 */
+    overflowY: 'auto', /* 添加垂直滾動條 */
   }
 });
 
@@ -256,7 +258,7 @@ const TravelDetail = ({travel}) => {
         <div className={classes.editSpot}>
           <span className={classes.closeButton} onClick={closeEditSpot}>&times;</span>
           <div className={classes.editSpotContent}>
-            <EditSpot close={closeEditSpot}/>
+            <EditSpot close={closeEditSpot} insertPlace={onPlaceConfirmed}/>
           </div>
         </div>
       )}
