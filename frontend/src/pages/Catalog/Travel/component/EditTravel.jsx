@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { edittravel } from '../../../../actions/travelAction';
 import { useDispatch, useSelector } from 'react-redux';
+import { getgroup } from './../../../../actions/groupAction.js'
+
 import {
     Button,
     Dialog,
@@ -8,18 +10,45 @@ import {
     DialogContent,
     TextField,
     DialogActions,
+    Select,
+    MenuItem,
 } from '@mui/material';
 
-const EditTravel = () => {
+const EditTravel = ({ targetTravel }) => {
+    // console.log(targetTravel);
+    // const [targetTravel,setTargetTravel] = useState(test);
     const dispatcher = useDispatch();
     const [open, setOpen] = useState(false);
-    const [travelId, setTravelId] = useState("");
-    const [travelName, setTravelName] = useState("");
+    const [targetTravelId, setTargetTravelId] = useState("");
+    const [targetTravelName, setTargetTravelName] = useState("");
+    const [targetGroupId, setTargetGroupId] = useState("");
+    const [targetTravelDate, setTargetTravelDate] = useState("");
+    const [targetTravelPeoplenum, setTargetTravelPeoplenum] = useState("");
+    const [targetTravelDescription, setTargetTravelDescription] = useState("");
+    const [targetTravelDone, setTargetTravelDone] = useState("");
+    // console.log(travelId);
+    //============Get GroupID============
     const [groupId, setGroupId] = useState("");
-    const [travelDate, setTravelDate] = useState("");
-    const [travelPeoplenum, setTravelPeoplenum] = useState("");
-    const [travelDescription, setTravelDescription] = useState("");
-    const [travelDone, setTravelDone] = useState("");
+    const groups = useSelector(state => state.groupReducer.groups);
+    useEffect(() => {
+        dispatcher(getgroup());
+    }, [])
+    //============Get GroupID============
+
+    useEffect(() => {
+        // setTargetTravel(test);
+        if (!!targetTravel) {
+            setTargetTravelId(targetTravel.travel_id);
+            setTargetTravelName(targetTravel.travel_name);
+            setTargetGroupId(targetTravel.group_id);
+            setTargetTravelDate(targetTravel.travel_date);
+            setTargetTravelPeoplenum(targetTravel.travel_peoplenum);
+            setTargetTravelDescription(targetTravel.travel_description);
+            setTargetTravelDone(targetTravel.travel_done);
+        }
+    }, [targetTravel]);
+    //   console.log(travelId);
+    // console.log(targetTravel);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -30,16 +59,22 @@ const EditTravel = () => {
     };
 
     const handleUpdate = () => {
+           // 將 travelDate 轉換為指定格式
+        //    const formattedDate = new Date(targetTravelDate).toISOString().slice(0, 16);
+        //    const doneValue = targetTravelDone.toString(); // 將目標旅遊的 done 值轉換為字串
+
+        //    console.log(targetGroupId);
         // call api here
         dispatcher(
             edittravel(
-                travelId,
-                travelName,
-                travelDate,
-                travelPeoplenum,
-                travelDescription,
-                groupId,
-                travelDone
+                targetTravelId,
+                targetTravelName,
+                targetTravelDate,
+                targetTravelPeoplenum,
+                targetTravelDescription,
+                targetTravelDone,
+                targetGroupId,
+
             )
         );
         setOpen(false);
@@ -52,7 +87,7 @@ const EditTravel = () => {
             <Button variant="contained" color="primary" onClick={handleClickOpen}>
                 Update
             </Button>
-            <Dialog open={open} onClose={handleClose}>
+            <Dialog open={open && !!targetTravel} onClose={handleClose}>
                 <DialogTitle>Update Travel</DialogTitle>
                 <DialogContent>
                     <form>
@@ -62,8 +97,8 @@ const EditTravel = () => {
                             label="Travel ID"
                             type="text"
                             fullWidth
-                            value={travelId}
-                            onChange={(e) => setTravelId(e.target.value)}
+                            value={targetTravelId}
+                            onChange={(e) => setTargetTravelId(e.target.value)}
                         />
                         <TextField
                             autoFocus
@@ -71,52 +106,60 @@ const EditTravel = () => {
                             label="New Travel Name"
                             type="text"
                             fullWidth
-                            value={travelName}
-                            onChange={(e) => setTravelName(e.target.value)}
+                            value={targetTravelName}
+                            onChange={(e) => setTargetTravelName(e.target.value)}
                         />
-                         <TextField
+                        <TextField
                             autoFocus
                             margin="dense"
                             label="New Date"
-                            type="date"
+                            type="datetime-local"
                             fullWidth
-                            value={travelDate}
-                            onChange={(e) => setTravelDate(e.target.value)}
+                            value={targetTravelDate}
+                            onChange={(e) => setTargetTravelDate(e.target.value)}
                         />
-                         <TextField
+                        <TextField
                             autoFocus
                             margin="dense"
                             label="New Number of People"
                             type="text"
                             fullWidth
-                            value={travelPeoplenum}
-                            onChange={(e) => setTravelPeoplenum(e.target.value)}
+                            value={targetTravelPeoplenum}
+                            onChange={(e) => setTargetTravelPeoplenum(e.target.value)}
                         />
                         <TextField
                             margin="dense"
                             label="New Description"
                             type="text"
                             fullWidth
-                            value={travelDescription}
-                            onChange={(e) => setTravelDescription(e.target.value)}
+                            value={targetTravelDescription}
+                            onChange={(e) => setTargetTravelDescription(e.target.value)}
                         />
-                         <TextField
-                            autoFocus
+                     <Select
                             margin="dense"
-                            label="New Group ID"
+                            label="Group Name"
                             type="text"
                             fullWidth
-                            value={groupId}
-                            onChange={(e) => setGroupId(e.target.value)}
-                        />
-                         <TextField
+                            value={targetGroupId || ""}
+                            onChange={(e) => setTargetGroupId(e.target.value)}
+                        >
+                            <MenuItem value="">無</MenuItem>
+                            {Array.isArray(groups) && Array.isArray(groups[0]) && groups[0].map(group => (
+                                group.group_name && group.group_id ? (
+                                    <MenuItem key={group.group_id} value={group.group_id}>
+                                        {group.group_name}
+                                    </MenuItem>
+                                ) : null
+                            ))}
+                        </Select>
+                        <TextField
                             autoFocus
                             margin="dense"
                             label="Done or Not"
                             type="text"
                             fullWidth
-                            value={travelDone}
-                            onChange={(e) => setTravelDone(e.target.value)}
+                            value={targetTravelDone}
+                            onChange={(e) => setTargetTravelDone(e.target.value)}
                         />
                     </form>
                 </DialogContent>
