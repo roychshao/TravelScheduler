@@ -80,8 +80,8 @@ const CreateGroup = () => {
             justifyContent: 'center',
             position: 'fixed',
             width: '70%',
-            height: '58%',
-            maxHeight: '388px',
+            height: '45%',
+            maxHeight: '302px',
             background: 'linear-gradient(180deg, rgba(249, 249, 244) 0%, rgba(241, 238, 230) 100%)',
             border: '0.5px solid #F9F8F4',
             boxShadow: 'inset 1px 1px 1px rgba(244, 249, 249, 0.55)',
@@ -210,10 +210,10 @@ const CreateGroup = () => {
                             <div className={classes.Title}>Group Name</div>
                         </div>
                         <input className={classes.Input} type="text" placeholder="New Group" onChange={(e) => setGroupName(e.target.value)}/>
-                        <div className={classes.TitleWrapper}>
-                            <div className={classes.Title}>Group Description</div>
-                        </div>
-                        <input className={classes.Input} type="text" placeholder="Description" onChange={(e) => setGroupDescription(e.target.value)}/>
+                        {/* <div className={classes.TitleWrapper}> */}
+                        {/*     <div className={classes.Title}>Group Description</div> */}
+                        {/* </div> */}
+                        {/* <input className={classes.Input} type="text" placeholder="Description" onChange={(e) => setGroupDescription(e.target.value)}/> */}
                         <div className={classes.SaveBtn} onClick={handleCreate}>Save Group</div>
                         <div className={classes.CancelBtn} onClick={handleClose}>Cancel</div>
                     </div>
