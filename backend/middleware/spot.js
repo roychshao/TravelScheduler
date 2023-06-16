@@ -41,6 +41,7 @@ export const get_response = async (req, res, next) => {
 			"message": "獲得地點成功",
 			"data": {}
       	}
+		// console.log(req.data);
 		response.data = req.data;
 		res.status(201).json(response);
   }
