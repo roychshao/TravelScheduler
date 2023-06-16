@@ -1,4 +1,3 @@
-import { pool } from "./pool.js";
 import { useTransaction } from "./utils.js";
 
 const print_error = (err) => {

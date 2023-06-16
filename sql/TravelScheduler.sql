@@ -91,7 +91,7 @@ CREATE TABLE `HAS` (
   CONSTRAINT `HAS_ibfk_1` FOREIGN KEY (`travel_id`) REFERENCES `TRAVEL` (`travel_id`) ON DELETE CASCADE,
   CONSTRAINT `HAS_ibfk_2` FOREIGN KEY (`spot_id`) REFERENCES `SPOT` (`spot_id`) ON DELETE CASCADE,
   CONSTRAINT `HAS_ibfk_3` FOREIGN KEY (`tag_name`) REFERENCES `TAG` (`name`) ON DELETE SET NULL,
-  CONSTRAINT `HAS_ibfk_4` FOREIGN KEY (`arrive_id`) REFERENCES `HAS` (`spot_id`) ON DELETE SET NULL
+  CONSTRAINT `HAS_ibfk_4` FOREIGN KEY (`arrive_id`) REFERENCES `HAS` (`has_id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -113,12 +113,12 @@ DROP TABLE IF EXISTS `SPOT`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `SPOT` (
   `spot_id` varchar(256) NOT NULL,
-  `name` varchar(20) DEFAULT NULL,
+  `name` varchar(256) DEFAULT NULL,
   `ranking` float DEFAULT NULL,
   `description` varchar(100) DEFAULT NULL,
   `longtitude` float DEFAULT NULL,
   `latitude` float DEFAULT NULL,
-  `open_hour` varchar(100) DEFAULT NULL,
+  `open_hour` varchar(256) DEFAULT NULL,
   `location` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`spot_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

@@ -259,6 +259,8 @@ body: {
     data: {
         spots: [
             {
+                has_id,
+                arrive_id, 
                 spot_id,
                 spot_name,
                 spot_location,
@@ -319,6 +321,7 @@ request
 
 ```
 body: {
+    has_id: (string),
     spot_id: (string),
     spot_description: (string),
     spot_tag_name: (string),
