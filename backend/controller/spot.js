@@ -9,7 +9,7 @@ import { v4 as uuid } from "uuid";
 dotenv.config();
 
 const parseEscape = (value) => {
-    var length = value.length;
+    var length = value ? value.length : 0;
     return (length >= 6 && typeof value.slice(1, length - 1) === "boolean") ? value.slice(1, length - 1) : value;
 };
 

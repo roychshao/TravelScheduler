@@ -31,8 +31,6 @@ export const getTravelSpots = (travelId) => {
             .then((res) => (res = res.data))
             .then((res) => {
                 if (res.success === true) {
-                    console.log(res);
-                    console.log(travelId);
                     dispatch({
                         type: "GetTravelSpot",
                         payload: res.data,
