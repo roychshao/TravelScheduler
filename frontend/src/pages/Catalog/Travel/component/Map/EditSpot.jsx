@@ -5,8 +5,9 @@ import ArriveTime from '../Time/ArriveTime.jsx';
 import StartTime from '../Time/StartTime.jsx';
 import { makeStyles } from '@mui/styles';
 import { Button, TextField } from '@mui/material'
-import { createspot } from '../../../../../actions/spotAction.js';
+import { getTravelSpots } from '../../../../../actions/spotAction.js';
 import { gettravel } from '../../../../../actions/travelAction.js';
+
 import { useDispatch, useSelector } from 'react-redux'
 import moment from 'moment';
 
@@ -93,6 +94,14 @@ const EditSpot = ({close, insertPlace}) => {
       dispatcher(gettravel());
   }, [])
   //console.log(travels[0][0].travel_id);
+
+  //call /api/spot/get2
+  const spotFromBackend = useSelector(state => state.spotReducer.spots)
+  useEffect(() => {
+    dispatcher(getTravelSpots(travels[0][0].travel_id));
+  },[travels[0][0]])
+  // console.log(travels[0][0].travel_id);
+  console.log(spotFromBackend);
 
   const passToBackend = () => {
     const openingHoursString = JSON.stringify(selectedPlaceInfo.openingHours);

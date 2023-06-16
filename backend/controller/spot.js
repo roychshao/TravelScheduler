@@ -79,14 +79,13 @@ export const get1 = async (req, res, next) => {
 
 export const get2 = async (req, res, next) => {
 
-    const { travel_id } = req.body;
+    const { travel_id } = req.headers;
     await Spot.get2(travel_id)
         .then(result => {
             var has_id = "null";
             var data = {
                 "spots": []
             };
-
             while (result[0].length > 0) {
                 let foundIndex = -1;
               
