@@ -21,13 +21,13 @@ export const getUserSpots = () => {
 
 export const getTravelSpots = (travelId) => {
     return (dispatch) => {
-        const hostUrl = import.meta.env.VITE_HOST_URL;
-        axios.get(`${hostUrl}/api/spot/get2`,{
-            headers: {
-                travel_id: travelId
-            },
-            withCredentials: true
-        })
+            const hostUrl = import.meta.env.VITE_HOST_URL;
+            axios.get(`${hostUrl}/api/spot/get2`,{
+                headers: {
+                    travel_id: travelId
+                },
+                withCredentials: true
+            })
             .then((res) => (res = res.data))
             .then((res) => {
                 if (res.success === true) {
@@ -45,9 +45,9 @@ export const getTravelSpots = (travelId) => {
 
 export const createspot = (spotName, spotLatitude, spotLongitude, spotLocation, spotRank, spotOpenhour, spotTagName, spotStartTime, spotArriveTime, travelId) => {
     return (dispatch) => {
+        console.log("有嗎");
         const hostUrl = import.meta.env.VITE_HOST_URL;
-        axios.post(
-            `${hostUrl}/api/spot/create`,
+        axios.post(`${hostUrl}/api/spot/create`,
             {
                 spot_name: spotName,
                 spot_latitude: spotLatitude,
@@ -66,15 +66,15 @@ export const createspot = (spotName, spotLatitude, spotLongitude, spotLocation, 
             },
             { withCredentials: true }
         )
-            .then((res) => (res = res.data))
-            .then((res) => {
-                if (res.success === true) {
-                    dispatch(getTravelSpots());
-                }
-            })
-            .catch((err) => {
-                console.log("error: " + err.message);
-            });
+        .then((res) => (res = res.data))
+        .then((res) => {
+            if (res.success === true) {
+                dispatch(getTravelSpots(travelId)); // Wait for getTravelSpots to complete
+            }
+        })
+        .catch ((err) => {
+            console.log("error: " + err.message);
+        })
     };
 };
 
