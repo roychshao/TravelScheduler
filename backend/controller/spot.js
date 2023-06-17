@@ -109,6 +109,8 @@ export const get2 = async (req, res, next) => {
                             "spot_description": parseEscape(result[0][i].description),
                             "spot_tag_name": parseEscape(result[0][i].spot_tag_name),
                             "spot_tag_color": parseEscape(result[0][i].color),
+                            "spot_start_time": parseEscape(result[0][i].start_time),
+                            "spot_arrive_time": parseEscape(result[0][i].arrive_time),
                             "spot_done": parseEscape(result[0][i].done)
                         };
                         data.spots.unshift(spot);
@@ -215,8 +217,8 @@ export const create = async (req, res, next) => {
 
 export const update = async (req, res, next) => {
 
-    const { user_id } = req?.session; 
-    //const user_id = "user_id_1";
+    // const { user_id } = req?.session; 
+    const user_id = "user_id_1";
     const { has_id, spot_id, spot_description, spot_tag_name, spot_transportation, spot_start_time, spot_arrive_time, arrive_id, travel_id, spot_star } = req.body;
 
     var origin_last_spot;//, origin_next_spot, new_last_spot;

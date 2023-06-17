@@ -34,7 +34,7 @@ const get2 = (travel_id) => {
     return new Promise( async (resolve, reject) => {
 
         var sqls = [
-            "SELECT HAS.has_id, HAS.arrive_id, SPOT.spot_id, SPOT.name as spot_name, SPOT.location, longtitude, latitude, HAS.transportation, SPOT.ranking, SPOT.open_hour, SPOT.description, TAG.name as spot_tag_name, TAG.color, TRAVEL.done from SPOT JOIN HAS ON HAS.spot_id = SPOT.spot_id JOIN TAG ON HAS.tag_name = TAG.name JOIN TRAVEL ON TRAVEL.travel_id = HAS.travel_id where TRAVEL.travel_id = ?;"
+            "SELECT HAS.has_id, HAS.arrive_id, SPOT.spot_id, SPOT.name as spot_name, SPOT.location, longtitude, latitude, HAS.transportation, SPOT.ranking, SPOT.open_hour, SPOT.description, TAG.name as spot_tag_name, TAG.color, HAS.start_time, HAS.arrive_time, TRAVEL.done from SPOT JOIN HAS ON HAS.spot_id = SPOT.spot_id JOIN TAG ON HAS.tag_name = TAG.name JOIN TRAVEL ON TRAVEL.travel_id = HAS.travel_id where TRAVEL.travel_id = ?;"
         ]
 
         var values = [
