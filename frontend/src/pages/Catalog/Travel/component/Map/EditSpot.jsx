@@ -4,7 +4,7 @@ import Map_Detail from './MapDetail.jsx';
 import ArriveTime from '../Time/ArriveTime.jsx';
 import StartTime from '../Time/StartTime.jsx';
 import { makeStyles } from '@mui/styles';
-import { Button, TextField } from '@mui/material'
+import { Button, TextField, FormControl, Select, InputLabel, MenuItem} from '@mui/material'
 import { getTravelSpots } from '../../../../../actions/spotAction.js';
 import { gettravel } from '../../../../../actions/travelAction.js';
 
@@ -63,7 +63,7 @@ const useStyles = makeStyles({
   }
 });
 
-const EditSpot = ({close, insertPlace}) => {
+const EditSpot = ({close, index}) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchLocation, setSearchLocation] = useState(null);
   const [showMap, setShowMap] = useState(false);
@@ -79,11 +79,6 @@ const EditSpot = ({close, insertPlace}) => {
   });
   const [showStartTime, setShowStartTime] = useState(false);
   const [showArriveTime, setShowArriveTime] = useState(false);
-  const [startTime, setStartTime] = useState(null);
-  const [arriveTime, setArriveTime] = useState(null);
-  const [selectedPlaceInfo, setSelectedPlaceInfo] = useState(null);
-  const [showSelectedPlaceInfo, setShowSelectedPlaceInfo] = useState(false);
-  const [spotDescription, setSpotDescription] = useState("");
 
   const classes = useStyles();  
 
@@ -96,12 +91,38 @@ const EditSpot = ({close, insertPlace}) => {
   //console.log(travels[0][0].travel_id);
 
   //call /api/spot/get2
-  const spotFromBackend = useSelector(state => state.spotReducer.spots)
+  const spotFromBackend = useSelector(state => state.spotReducer.spots);
   useEffect(() => {
     dispatcher(getTravelSpots(travels[0][0].travel_id));
   },[travels[0][0]])
-  // console.log(travels[0][0].travel_id);
-  console.log(spotFromBackend);
+  const [selectedPlaceInfo, setSelectedPlaceInfo] = useState({
+    name: spotFromBackend[0][index].spot_name,
+    lat: spotFromBackend[0][index].spot_latitude,
+    lng: spotFromBackend[0][index].spot_longtitude,
+    location: spotFromBackend[0][index].spot_location,
+    rating: spotFromBackend[0][index].spot_rank,
+    types: spotFromBackend[0][index].spot_tag_name,
+    openingHours: spotFromBackend[0][index].spot_openhour,
+    transportation: spotFromBackend[0][index].spot_transportation,
+    start_time: spotFromBackend[0][index].spot_start_time,
+    arrive_time: spotFromBackend[0][index].spot_arrive_time,
+    description: spotFromBackend[0][index].spot_description
+  });
+  const preStartDateTime = new Date(selectedPlaceInfo.start_time);
+  const preStartTime = preStartDateTime.toLocaleString('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true
+  });
+  const [startTime, setStartTime] = useState(preStartTime);
+
+  const preArriveDateTime = new Date(selectedPlaceInfo.arrive_time);
+  const preArriveTime = preArriveDateTime.toLocaleString('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true
+  });
+  const [arriveTime, setArriveTime] = useState(preArriveTime);
 
   const passToBackend = () => {
     const openingHoursString = JSON.stringify(selectedPlaceInfo.openingHours);
@@ -128,18 +149,12 @@ const EditSpot = ({close, insertPlace}) => {
     //     travels[0][0].travel_id
     //   )
     // );
-
-    insertPlace(selectedPlaceInfo);
     close();
   }
   
 
   const panelClose = () => {
     setShowPanel(false);
-  };
-
-  const modalClose = () => {
-    close();
   };
 
   //StartTime介面
@@ -253,7 +268,6 @@ const EditSpot = ({close, insertPlace}) => {
 
   const handleConfirm = (placeInfo) => {
     setSelectedPlaceInfo(placeInfo);
-    setShowSelectedPlaceInfo(true);
   };
 
   useEffect(() => {
@@ -322,7 +336,7 @@ const EditSpot = ({close, insertPlace}) => {
         <Button onClick={handleSearch} variant="outlined" color="secondary" size="small">搜尋</Button>
       </div>
 
-      {selectedPlaceInfo && showSelectedPlaceInfo && (
+      {selectedPlaceInfo && (
         <div>
           <p>地點名稱: {selectedPlaceInfo.name}</p>
           <p>地點經度: {selectedPlaceInfo.lng}</p>
@@ -331,18 +345,48 @@ const EditSpot = ({close, insertPlace}) => {
           <p>地點評價: {selectedPlaceInfo.rating}</p>
           <p>地點營業時間: {selectedPlaceInfo.openingHours}</p>
           <p>地點類型: {selectedPlaceInfo.types}</p>
+
           <p>抵達時間: {startTime}</p>
           <p>離開時間: {arriveTime}</p>
           <Button onClick={callStartTime} variant="outlined" color="info" style={{ marginRight: '10px' }}>選擇抵達時間</Button>
           <Button onClick={callArriveTime} variant="outlined" color="info">選擇離開時間</Button>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <p>選擇交通工具: </p>
+            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+              <InputLabel id="demo-select-small-label">Travel Mode</InputLabel>
+              <Select
+              labelId="demo-select-small-label"
+              id="demo-select-small"
+              value={selectedPlaceInfo.transportation}
+              label="TravelMode"
+              onChange={(e) =>
+                setSelectedPlaceInfo((prevState) => ({
+                  ...prevState,
+                  transportation: e.target.value
+                }))}
+              >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value={'DRIVING'}>開車</MenuItem>
+              <MenuItem value={'WALKING'}>步行</MenuItem>
+              <MenuItem value={'BICYCLING'}>腳踏車</MenuItem>
+              <MenuItem value={'TRANSIT'}>大眾運輸</MenuItem>
+              <MenuItem value={'TWO_WHEELER'}>機車</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
           <br/>
           <TextField
             margin="dense"
             label="Description"
             type="text"
             fullWidth
-            value={spotDescription}
-            onChange={(e) => setSpotDescription(e.target.value)}
+            value={selectedPlaceInfo.description}
+            onChange={(e) => setSelectedPlaceInfo((prevState) => ({
+              ...prevState,
+              description: e.target.value
+            }))}
           />
           {startTime && arriveTime && (
             <Button onClick={passToBackend} variant="outlined" color="success" style={{ marginTop: '10px' }}>確定</Button>
