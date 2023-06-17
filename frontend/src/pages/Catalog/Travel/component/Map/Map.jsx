@@ -4,7 +4,7 @@ import Map_Detail from './MapDetail.jsx';
 import ArriveTime from '../Time/ArriveTime.jsx';
 import StartTime from '../Time/StartTime.jsx';
 import { makeStyles } from '@mui/styles';
-import Button from '@mui/material/Button'
+import { Button } from '@mui/material'
 import { createspot } from '../../../../../actions/spotAction.js';
 import { gettravel } from '../../../../../actions/travelAction.js';
 import { useDispatch, useSelector } from 'react-redux'
@@ -86,10 +86,13 @@ const Map = ({close, insertPlace}) => {
   const classes = useStyles();  
 
   const dispatcher = useDispatch();
+  const travels = useSelector(state => state.travelReducer.travels);
+  useEffect(() => {
+      dispatcher(gettravel());
+  }, [])
+  //console.log(travels[0][0].travel_id);
 
-    
-
-  const passToBackend = () => {
+  const passToBackend = () => {  
     const openingHoursString = JSON.stringify(selectedPlaceInfo.openingHours);
     const startTimeStr = moment(startTime, 'h:mm A');
     const arriveTimeStr = moment(arriveTime, 'h:mm A');
@@ -97,11 +100,6 @@ const Map = ({close, insertPlace}) => {
     const arriveTimeFormatted = arriveTimeStr.format('YYYY-MM-DD HH:mm:ss');
     console.log(startTimeFormatted);
     console.log(arriveTimeFormatted);
-    const travels = useSelector(state => state.travelReducer.travels);
-    useEffect(() => {
-        dispatcher(gettravel());
-    }, [])
-    console.log(travels[0][0].travel_id);
     
     dispatcher(
       createspot(

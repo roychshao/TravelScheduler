@@ -62,7 +62,7 @@ body: {
 request
 
 ```
-body: {
+headers: {
     travel_id,
 }
 ```
@@ -245,7 +245,7 @@ body: {
 request
 
 ```
-body: {
+headers: {
     travel_id,
 }
 ```
@@ -259,6 +259,8 @@ body: {
     data: {
         spots: [
             {
+                has_id,
+                arrive_id, 
                 spot_id,
                 spot_name,
                 spot_location,

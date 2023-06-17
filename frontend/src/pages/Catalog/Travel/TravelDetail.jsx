@@ -16,6 +16,8 @@ import StepContent from '@mui/material/StepContent'
 import Button from '@mui/material/Button'
 import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
+import { gettravel } from '../../../actions/travelAction.js'
+import { getTravelSpots } from '../../../actions/spotAction.js'
 import { makeStyles } from '@mui/styles'
 
 const useStyles = makeStyles({
@@ -96,7 +98,9 @@ const useStyles = makeStyles({
     borderRadius: 4,
     boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
     width: 1200,
-    height: 500
+    height: 500,
+    maxHeight: '1000px', /* 容器的最大高度 */
+    overflowY: 'auto', /* 添加垂直滾動條 */
   }
 });
 
@@ -116,18 +120,33 @@ const TravelDetail = ({travel}) => {
   const [showEditSpot, setShowEditSpot] = useState(false);
   const classes = useStyles();
 
+  //call /api/travel
+  const travels = useSelector(state => state.travelReducer.travels);
+  useEffect(() => {
+      dispatcher(gettravel());
+  }, [])
+  //console.log(travels[0][0].travel_id);
+
+  //call /api/spot/get2
+  const spotFromBackend = useSelector(state => state.spotReducer.spots);
+  useEffect(() => {
+    dispatcher(getTravelSpots(travels[0][0].travel_id));
+  },[travels[0][0]])
+  console.log(spotFromBackend[0][0]);
+
+  useEffect(() => {
+    const newSteps = spotFromBackend.map((spot) => ({
+      label: spot.name,
+    }));
+    setSteps(newSteps);
+  }, [spotFromBackend]);
+
   const callMap = () => {
     setShowMap(true);
     setSelectedTravel(travel);
   };
   const closeMap = () => {
     setShowMap(false);
-  };
-
-  const onPlaceConfirmed = (selectedPlaceInfo) => {
-    const newStep = { label: selectedPlaceInfo.name }; // 创建新的步骤对象
-  
-    setSteps((prevSteps) => [...prevSteps, newStep]); // 将新步骤添加到步骤数组中
   };
 
   //改交通工具資訊
@@ -238,7 +257,7 @@ const TravelDetail = ({travel}) => {
         <div className={classes.map}>
           <span className={classes.closeButton} onClick={closeMap}>&times;</span>
           <div className={classes.mapContent}>
-            <Map close={closeMap} insertPlace={onPlaceConfirmed}/>
+            <Map close={closeMap} />
           </div>
         </div>
       )}
@@ -256,7 +275,7 @@ const TravelDetail = ({travel}) => {
         <div className={classes.editSpot}>
           <span className={classes.closeButton} onClick={closeEditSpot}>&times;</span>
           <div className={classes.editSpotContent}>
-            <EditSpot close={closeEditSpot}/>
+            <EditSpot close={closeEditSpot} />
           </div>
         </div>
       )}

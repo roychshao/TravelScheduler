@@ -29,10 +29,12 @@ const get1 = (user_id) => {
 }
 
 const get2 = (travel_id) => {
+    // console.log(travel_id);
+
     return new Promise( async (resolve, reject) => {
 
         var sqls = [
-            "SELECT SPOT.spot_id, SPOT.name as spot_name, SPOT.location, longtitude, latitude, HAS.transportation, SPOT.ranking, SPOT.open_hour, SPOT.description, TAG.name as spot_tag_name, TAG.color, TRAVEL.done from SPOT JOIN HAS ON HAS.spot_id = SPOT.spot_id JOIN TAG ON HAS.tag_name = TAG.name JOIN TRAVEL ON TRAVEL.travel_id = HAS.travel_id where TRAVEL.travel_id = ?;"
+            "SELECT HAS.has_id, HAS.arrive_id, SPOT.spot_id, SPOT.name as spot_name, SPOT.location, longtitude, latitude, HAS.transportation, SPOT.ranking, SPOT.open_hour, SPOT.description, TAG.name as spot_tag_name, TAG.color, TRAVEL.done from SPOT JOIN HAS ON HAS.spot_id = SPOT.spot_id JOIN TAG ON HAS.tag_name = TAG.name JOIN TRAVEL ON TRAVEL.travel_id = HAS.travel_id where TRAVEL.travel_id = ?;"
         ]
 
         var values = [
@@ -117,16 +119,18 @@ const add_to_has = (has_id, travel_id, spot_id, spot_tag_name, spot_transportati
 }
 
 // await Spot.update(spot_id, spot_description, spot_tag_name, spot_transportation, spot_start_time, spot_arrive_time, arrive_id, travel_id)
-const find_next_spot = () => {
+const get_origin_spots = (has_id) => {
     return new Promise( async (resolve, reject) => {
 
         var sqls = [
-            "SELECT  WHERE spot_id = ?;",
+            "SELECT HAS.has_id FROM HAS WHERE arrive_id = ?;",
+            "SELECT HAS.arrive_id FROM HAS WHERE has_id = ?;"
             
         ];
 
         var values = [
-            [spot_description, spot_id]
+            [has_id], 
+            [has_id]
         ];
 
         await useTransaction(sqls, values).then(results => {
@@ -138,16 +142,20 @@ const find_next_spot = () => {
     })
 }
 
-const update_has = () => {
+const get_new_last_spot = (arrive_id) => {
     return new Promise( async (resolve, reject) => {
-
-        var sqls = [
-            "SELECT  WHERE spot_id = ?;",
-            
-        ];
+        if(arrive_id === null){
+            var sqls = [
+                "SELECT HAS.has_id FROM HAS WHERE arrive_id is ? ;"
+            ];
+        }else{
+            var sqls = [
+                "SELECT HAS.has_id FROM HAS WHERE arrive_id = ? ;"
+            ];
+        }
 
         var values = [
-            [spot_description, spot_id]
+            [arrive_id]
         ];
 
         await useTransaction(sqls, values).then(results => {
@@ -159,17 +167,40 @@ const update_has = () => {
     })
 }
 
-const update_spot = (spot_id, spot_description, spot_tag_name, spot_transportation, spot_start_time, spot_arrive_time, arrive_id, travel_id) => {
+const update_has = (has_id, travel_id, spot_id, spot_tag_name, spot_transportation, spot_start_time, spot_arrive_time, arrive_id, origin_last_spot, origin_next_spot, new_last_spot) => {
     return new Promise( async (resolve, reject) => {
 
         var sqls = [
-            "UPDATE SPOT SET description = ? WHERE spot_id = ?;",
-            // "UPDATE HAS SET tag_id = ?, transportation = ?, start_time = ?, arrive_time = ?, arrive_id = ? WHERE spot_id = ? AND travel_id = ?;"
+            "UPDATE HAS SET arrive_id = ? WHERE has_id = ?",
+            "UPDATE HAS SET arrive_id = ? WHERE has_id = ?",
+            "UPDATE HAS SET travel_id = ?, spot_id = ?, tag_name = ?, transportation = ?, start_time = ?, arrive_time = ?, arrive_id = ? WHERE has_id = ?",
+            
         ];
 
         var values = [
-            [spot_description, spot_id], 
-            // [spot_tag_name, spot_transportation, spot_start_time, spot_arrive_time, arrive_id, spot_id, travel_id]
+            [origin_next_spot, origin_last_spot],
+            [has_id, new_last_spot],
+            [travel_id, spot_id, spot_tag_name, spot_transportation, spot_start_time, spot_arrive_time, arrive_id, has_id]
+        ];
+
+        await useTransaction(sqls, values).then(results => {
+            resolve(results);
+        }).catch(err => {
+            print_error(err);
+            reject(err);
+        })
+    })
+}
+
+const update_spot = (spot_id, spot_description) => {
+    return new Promise( async (resolve, reject) => {
+
+        var sqls = [
+            "UPDATE SPOT SET description = ? WHERE spot_id = ?;"
+        ];
+
+        var values = [
+            [spot_description, spot_id]
         ];
 
         await useTransaction(sqls, values).then(results => {
@@ -202,4 +233,4 @@ const delete_ = (has_id) => {
 };
 
 
-export default { get1, get2, check_spot_exist, create, add_to_has, find_next_spot, update_has, update_spot, delete_ };
+export default { get1, get2, check_spot_exist, create, add_to_has, get_origin_spots, get_new_last_spot, update_has, update_spot, delete_ };
