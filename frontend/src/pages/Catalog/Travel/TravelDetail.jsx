@@ -254,6 +254,9 @@ const TravelDetail = ({ travelid }) => {
 					</Step>
 				))}
 			</Stepper>
+			{activeStep === steps.length && steps.length == 0 && (
+				<Button onClick={callMap} variant="outlined" color="secondary" size="small" style={{ marginLeft: '10px' }}>新增地點</Button>
+			)}
 			{activeStep === steps.length && steps.length != 0 && (
 				<Paper square elevation={0} sx={{ p: 3 }}>
 					<Typography>恭喜你完成旅程</Typography>
