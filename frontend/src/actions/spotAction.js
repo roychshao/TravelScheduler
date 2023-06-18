@@ -43,7 +43,7 @@ export const getTravelSpots = (travelId) => {
     };
 };
 
-export const createspot = (spotName, spotLatitude, spotLongitude, spotLocation, spotRank, spotOpenhour, spotTagName, spotStartTime, spotArriveTime, travelId) => {
+export const createspot = (spotName, spotLatitude, spotLongitude, spotLocation, spotRank, spotOpenhour, spotTagName, spotArriveId, spotStartTime, spotArriveTime, travelId) => {
     return (dispatch) => {
         console.log("有嗎");
         const hostUrl = import.meta.env.VITE_HOST_URL;
@@ -58,7 +58,7 @@ export const createspot = (spotName, spotLatitude, spotLongitude, spotLocation, 
                 spot_description: "hello",
                 spot_tag_name: spotTagName,
                 spot_tag_color: "purple",
-                arrive_id: null,
+                arrive_id: spotArriveId,
                 spot_transportation: "null",
                 spot_start_time: spotStartTime,
                 spot_arrive_time: spotArriveTime,
@@ -79,7 +79,7 @@ export const createspot = (spotName, spotLatitude, spotLongitude, spotLocation, 
 };
 
 
-export const updatespot = (hasId, spotId, spotDescription, spotTagName, spotTransportation, spotStartTime, spotArriveTime, spotArriveId, spotTravelId, spotStar) => {
+export const updatespot = (hasId, spotId, spotDescription, spotTagName, spotTransportation, spotStartTime, spotArriveTime, spotArriveId, spotTravelId) => {
     return (dispatch) => {
         const hostUrl = import.meta.env.VITE_HOST_URL;
         axios.put(
@@ -94,7 +94,7 @@ export const updatespot = (hasId, spotId, spotDescription, spotTagName, spotTran
                 spot_arrive_time: spotArriveTime,
                 arrive_id: spotArriveId,
                 travel_id: spotTravelId,
-                spot_star: spotStar
+                spot_star: null
             },
             { withCredentials: true }
         )

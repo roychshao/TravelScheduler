@@ -62,9 +62,7 @@ const useStyles = makeStyles({
     }
 });
 
-const Map = ({ close, renew, travelid }) => {
-    console.log("Map:",travelid);
-
+const Map1 = ({ close, renew, travelid }) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [searchLocation, setSearchLocation] = useState(null);
     const [showMap, setShowMap] = useState(false);
@@ -89,12 +87,7 @@ const Map = ({ close, renew, travelid }) => {
     const classes = useStyles();
 
     const dispatcher = useDispatch();
-    const travels = useSelector(state => state.travelReducer.travels);
-    useEffect(() => {
-        dispatcher(gettravel());
-    }, [])
-    //console.log(travels[0][0].travel_id);
-
+    
     const passToBackend = () => {
         const openingHoursString = JSON.stringify(selectedPlaceInfo.openingHours);
         const startTimeStr = moment(startTime, 'h:mm A');
@@ -113,6 +106,7 @@ const Map = ({ close, renew, travelid }) => {
                 selectedPlaceInfo.rating,     //(float)
                 openingHoursString,           //填寫適當的 spotOpenhour 值    (string)
                 selectedPlaceInfo.types,      //填寫適當的 spotTagName 值     (string)
+                null,
                 startTimeFormatted,           //填寫適當的 spotStartTime 值   (datetime)
                 arriveTimeFormatted,          //填寫適當的 spotArriveTime 值  (datetime)
                 travelid,
@@ -128,10 +122,10 @@ const Map = ({ close, renew, travelid }) => {
 
     const callMsg = () => {
         setShowAddMsg(true);
+        renew();
     }
 
     const closeMsg = () => {
-        renew();
         close();
     };
 
@@ -375,4 +369,4 @@ const Map = ({ close, renew, travelid }) => {
     );
 };
 
-export default Map;
+export default Map1;

@@ -16,13 +16,14 @@ const TravelList = () => {
     }, [])
     // console.log(travels);
     // ====================SET==================== 
-    const [selectedTravel, setSelectedTravel] = useState(null);
+    const [selectedTravelId, setSelectedTravelId] = useState("");
     const [showTravelDetail, setShowTravelDetail] = useState(false);
     const [detailOpen, setDetailOpen] = useState(false);
 
 
-    const handleDetailClickOpen = () => {
-        // setSelectedTravel(travel)
+    const handleDetailClickOpen = (travelid) => {
+        setSelectedTravelId(travelid)
+        console.log(travelid);
         setDetailOpen(true);
     };
     const handleDetailClose = () => {
@@ -64,14 +65,14 @@ const TravelList = () => {
                             {/* <ListItemText primary={travel.group_id} /> */}
                             <DoneTravel targetTravel={travel} />
                             {/* =====================TravelDetail===================== */}
-                            <Button variant="contained" color="warning" style={{ marginRight: '10px' }} onClick={handleDetailClickOpen}>
+                            <Button variant="contained" color="warning" style={{ marginRight: '10px' }} onClick={() => handleDetailClickOpen(travel.travel_id)}>
                                 SET
                             </Button>
                             <Dialog open={detailOpen} onClose={handleDetailClose}>
                                 <DialogTitle>Travel Detail</DialogTitle>
-                                <DialogContent style={{ backgroundColor: 'transparent' }}>
+                                <DialogContent>
                                     <div>
-                                        <TravelDetail travelid={travel.travel_id} />
+                                        <TravelDetail travelid={selectedTravelId} />
                                     </div>
                                 </DialogContent>
                                 <DialogActions>
