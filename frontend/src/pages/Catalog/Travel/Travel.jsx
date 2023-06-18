@@ -25,9 +25,9 @@ const Travel = () => {
     return (
         <div>
             {showTravelDetail && (
-            <div>
-                <TravelDetail travel={selectedTravel}/>
-            </div>
+                <div>
+                    <TravelDetail travel={selectedTravel}/>
+                </div>
             )}
 
             <p>Travel</p>
