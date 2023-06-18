@@ -63,9 +63,6 @@ const useStyles = makeStyles({
 });
 
 const EditSpot = ({close, index, travelid}) => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchLocation, setSearchLocation] = useState(null);
-  const [showMap, setShowMap] = useState(false);
   const [showStartTime, setShowStartTime] = useState(false);
   const [showArriveTime, setShowArriveTime] = useState(false);
 
@@ -78,6 +75,8 @@ const EditSpot = ({close, index, travelid}) => {
   useEffect(() => {
     dispatcher(getTravelSpots(travelid));
   },[travelid])
+  console.log("travelID: ", travelid);
+  console.log(spotFromBackend[0]);
   const [selectedPlaceInfo, setSelectedPlaceInfo] = useState({
     arrive_id: spotFromBackend[0][index].arrive_id,
     has_id: spotFromBackend[0][index].has_id,
@@ -136,11 +135,6 @@ const EditSpot = ({close, index, travelid}) => {
     );
     close();
   }
-  
-
-  const panelClose = () => {
-    setShowPanel(false);
-  };
 
   //StartTime介面
   const callStartTime = () => {
@@ -167,146 +161,6 @@ const EditSpot = ({close, index, travelid}) => {
     setArriveTime(time);
     console.log(time);
   };
-
-  const handleSearch = async () => {
-    if (!searchLocation) return;
-
-    setShowMap(true);
-
-    const mapElement = document.getElementById('map');
-    if (!mapElement) return;
-
-    const map = new window.google.maps.Map(mapElement, {
-      zoom: 16,
-      center: searchLocation,
-    });
-
-    const placesService = new window.google.maps.places.PlacesService(map);
-
-    const callback = (results, status) => {
-      if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-        for (let i = 0; i < results.length; i++) {
-          createMarker(results[i]);
-        }
-      }
-    }
-
-    const createMarker = (place) => {
-      const marker = new window.google.maps.Marker({
-        map: map,
-        position: place.geometry.location,
-        title: place.name,
-      });
-
-      marker.addListener('click', () => {
-        handleMapClick(place);
-      });
-    }
-  
-    const request = {
-      location: searchLocation,
-      radius: '500',
-      query: searchQuery,
-    };
-
-    placesService.textSearch(request, callback);
-  };
-
-  const handleMapClick = (place) => {
-    setShowPanel(true);
-
-    const placesService = new window.google.maps.places.PlacesService(map);
-    const request = {
-      placeId: place.place_id,
-      fields: ['name', 'geometry', 'rating', 'opening_hours', 'types', 'formatted_address']
-    };
-
-    placesService.getDetails(request, (placeDetails, status) => {
-      if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-        const openingHours = placeDetails.opening_hours;
-        const clickPlace = {
-          name: place.name,
-          lat: placeDetails.geometry.location.lat(),
-          lng: placeDetails.geometry.location.lng(),
-          location: placeDetails.formatted_address,
-          rating: placeDetails.rating,
-          openingHours: openingHours ? openingHours.weekday_text : '無營業時間',
-          types: placeDetails.types[0]
-        };
-  
-        setClickPlace(clickPlace);
-
-        setSelectedPlaceInfo({
-          name: place.name,
-          lat: placeDetails.geometry.location.lat(),
-          lng: placeDetails.geometry.location.lng(),
-          location: placeDetails.formatted_address,
-          rating: placeDetails.rating,
-          types: placeDetails.types[0],
-          openingHours: openingHours ? openingHours.weekday_text : '無營業時間'
-        });
-      } else {
-        console.log("ERROR: Google Map Status not OK");
-      }
-    });
-  };
-
-  const handleConfirm = (placeInfo) => {
-    setSelectedPlaceInfo(placeInfo);
-  };
-
-  useEffect(() => {
-    if (searchQuery !== '') {
-      const geocoder = new window.google.maps.Geocoder();
-
-      geocoder.geocode({ address: searchQuery }, (results, status) => {
-        if (status === window.google.maps.GeocoderStatus.OK) {
-          const location = results[0].geometry.location;
-          setSearchLocation(location);
-        }
-      });
-    }
-  }, [searchQuery]);
-
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src =
-    `https://maps.googleapis.com/maps/api/js?key=${window.REACT_APP_API_KEY}&libraries=places`;     
-    script.defer = true;
-    document.head.appendChild(script);
-
-    script.onload = () => {
-      console.log('Google Maps API 加載完成');
-    };
-
-    return () => {
-      document.head.removeChild(script);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (searchLocation && showMap) {
-      handleSearch();
-    }
-  }, [searchLocation, showMap]);
-
-  useEffect(() => {
-    if (searchLocation) {
-      const mapElement = document.getElementById('map');
-      if (!mapElement) return;
-
-      const map = new window.google.maps.Map(mapElement, {
-        zoom: 16,
-        center: searchLocation,
-      });
-
-      map.addListener('click', handleMapClick);
-
-      return () => {
-        google.maps.event.clearListeners(map, 'click');
-      };
-    }
-  }, [searchLocation]);
 
   return (
     <div>

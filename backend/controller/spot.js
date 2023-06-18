@@ -226,16 +226,18 @@ export const update = async (req, res, next) => {
     var new_last_spot;
 
     if (spot_star) {
+        console.log("true");
         await Star.create(user_id, spot_id).then().catch(err => {
             req.err = err;
             next();
         })
-    } else if(spot_star === false)(
+    } else if(spot_star === false) {
+        console.log("false");
         await Star.delete_(user_id, spot_id).then().catch(err => {
             req.err = err;
             next();
         })
-    )
+    }
     await Spot.update_spot(spot_id, spot_description)
     .then(result => {
         req.data = JSON.stringify({});

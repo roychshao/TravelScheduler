@@ -32,6 +32,7 @@ const Trace = ({index, travelid}) => {
         }      
     }, [spotLoaded]);
 
+    const [instructions, setInstructions] = useState([]);
     const [passedTime, setPassedTime] = useState("");
 
     const createTrace = (spotFromBackend, index, passedTime) => {
@@ -61,7 +62,7 @@ const Trace = ({index, travelid}) => {
         const request = {
           origin: { lat: spotFromBackend[0][index].spot_latitude, lng: spotFromBackend[0][index].spot_longtitude }, // 起點座標
           destination: { lat: spotFromBackend[0][index+1].spot_latitude, lng: spotFromBackend[0][index+1].spot_longtitude }, // 終點座標
-          travelMode: "DRIVING", // 交通方式
+          travelMode: spotFromBackend[0][index].spot_transportation, // 交通方式
         };
 
         directionsService.route(request, function (result, status) {
@@ -69,6 +70,10 @@ const Trace = ({index, travelid}) => {
             // 在地圖上繪製路線
             directionsRenderer.setDirections(result);
             directionsRenderer.setMap(map);
+
+            const steps = result.routes[0].legs[0].steps;
+            const instructions = steps.map(step => step.instructions);
+            setInstructions(instructions);
 
             const duration = result.routes[0].legs[0].duration.text;
             setPassedTime(duration);
@@ -82,6 +87,12 @@ const Trace = ({index, travelid}) => {
             <p>出發地點: {spotFromBackend[0][index].spot_name}</p>
             <p>目的地: {spotFromBackend[0][index+1].spot_name}</p>
             <p>交通方式: {spotFromBackend[0][index].spot_transportation}</p>
+            <p>具體路線: </p>
+            <ul>
+              {instructions.map((instruction, index) => (
+                <li key={index}>{instruction}</li>
+              ))}
+            </ul>
             <p>預計所需時間: {passedTime}</p>
         </div>
     );

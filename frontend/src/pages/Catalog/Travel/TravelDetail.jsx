@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import Map from './component/Map/Map.jsx'
+import Map1 from './component/Map/Map1.jsx'
+import Map2 from './component/Map/Map2.jsx'
 import Trace from './component/Trace/Trace.jsx'
 import EditSpot from './component/Map/EditSpot.jsx'
-import InputLabel from '@mui/material/InputLabel'
-import MenuItem from '@mui/material/MenuItem'
-import FormControl from '@mui/material/FormControl'
-import Select from '@mui/material/Select'
 import Box from '@mui/material/Box'
 import Stepper from '@mui/material/Stepper'
 import Step from '@mui/material/Step'
@@ -16,12 +13,7 @@ import StepContent from '@mui/material/StepContent'
 import Button from '@mui/material/Button'
 import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import { gettravel } from '../../../actions/travelAction.js'
-import { getTravelSpots } from '../../../actions/spotAction.js'
+import { getTravelSpots, deletespot } from '../../../actions/spotAction.js'
 import { makeStyles } from '@mui/styles'
 
 const useStyles = makeStyles({
@@ -117,13 +109,12 @@ const TravelDetail = ({ travelid }) => {
 	const dispatcher = useDispatch();
 	const loginWithGoogle = useSelector(state => state.loginReducer.loginWithGoogle);
 	const [showMap, setShowMap] = useState(false);
-	// const [selectedTravel, setSelectedTravel] = useState(null); 
-	const [travelMode, setTravelMode] = useState('');
+	const [showMap2, setShowMap2] = useState(false);
 	const [showTrace, setShowTrace] = useState(false);
 	const [activeStep, setActiveStep] = useState(0);
-	const [spotTransportation, setSpotTransportation] = useState('');
 	const [steps, setSteps] = useState([]);
 	const [passedIndex, setPassedIndex] = useState(0);
+	const [passedArriveID, setPassedArriveID] = useState("");
 	const [showEditSpot, setShowEditSpot] = useState(false);
 	const [renewSchedule, setRenewSchedule] = useState(false);
 	const [showDialog, setShowDialog] = useState(false); // State for dialog visibility
@@ -141,17 +132,22 @@ const TravelDetail = ({ travelid }) => {
 
 
 	useEffect(() => {
-		if (spotLoaded) {
+		if (spotLoaded || renewSchedule) {
 			const newSteps = spotFromBackend[0].map((spot) => ({
 				label: spot.spot_name,
 			}));
-			//console.log(spotFromBackend[0]);
+			console.log(spotFromBackend[0]);
 
 			// console.log(renewSchedule);
 			console.log(newSteps);
 			setSteps(newSteps);
 		}
 	}, [spotLoaded, renewSchedule]);
+
+	const deleteInfo = (index) => {
+		dispatcher(deletespot(spotFromBackend[0][index].has_id));
+		setRenewSchedule(true);
+	  };
 
 	// Function to open the dialog
 	const openDialog = () => {
@@ -165,14 +161,21 @@ const TravelDetail = ({ travelid }) => {
 
 	const callMap = () => {
 		setShowMap(true);
-		// console.log("detail:", travelid);
-
-		// setSelectedTravel(targettravel);
 		setRenewSchedule(false);
 	};
 	const closeMap = () => {
 		console.log(renewSchedule);		
 		setShowMap(false);
+	};
+
+	const callMap2 = (index) => {
+		setShowMap2(true);
+		setPassedArriveID(spotFromBackend[0][index].arrive_id)
+		setRenewSchedule(false);
+	};
+	const closeMap2 = () => {
+		console.log(renewSchedule);		
+		setShowMap2(false);
 	};
 
 	const getNewSpot = () => {
@@ -208,9 +211,7 @@ const TravelDetail = ({ travelid }) => {
 		setActiveStep(0);
 	};
 	// console.log("detail:", travelid);
-
 	return (
-
 			<div className={classes.travelContent}>
 				<Stepper activeStep={activeStep} orientation="vertical">
 				{steps.map((step, index) => (
@@ -222,8 +223,15 @@ const TravelDetail = ({ travelid }) => {
 									<Button onClick={() => callTrace(index)} variant="outlined" color="info" size="small" style={{ marginLeft: '10px', marginBottom: '10px' }}>查看路徑</Button>
 								</div>
 							)}
+							{activeStep === steps.length && (
+								<Button onClick={callMap} variant="outlined" color="secondary" size="small" style={{ marginLeft: '10px' }}>新增地點</Button>
+							)}
+							{activeStep !== steps.length && (
+								<Button onClick={() => callMap2(index)} variant="outlined" color="secondary" size="small" style={{ marginLeft: '10px' }}>新增地點</Button>
+							)}
+
 							<Button onClick={() => callEditSpot(index)} variant="outlined" color="warning" size="small" style={{ marginLeft: '10px' }}>編輯地點</Button>
-							<Button variant="outlined" color="error" size="small" style={{ marginLeft: '10px' }}>刪除地點</Button>
+							<Button onClick={() => deleteInfo(index)} variant="outlined" color="error" size="small" style={{ marginLeft: '10px' }}>刪除地點</Button>
 							<Box sx={{ mb: 2 }}>
 								<div>
 									<Button
@@ -254,7 +262,7 @@ const TravelDetail = ({ travelid }) => {
 					</Button>
 				</Paper>
 			)}
-			<Button onClick={callMap} variant="outlined" color="secondary" style={{ marginBottom: '10px' }}>新增地點</Button>
+
 			<br />
 			{/* <Button variant="contained" color="success" size="large" style={{ marginRight: '10px' }}>確定</Button>
 			<Button variant="contained" color="error" size="large">取消</Button> */}
@@ -263,11 +271,18 @@ const TravelDetail = ({ travelid }) => {
 				<div className={classes.map}>
 					<span className={classes.closeButton} onClick={closeMap}>&times;</span>
 					<div className={classes.mapContent}>
-						<Map close={closeMap} renew={getNewSpot} travelid={travelid} />
+						<Map1 close={closeMap} renew={getNewSpot} travelid={travelid} />
 					</div>
 				</div>
 			)}
-
+			{showMap2 && (
+				<div className={classes.map}>
+					<span className={classes.closeButton} onClick={closeMap2}>&times;</span>
+					<div className={classes.mapContent}>
+						<Map2 close={closeMap2} renew={getNewSpot} arriveID={passedArriveID} travelid={travelid} />
+					</div>
+				</div>
+			)}
 			{showTrace && (
 				<div className={classes.trace}>
 					<span className={classes.closeButton} onClick={closeTrace}>&times;</span>
