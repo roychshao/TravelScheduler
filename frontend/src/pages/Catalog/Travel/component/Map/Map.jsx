@@ -63,8 +63,6 @@ const useStyles = makeStyles({
 });
 
 const Map = ({ close, renew, travelid }) => {
-    console.log("Map:",travelid);
-
     const [searchQuery, setSearchQuery] = useState('');
     const [searchLocation, setSearchLocation] = useState(null);
     const [showMap, setShowMap] = useState(false);
@@ -128,10 +126,10 @@ const Map = ({ close, renew, travelid }) => {
 
     const callMsg = () => {
         setShowAddMsg(true);
+        renew();
     }
 
     const closeMsg = () => {
-        renew();
         close();
     };
 

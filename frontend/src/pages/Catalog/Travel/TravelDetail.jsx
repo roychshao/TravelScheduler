@@ -113,7 +113,7 @@ const useStyles = makeStyles({
 
 
 const TravelDetail = ({ travelid }) => {
-	// console.log("detail:",travelid);
+	console.log("detail:",travelid);
 	const navigate = useNavigate();
 	const dispatcher = useDispatch();
 	const loginWithGoogle = useSelector(state => state.loginReducer.loginWithGoogle);
@@ -132,7 +132,7 @@ const TravelDetail = ({ travelid }) => {
 
 
 	useEffect(() => {
-		console.log("detail:", travelid);
+		//console.log("detail:", travelid);
 
 	}, [travelid]);
 
@@ -170,7 +170,7 @@ const TravelDetail = ({ travelid }) => {
 		setRenewSchedule(false);
 	};
 	const closeMap = () => {
-		//console.log(renewSchedule);		
+		console.log(renewSchedule);		
 		setShowMap(false);
 	};
 
@@ -352,7 +352,7 @@ const TravelDetail = ({ travelid }) => {
 				<div className={classes.map}>
 					<span className={classes.closeButton} onClick={closeMap}>&times;</span>
 					<div className={classes.mapContent}>
-						<Map close={closeMap} renew={getNewSpot} traveiId={travelid} />
+						<Map close={closeMap} renew={getNewSpot} travelid={travelid} />
 					</div>
 				</div>
 			)}
