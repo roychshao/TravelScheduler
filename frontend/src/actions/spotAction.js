@@ -79,7 +79,7 @@ export const createspot = (spotName, spotLatitude, spotLongitude, spotLocation, 
 };
 
 
-export const updatespot = (hasId, spotId, spotDescription, spotTagName, spotTransportation, spotStartTime, spotArriveTime, spotArriveId, spotTravelId, spotStar) => {
+export const updatespot = (hasId, spotId, spotDescription, spotTagName, spotTransportation, spotStartTime, spotArriveTime, spotArriveId, spotTravelId) => {
     return (dispatch) => {
         const hostUrl = import.meta.env.VITE_HOST_URL;
         axios.put(
@@ -94,7 +94,7 @@ export const updatespot = (hasId, spotId, spotDescription, spotTagName, spotTran
                 spot_arrive_time: spotArriveTime,
                 arrive_id: spotArriveId,
                 travel_id: spotTravelId,
-                spot_star: spotStar
+                spot_star: "null"
             },
             { withCredentials: true }
         )

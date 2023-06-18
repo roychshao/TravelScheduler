@@ -82,7 +82,7 @@ const useStyles = makeStyles({
 		backgroundColor: '#fff',
 		padding: 20,
 		borderRadius: 4,
-		width: 1470,
+		width: 800,
 		height: 800,
 		maxHeight: '2000px', /* 容器的最大高度 */
 		overflowY: 'auto', /* 添加垂直滾動條 */
@@ -113,7 +113,6 @@ const useStyles = makeStyles({
 
 
 const TravelDetail = ({ travelid }) => {
-	console.log("detail:",travelid);
 	const navigate = useNavigate();
 	const dispatcher = useDispatch();
 	const loginWithGoogle = useSelector(state => state.loginReducer.loginWithGoogle);
@@ -132,8 +131,8 @@ const TravelDetail = ({ travelid }) => {
 
 
 	useEffect(() => {
-		//console.log("detail:", travelid);
-
+		console.log("detail:", travelid);
+		dispatcher(getTravelSpots(travelid));
 	}, [travelid]);
 
 	//call /api/spot/get2
@@ -148,7 +147,7 @@ const TravelDetail = ({ travelid }) => {
 			}));
 			//console.log(spotFromBackend[0]);
 
-			console.log(renewSchedule);
+			// console.log(renewSchedule);
 			console.log(newSteps);
 			setSteps(newSteps);
 		}
@@ -213,98 +212,6 @@ const TravelDetail = ({ travelid }) => {
 	return (
 
 			<div className={classes.travelContent}>
-				{/*  <div> */}
-				{/* <p>This is the Travel detail page</p> */}
-				{/* <Button onClick={openDialog} variant="contained" color="warning" sx={{ marginRight: '10px' }} >
-					SET
-				</Button> */}
-
-				{/* Dialog component */}
-				{/* <Dialog open={showDialog} onClose={closeDialog}>
-					<DialogTitle>
-						TravelDetail
-					</DialogTitle>
-					<DialogContent>
-						<Stepper activeStep={activeStep} orientation="vertical">
-							{steps.map((step, index) => (
-								<Step key={index}>
-									<StepLabel>{step.label}</StepLabel>
-									<StepContent>
-										{activeStep !== steps.length - 1 && (
-											<div>
-												<Button onClick={() => callTrace(index)} variant="outlined" color="info" size="small" style={{ marginLeft: '10px', marginBottom: '10px' }}>查看路徑</Button>
-											</div>
-										)}
-										<Button onClick={() => callEditSpot(index)} variant="outlined" color="warning" size="small" style={{ marginLeft: '10px' }}>編輯地點</Button>
-										<Button variant="outlined" color="error" size="small" style={{ marginLeft: '10px' }}>刪除地點</Button>
-										<Box sx={{ mb: 2 }}>
-											<div>
-												<Button
-													variant="contained"
-													onClick={handleNext}
-													sx={{ mt: 1, mr: 1 }}
-												>
-													{index === steps.length - 1 ? '完成' : '下一個地點'}
-												</Button>
-												<Button
-													disabled={index === 0}
-													onClick={handleBack}
-													sx={{ mt: 1, mr: 1 }}
-												>
-													前一個地點
-												</Button>
-											</div>
-										</Box>
-									</StepContent>
-								</Step>
-							))}
-						</Stepper>
-						{activeStep === steps.length && steps.length != 0 && (
-							<Paper square elevation={0} sx={{ p: 3 }}>
-								<Typography>恭喜你完成旅程</Typography>
-								<Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
-									Reset
-								</Button>
-							</Paper>
-						)}
-						<Button onClick={callMap} variant="outlined" color="secondary" style={{ marginBottom: '10px' }}>新增地點</Button>
-						<br />
-						<Button variant="contained" color="success" size="large" style={{ marginRight: '10px' }}>確定</Button>
-						<Button variant="contained" color="error" size="large">取消</Button>
-
-						{showMap && (
-							<div className={classes.map}>
-								<span className={classes.closeButton} onClick={closeMap}>&times;</span>
-								<div className={classes.mapContent}>
-									<Map close={closeMap} renew={getNewSpot} traveiId={travelid} />
-								</div>
-							</div>
-						)}
-
-						{showTrace && (
-							<div className={classes.trace}>
-								<span className={classes.closeButton} onClick={closeTrace}>&times;</span>
-								<div className={classes.traceContent}>
-									<Trace index={passedIndex} />
-								</div>
-							</div>
-						)}
-
-						{showEditSpot && (
-							<div className={classes.editSpot}>
-								<span className={classes.closeButton} onClick={closeEditSpot}>&times;</span>
-								<div className={classes.editSpotContent}>
-									<EditSpot close={closeEditSpot} index={passedIndex} />
-								</div>
-							</div>
-						)}
-					</DialogContent>
-					<DialogActions>
-						<Button onClick={closeDialog} color="primary">
-							Close
-						</Button>
-					</DialogActions>
-				</Dialog> */}
 				<Stepper activeStep={activeStep} orientation="vertical">
 				{steps.map((step, index) => (
 					<Step key={index}>
@@ -349,8 +256,8 @@ const TravelDetail = ({ travelid }) => {
 			)}
 			<Button onClick={callMap} variant="outlined" color="secondary" style={{ marginBottom: '10px' }}>新增地點</Button>
 			<br />
-			<Button variant="contained" color="success" size="large" style={{ marginRight: '10px' }}>確定</Button>
-			<Button variant="contained" color="error" size="large">取消</Button>
+			{/* <Button variant="contained" color="success" size="large" style={{ marginRight: '10px' }}>確定</Button>
+			<Button variant="contained" color="error" size="large">取消</Button> */}
 
 			{showMap && (
 				<div className={classes.map}>
@@ -365,7 +272,7 @@ const TravelDetail = ({ travelid }) => {
 				<div className={classes.trace}>
 					<span className={classes.closeButton} onClick={closeTrace}>&times;</span>
 					<div className={classes.traceContent}>
-						<Trace index={passedIndex} />
+						<Trace index={passedIndex} travelid={travelid}/>
 					</div>
 				</div>
 			)}
@@ -374,7 +281,7 @@ const TravelDetail = ({ travelid }) => {
 				<div className={classes.editSpot}>
 					<span className={classes.closeButton} onClick={closeEditSpot}>&times;</span>
 					<div className={classes.editSpotContent}>
-						<EditSpot close={closeEditSpot} index={passedIndex} />
+						<EditSpot close={closeEditSpot} index={passedIndex} travelid={travelid}/>
 					</div>
 				</div>
 			)}

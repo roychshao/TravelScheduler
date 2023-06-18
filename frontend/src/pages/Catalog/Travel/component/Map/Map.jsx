@@ -87,12 +87,7 @@ const Map = ({ close, renew, travelid }) => {
     const classes = useStyles();
 
     const dispatcher = useDispatch();
-    const travels = useSelector(state => state.travelReducer.travels);
-    useEffect(() => {
-        dispatcher(gettravel());
-    }, [])
-    //console.log(travels[0][0].travel_id);
-
+    
     const passToBackend = () => {
         const openingHoursString = JSON.stringify(selectedPlaceInfo.openingHours);
         const startTimeStr = moment(startTime, 'h:mm A');

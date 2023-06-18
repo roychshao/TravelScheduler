@@ -4,20 +4,15 @@ import { gettravel } from '../../../../../actions/travelAction.js';
 import { getTravelSpots } from '../../../../../actions/spotAction.js';
 import { useDispatch, useSelector } from 'react-redux'
 
-const Trace = ({index}) => {
+const Trace = ({index, travelid}) => {
     const dispatcher = useDispatch();
-    //call /api/travel
-	const travels = useSelector(state => state.travelReducer.travels);
-	useEffect(() => {
-		dispatcher(gettravel());
-	}, [])
 
     //call /api/spot/get2
 	const spotFromBackend = useSelector(state => state.spotReducer.spots);
 	const spotLoaded = spotFromBackend[0]?.length > 0; // 检查 spotFromBackend 是否有数据
 	useEffect(() => {
-		dispatcher(getTravelSpots(travels[0][0].travel_id));
-	},[travels[0][0]])
+		dispatcher(getTravelSpots(travelid));
+	},[travelid])
 
     //call map api
     useEffect(() => {

@@ -5,8 +5,7 @@ import ArriveTime from '../Time/ArriveTime.jsx';
 import StartTime from '../Time/StartTime.jsx';
 import { makeStyles } from '@mui/styles';
 import { Button, TextField, FormControl, Select, InputLabel, MenuItem} from '@mui/material'
-import { getTravelSpots } from '../../../../../actions/spotAction.js';
-import { gettravel } from '../../../../../actions/travelAction.js';
+import { getTravelSpots, updatespot } from '../../../../../actions/spotAction.js';
 
 import { useDispatch, useSelector } from 'react-redux'
 import moment from 'moment';
@@ -63,39 +62,26 @@ const useStyles = makeStyles({
   }
 });
 
-const EditSpot = ({close, index}) => {
+const EditSpot = ({close, index, travelid}) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchLocation, setSearchLocation] = useState(null);
   const [showMap, setShowMap] = useState(false);
-  const [showPanel, setShowPanel] = useState(false);
-  const [clickPlace, setClickPlace] = useState({
-    name: null,
-    lat: null,
-    lng: null,
-    location: null,
-    rating: null,
-    openingHours: null,
-    types: []
-  });
   const [showStartTime, setShowStartTime] = useState(false);
   const [showArriveTime, setShowArriveTime] = useState(false);
 
   const classes = useStyles();  
 
   const dispatcher = useDispatch();
-  //call /api/travel
-  const travels = useSelector(state => state.travelReducer.travels);
-  useEffect(() => {
-      dispatcher(gettravel());
-  }, [])
-  //console.log(travels[0][0].travel_id);
 
   //call /api/spot/get2
   const spotFromBackend = useSelector(state => state.spotReducer.spots);
   useEffect(() => {
-    dispatcher(getTravelSpots(travels[0][0].travel_id));
-  },[travels[0][0]])
+    dispatcher(getTravelSpots(travelid));
+  },[travelid])
   const [selectedPlaceInfo, setSelectedPlaceInfo] = useState({
+    arrive_id: spotFromBackend[0][index].arrive_id,
+    has_id: spotFromBackend[0][index].has_id,
+    spot_id: spotFromBackend[0][index].spot_id,
     name: spotFromBackend[0][index].spot_name,
     lat: spotFromBackend[0][index].spot_latitude,
     lng: spotFromBackend[0][index].spot_longtitude,
@@ -135,20 +121,19 @@ const EditSpot = ({close, index}) => {
    
 
     //要改成用edit api
-    // dispatcher(
-    //   createspot(
-    //     selectedPlaceInfo.name,       //(string)
-    //     selectedPlaceInfo.lat,        //(float)
-    //     selectedPlaceInfo.lng,        //(float)
-    //     selectedPlaceInfo.location,   //(string)
-    //     selectedPlaceInfo.rating,     //(float)
-    //     openingHoursString,           //填寫適當的 spotOpenhour 值    (string)
-    //     selectedPlaceInfo.types,      //填寫適當的 spotTagName 值     (string)
-    //     startTimeFormatted,           //填寫適當的 spotStartTime 值   (datetime)
-    //     arriveTimeFormatted,          //填寫適當的 spotArriveTime 值  (datetime)
-    //     travels[0][0].travel_id
-    //   )
-    // );
+    dispatcher(
+      updatespot(
+        selectedPlaceInfo.has_id,
+        selectedPlaceInfo.spot_id,
+        selectedPlaceInfo.description,
+        selectedPlaceInfo.types,      //填寫適當的 spotTagName 值     (string)
+        selectedPlaceInfo.transportation,
+        startTimeFormatted,           //填寫適當的 spotStartTime 值   (datetime)
+        arriveTimeFormatted,          //填寫適當的 spotArriveTime 值  (datetime)
+        selectedPlaceInfo.arrive_id,
+        travelid
+      )
+    );
     close();
   }
   
@@ -326,15 +311,6 @@ const EditSpot = ({close, index}) => {
   return (
     <div>
       <h3>My Google Maps Demo</h3>
-      <div>
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          style={{ marginRight: '10px' }}
-        />
-        <Button onClick={handleSearch} variant="outlined" color="secondary" size="small">搜尋</Button>
-      </div>
 
       {selectedPlaceInfo && (
         <div>
@@ -394,17 +370,6 @@ const EditSpot = ({close, index}) => {
         </div>
       )}
       <br />
-      {showMap && (
-        <div id="map" style={{ height: '400px', width: '100%' }}></div>
-      )}
-      
-      {showPanel &&(
-        <div className={classes.modal}>
-          <div className={classes.modalContent}>
-            <Map_Detail onCancel={panelClose} onConfirm={handleConfirm} place={clickPlace}/>
-          </div>
-        </div>
-      )}
       
       {showStartTime && (
         <div className={classes.time}>
