@@ -108,12 +108,13 @@ const useStyles = makeStyles({
 
 
 
-const TravelDetail = ({travel}) => {
+const TravelDetail = ({travelid}) => {
+	console.log("detail:",travelid);
 	const navigate = useNavigate();
 	const dispatcher = useDispatch();
 	const loginWithGoogle = useSelector(state => state.loginReducer.loginWithGoogle);
 	const [showMap, setShowMap] = useState(false);
-	const [selectedTravel, setSelectedTravel] = useState(null); 
+	// const [selectedTravel, setSelectedTravel] = useState(null); 
 	const [travelMode, setTravelMode] = useState('');
 	const [showTrace, setShowTrace] = useState(false);
 	const [activeStep, setActiveStep] = useState(0);
@@ -125,20 +126,20 @@ const TravelDetail = ({travel}) => {
 	const classes = useStyles();
 
 	//call /api/travel
-	const travels = useSelector(state => state.travelReducer.travels);
-	useEffect(() => {
-		dispatcher(gettravel());
-	}, [])
+	// const travels = useSelector(state => state.travelReducer.travels);
+	// useEffect(() => {
+	// 	dispatcher(gettravel());
+	// }, [])
 	//console.log(travels[0][0].travel_id);
 
 	//call /api/spot/get2
 	const spotFromBackend = useSelector(state => state.spotReducer.spots);
 	const spotLoaded = spotFromBackend[0]?.length > 0; // 检查 spotFromBackend 是否有数据
-	useEffect(() => {
-		dispatcher(getTravelSpots(travels[0][0].travel_id));
-	},[travels[0][0]])
+	// useEffect(() => {
+	// 	dispatcher(getTravelSpots(travels[0][0].travel_id));
+	// },[travels[0][0]])
 	// console.log(spotFromBackend[0][0]);
-		
+
     useEffect(() => {
         if (spotLoaded) {
             const newSteps = spotFromBackend[0].map((spot) => ({
@@ -155,7 +156,7 @@ const TravelDetail = ({travel}) => {
 
 	const callMap = () => {
 		setShowMap(true);
-		setSelectedTravel(travel);
+		// setSelectedTravel(targettravel);
 		setRenewSchedule(false);
 	};
 	const closeMap = () => {
@@ -251,7 +252,7 @@ const TravelDetail = ({travel}) => {
 			<div className={classes.map}>
 			<span className={classes.closeButton} onClick={closeMap}>&times;</span>
 			<div className={classes.mapContent}>
-				<Map close={closeMap} renew={getNewSpot}/>
+				<Map close={closeMap} renew={getNewSpot} traveiId={travelid} />
 			</div>
 			</div>
 		)}

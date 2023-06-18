@@ -10,11 +10,11 @@ import {
     TextField,
 } from '@mui/material';
 
-const DeleteTravel = () => {
+const DeleteTravel = ({travelId}) => {
+    // console.log(travelId);
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
-    const [travelId, setTravelId] = useState("");
-
+    // const [targettravelId, setTargetTravelId] = useState(travelId);
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -24,27 +24,20 @@ const DeleteTravel = () => {
     };
 
     const handleDelete = () => {
+        console.log(travelId);
         dispatch(deletetravel(travelId));
         setOpen(false);
     };
 
     return (
         <div>
-            <Button variant="contained" color="primary" onClick={handleClickOpen}>
+            <Button variant="contained" color="primary" style={{ marginRight: '10px' }} onClick={handleClickOpen}>
                 Delete
             </Button>
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Delete Travel</DialogTitle>
+                <DialogTitle>確認刪除</DialogTitle>
                 <DialogContent>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        label="Travel ID"
-                        type="text"
-                        fullWidth
-                        value={travelId}
-                        onChange={(e) => setTravelId(e.target.value)}
-                    />
+                    確定要刪除這個地點嗎?
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>

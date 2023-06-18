@@ -3,7 +3,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { List, ListItem, ListItemText, Button, Dialog, DialogTitle, DialogActions, DialogContent, TextField } from "@mui/material"
 import { gettravel, deletetravel } from './../../../../actions/travelAction.js'
 import EditTravel from './EditTravel.jsx'
+import DeleteTravel from './DeleteTravel.jsx'
+import DoneTravel from './DoneTravel.jsx'
 import TravelDetail from '../TravelDetail.jsx'
+
 const TravelList = ({open}) => {
 
     const dispatcher = useDispatch();
@@ -11,32 +14,8 @@ const TravelList = ({open}) => {
     useEffect(() => {
         dispatcher(gettravel());
     }, [])
-    console.log(travels);
+    // console.log(travels);
 
-    // ====================UPDATE====================
-    const [selectedTravel, setSelectedTravel] = useState(null);
-    const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
-    const [updateDialogOpen, setUpdateDialogOpen] = useState(false);
-
-    const handleUpdateDialogOpen = () => {
-        setUpdateDialogOpen(true);
-    }
-    const handleUpdate = () => {
-        dispatcher()
-    }
-
-    // ====================UPDATE====================
-
-    // ====================DELETE====================
-    const handleDelete = (TravelID) => {
-        dispatcher(deletetravel(TravelID));
-        setConfirmDialogOpen(false);
-    };
-
-    const confirmDelete = () => {
-        setConfirmDialogOpen(true);
-    };
-    // ====================DELETE====================
 
     return (
         <div>
@@ -60,28 +39,14 @@ const TravelList = ({open}) => {
                     <ListItemText primary={travel.travel_done} /> */}
                     <ListItemText primary={travel.travel_id} />
                     {/* <ListItemText primary={travel.group_id} /> */}
-                    <Button variant="contained" color="warning" style={{ marginRight: '10px' }} onClick={open}>Set</Button>
-                    
+                    <DoneTravel targetTravel={travel} />
+                    {/* <Button variant="contained" color="warning" style={{ marginRight: '10px' }} onClick={open}>Set</Button> */}
+                    {/* <Button variant="contained" color="warning" style={{ marginRight: '10px' }} onClick={open} travelid={travel.travel_id} >Set</Button> */}
+                    <TravelDetail variant="contained" color="warning" style={{ marginRight: '10px' }} onClick={open} travelid={travel.travel_id} />
+
                     <EditTravel targetTravel={travel} />
+                    <DeleteTravel travelId={travel.travel_id} />
 
-
-                    <DialogActions>
-                        {/* <Button variant="contained" color="primary" onClick={handleUpdateDialogOpen}>Update</Button> */}
-                        <Button variant="contained" color="primary" onClick={confirmDelete}>Delete</Button>
-
-                    </DialogActions>
-                    {/* ====================Delete==================== */}
-                    <Dialog open={confirmDialogOpen} onClose={() => setConfirmDialogOpen(false)}>
-                        <DialogTitle>確認刪除</DialogTitle>
-                        <DialogContent>
-                            確定要刪除這個行程嗎?
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={() => setConfirmDialogOpen(false)}>取消</Button>
-                            <Button onClick={() => handleDelete(travel.travel_id)}>確定</Button>
-                        </DialogActions>
-                    </Dialog>
-                    {/* ====================Delete==================== */}
 
                 </ListItem>
                 ))

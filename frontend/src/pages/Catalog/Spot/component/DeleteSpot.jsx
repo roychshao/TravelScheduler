@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 
 const DeleteSpot = (targetSpot) => {
+    // console.log(targetSpot);
     const [hasId, setHasId] = useState("");
     const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
 

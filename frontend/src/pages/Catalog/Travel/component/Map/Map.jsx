@@ -11,58 +11,60 @@ import { useDispatch, useSelector } from 'react-redux'
 import moment from 'moment';
 
 const useStyles = makeStyles({
-  modal: {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', /* 半透明黑色背景 */
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  modalContent: {
-    backgroundColor: '#fff',
-    padding: 20,
-    borderRadius: 4,
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-    width: 300,
-    height: 100
-  },
-  closeButton: {
-    position: 'absolute',
-    top: 10,
-    right: 10,
-    fontSize: 24,
-    color: '#555',
-    cursor: 'pointer'
-  },
-  closeButtonHover: {
-    color: '#000'
-  },
-  time: {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', /* 半透明黑色背景 */
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  timeContent: {
-    backgroundColor: '#fff',
-    padding: 20,
-    borderRadius: 4,
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-    width: 150,
-    height: 90
-  }
+    modal: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', /* 半透明黑色背景 */
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    modalContent: {
+        backgroundColor: '#fff',
+        padding: 20,
+        borderRadius: 4,
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+        width: 300,
+        height: 100
+    },
+    closeButton: {
+        position: 'absolute',
+        top: 10,
+        right: 10,
+        fontSize: 24,
+        color: '#555',
+        cursor: 'pointer'
+    },
+    closeButtonHover: {
+        color: '#000'
+    },
+    time: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', /* 半透明黑色背景 */
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    timeContent: {
+        backgroundColor: '#fff',
+        padding: 20,
+        borderRadius: 4,
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+        width: 150,
+        height: 90
+    }
 });
 
-const Map = ({close, renew}) => {
+const Map = ({ close, renew, travelid }) => {
+    console.log("Map:",travelid);
+
     const [searchQuery, setSearchQuery] = useState('');
     const [searchLocation, setSearchLocation] = useState(null);
     const [showMap, setShowMap] = useState(false);
@@ -84,7 +86,7 @@ const Map = ({close, renew}) => {
     const [selectedPlaceInfo, setSelectedPlaceInfo] = useState(null);
     const [showSelectedPlaceInfo, setShowSelectedPlaceInfo] = useState(false);
 
-    const classes = useStyles();  
+    const classes = useStyles();
 
     const dispatcher = useDispatch();
     const travels = useSelector(state => state.travelReducer.travels);
@@ -93,7 +95,7 @@ const Map = ({close, renew}) => {
     }, [])
     //console.log(travels[0][0].travel_id);
 
-    const passToBackend = () => {  
+    const passToBackend = () => {
         const openingHoursString = JSON.stringify(selectedPlaceInfo.openingHours);
         const startTimeStr = moment(startTime, 'h:mm A');
         const arriveTimeStr = moment(arriveTime, 'h:mm A');
@@ -101,7 +103,6 @@ const Map = ({close, renew}) => {
         const arriveTimeFormatted = arriveTimeStr.format('YYYY-MM-DD HH:mm:ss');
         console.log(startTimeFormatted);
         console.log(arriveTimeFormatted);
-
 
         dispatcher(
             createspot(
@@ -114,12 +115,12 @@ const Map = ({close, renew}) => {
                 selectedPlaceInfo.types,      //填寫適當的 spotTagName 值     (string)
                 startTimeFormatted,           //填寫適當的 spotStartTime 值   (datetime)
                 arriveTimeFormatted,          //填寫適當的 spotArriveTime 值  (datetime)
-                travels[0][0].travel_id
+                travelid,
             )
-        )	 
-        callMsg();  
+        )
+        callMsg();
     }
-    
+
 
     const panelClose = () => {
         setShowPanel(false);
@@ -130,7 +131,7 @@ const Map = ({close, renew}) => {
     }
 
     const closeMsg = () => {
-        renew(); 
+        renew();
         close();
     };
 
@@ -169,36 +170,36 @@ const Map = ({close, renew}) => {
         if (!mapElement) return;
 
         const map = new window.google.maps.Map(mapElement, {
-        zoom: 16,
-        center: searchLocation,
+            zoom: 16,
+            center: searchLocation,
         });
 
         const placesService = new window.google.maps.places.PlacesService(map);
 
         const callback = (results, status) => {
-        if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-            for (let i = 0; i < results.length; i++) {
-            createMarker(results[i]);
+            if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+                for (let i = 0; i < results.length; i++) {
+                    createMarker(results[i]);
+                }
             }
-        }
         }
 
         const createMarker = (place) => {
-        const marker = new window.google.maps.Marker({
-            map: map,
-            position: place.geometry.location,
-            title: place.name,
-        });
+            const marker = new window.google.maps.Marker({
+                map: map,
+                position: place.geometry.location,
+                title: place.name,
+            });
 
-        marker.addListener('click', () => {
-            handleMapClick(place);
-        });
+            marker.addListener('click', () => {
+                handleMapClick(place);
+            });
         }
-    
+
         const request = {
-        location: searchLocation,
-        radius: '500',
-        query: searchQuery,
+            location: searchLocation,
+            radius: '500',
+            query: searchQuery,
         };
 
         placesService.textSearch(request, callback);
@@ -209,37 +210,37 @@ const Map = ({close, renew}) => {
 
         const placesService = new window.google.maps.places.PlacesService(map);
         const request = {
-        placeId: place.place_id,
-        fields: ['name', 'geometry', 'rating', 'opening_hours', 'types', 'formatted_address']
+            placeId: place.place_id,
+            fields: ['name', 'geometry', 'rating', 'opening_hours', 'types', 'formatted_address']
         };
 
         placesService.getDetails(request, (placeDetails, status) => {
-        if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-            const openingHours = placeDetails.opening_hours;
-            const clickPlace = {
-            name: place.name,
-            lat: placeDetails.geometry.location.lat(),
-            lng: placeDetails.geometry.location.lng(),
-            location: placeDetails.formatted_address,
-            rating: placeDetails.rating,
-            openingHours: openingHours ? openingHours.weekday_text : '無營業時間',
-            types: placeDetails.types[0]
-            };
-    
-            setClickPlace(clickPlace);
+            if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+                const openingHours = placeDetails.opening_hours;
+                const clickPlace = {
+                    name: place.name,
+                    lat: placeDetails.geometry.location.lat(),
+                    lng: placeDetails.geometry.location.lng(),
+                    location: placeDetails.formatted_address,
+                    rating: placeDetails.rating,
+                    openingHours: openingHours ? openingHours.weekday_text : '無營業時間',
+                    types: placeDetails.types[0]
+                };
 
-            setSelectedPlaceInfo({
-            name: place.name,
-            lat: placeDetails.geometry.location.lat(),
-            lng: placeDetails.geometry.location.lng(),
-            location: placeDetails.formatted_address,
-            rating: placeDetails.rating,
-            types: placeDetails.types[0],
-            openingHours: openingHours ? openingHours.weekday_text : '無營業時間'
-            });
-        } else {
-            console.log("ERROR: Google Map Status not OK");
-        }
+                setClickPlace(clickPlace);
+
+                setSelectedPlaceInfo({
+                    name: place.name,
+                    lat: placeDetails.geometry.location.lat(),
+                    lng: placeDetails.geometry.location.lng(),
+                    location: placeDetails.formatted_address,
+                    rating: placeDetails.rating,
+                    types: placeDetails.types[0],
+                    openingHours: openingHours ? openingHours.weekday_text : '無營業時間'
+                });
+            } else {
+                console.log("ERROR: Google Map Status not OK");
+            }
         });
     };
 
@@ -250,126 +251,126 @@ const Map = ({close, renew}) => {
 
     useEffect(() => {
         if (searchQuery !== '') {
-        const geocoder = new window.google.maps.Geocoder();
+            const geocoder = new window.google.maps.Geocoder();
 
-        geocoder.geocode({ address: searchQuery }, (results, status) => {
-            if (status === window.google.maps.GeocoderStatus.OK) {
-            const location = results[0].geometry.location;
-            setSearchLocation(location);
-            }
-        });
+            geocoder.geocode({ address: searchQuery }, (results, status) => {
+                if (status === window.google.maps.GeocoderStatus.OK) {
+                    const location = results[0].geometry.location;
+                    setSearchLocation(location);
+                }
+            });
         }
     }, [searchQuery]);
 
     useEffect(() => {
         const script = document.createElement('script');
         script.src =
-        `https://maps.googleapis.com/maps/api/js?key=${window.REACT_APP_API_KEY}&libraries=places`;     
+            `https://maps.googleapis.com/maps/api/js?key=${window.REACT_APP_API_KEY}&libraries=places`;
         script.defer = true;
         document.head.appendChild(script);
 
         script.onload = () => {
-        console.log('Google Maps API 加載完成');
+            console.log('Google Maps API 加載完成');
         };
 
         return () => {
-        document.head.removeChild(script);
+            document.head.removeChild(script);
         };
     }, []);
 
     useEffect(() => {
         if (searchLocation && showMap) {
-        handleSearch();
+            handleSearch();
         }
     }, [searchLocation, showMap]);
 
     useEffect(() => {
         if (searchLocation) {
-        const mapElement = document.getElementById('map');
-        if (!mapElement) return;
+            const mapElement = document.getElementById('map');
+            if (!mapElement) return;
 
-        const map = new window.google.maps.Map(mapElement, {
-            zoom: 16,
-            center: searchLocation,
-        });
+            const map = new window.google.maps.Map(mapElement, {
+                zoom: 16,
+                center: searchLocation,
+            });
 
-        map.addListener('click', handleMapClick);
+            map.addListener('click', handleMapClick);
 
-        return () => {
-            google.maps.event.clearListeners(map, 'click');
-        };
+            return () => {
+                google.maps.event.clearListeners(map, 'click');
+            };
         }
     }, [searchLocation]);
 
     return (
         <div>
-        <h3>My Google Maps Demo</h3>
-        <div>
-            <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            style={{ marginRight: '10px' }}
-            />
-            <Button onClick={handleSearch} variant="outlined" color="secondary" size="small">搜尋</Button>
-        </div>
-
-        {selectedPlaceInfo && showSelectedPlaceInfo && (
+            <h3>My Google Maps Demo</h3>
             <div>
-            <p>地點名稱: {selectedPlaceInfo.name}</p>
-            <p>地點經度: {selectedPlaceInfo.lng}</p>
-            <p>地點緯度: {selectedPlaceInfo.lat}</p>
-            <p>地點地址: {selectedPlaceInfo.location}</p>
-            <p>地點評價: {selectedPlaceInfo.rating}</p>
-            <p>地點營業時間: {selectedPlaceInfo.openingHours}</p>
-            <p>地點類型: {selectedPlaceInfo.types}</p>
-            <p>抵達時間: {startTime}</p>
-            <p>離開時間: {arriveTime}</p>
-            <Button onClick={callStartTime} variant="outlined" color="info" style={{ marginRight: '10px' }}>選擇抵達時間</Button>
-            <Button onClick={callArriveTime} variant="outlined" color="info">選擇離開時間</Button>
-            <br/>
-            {startTime && arriveTime && (
-                <Button onClick={passToBackend} variant="outlined" color="success" style={{ marginTop: '10px' }}>確定</Button>
+                <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    style={{ marginRight: '10px' }}
+                />
+                <Button onClick={handleSearch} variant="outlined" color="secondary" size="small">搜尋</Button>
+            </div>
+
+            {selectedPlaceInfo && showSelectedPlaceInfo && (
+                <div>
+                    <p>地點名稱: {selectedPlaceInfo.name}</p>
+                    <p>地點經度: {selectedPlaceInfo.lng}</p>
+                    <p>地點緯度: {selectedPlaceInfo.lat}</p>
+                    <p>地點地址: {selectedPlaceInfo.location}</p>
+                    <p>地點評價: {selectedPlaceInfo.rating}</p>
+                    <p>地點營業時間: {selectedPlaceInfo.openingHours}</p>
+                    <p>地點類型: {selectedPlaceInfo.types}</p>
+                    <p>抵達時間: {startTime}</p>
+                    <p>離開時間: {arriveTime}</p>
+                    <Button onClick={callStartTime} variant="outlined" color="info" style={{ marginRight: '10px' }}>選擇抵達時間</Button>
+                    <Button onClick={callArriveTime} variant="outlined" color="info">選擇離開時間</Button>
+                    <br />
+                    {startTime && arriveTime && (
+                        <Button onClick={passToBackend} variant="outlined" color="success" style={{ marginTop: '10px' }}>確定</Button>
+                    )}
+                </div>
             )}
-            </div>
-        )}
-        <br />
-        {showMap && (
-            <div id="map" style={{ height: '400px', width: '100%' }}></div>
-        )}
+            <br />
+            {showMap && (
+                <div id="map" style={{ height: '400px', width: '100%' }}></div>
+            )}
 
-        {showAddMsg && (
-            <div className={classes.modal}>
-                <div className={classes.modalContent}>
-                    <p>已成功新增地點</p>
-                    <Button onClick={closeMsg} variant="contained" color="success" style={{ marginTop: '10px' }}>確定</Button>
-                </div> 
-            </div>          
-        )}
+            {showAddMsg && (
+                <div className={classes.modal}>
+                    <div className={classes.modalContent}>
+                        <p>已成功新增地點</p>
+                        <Button onClick={closeMsg} variant="contained" color="success" style={{ marginTop: '10px' }}>確定</Button>
+                    </div>
+                </div>
+            )}
 
-        {showPanel &&(
-            <div className={classes.modal}>
-                <div className={classes.modalContent}>
-                    <Map_Detail onCancel={panelClose} onConfirm={handleConfirm} place={clickPlace}/>
+            {showPanel && (
+                <div className={classes.modal}>
+                    <div className={classes.modalContent}>
+                        <Map_Detail onCancel={panelClose} onConfirm={handleConfirm} place={clickPlace} />
+                    </div>
                 </div>
-            </div>
-        )}
-        
-        {showStartTime && (
-            <div className={classes.time}>
-                <div className={classes.timeContent}>
-                    <StartTime Close={closeStartTime} updateStartTime={updateStartTime}/>
-                </div>
-            </div>
-        )}
+            )}
 
-        {showArriveTime && (
-            <div className={classes.time}>
-                <div className={classes.timeContent}>
-                    <ArriveTime Close={closeArriveTime} updateArriveTime={updateArriveTime}/>
+            {showStartTime && (
+                <div className={classes.time}>
+                    <div className={classes.timeContent}>
+                        <StartTime Close={closeStartTime} updateStartTime={updateStartTime} />
+                    </div>
                 </div>
-            </div>
-        )}
+            )}
+
+            {showArriveTime && (
+                <div className={classes.time}>
+                    <div className={classes.timeContent}>
+                        <ArriveTime Close={closeArriveTime} updateArriveTime={updateArriveTime} />
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

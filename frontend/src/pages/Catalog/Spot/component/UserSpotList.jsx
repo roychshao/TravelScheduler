@@ -18,7 +18,7 @@ const UserSpotList = () => {
         dispatcher(getUserSpots())
     }, []);
 
-    console.log(star_spots);
+    // console.log(star_spots);
 
 
     const handleClickOpen = (spot) => {
@@ -73,8 +73,8 @@ const UserSpotList = () => {
                             </DialogContent>
                             <DialogActions>
                                 <Button variant="contained" color="primary" onClick={handleClose}>Cancel</Button>
-                                <UpdateSpot targetSpot={spot}/>
-                                <DeleteSpot targetSpot={spot}/>
+                                {/* <UpdateSpot targetSpot={spot}/> */}
+                                {/* <DeleteSpot targetSpot={spot}/> */}
                                 {/* <Button onClick={confirmDelete}>Delete</Button> */}
                                 {/* <Button onClick={handleUpdateDialogOpen}>Update</Button> */}
 
