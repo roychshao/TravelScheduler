@@ -166,6 +166,8 @@ const TravelDetail = ({ travelid }) => {
 
 	const callMap = () => {
 		setShowMap(true);
+		// console.log("detail:", travelid);
+
 		// setSelectedTravel(targettravel);
 		setRenewSchedule(false);
 	};
@@ -206,8 +208,10 @@ const TravelDetail = ({ travelid }) => {
 	const handleReset = () => {
 		setActiveStep(0);
 	};
+	// console.log("detail:", travelid);
 
 	return (
+
 			<div className={classes.travelContent}>
 				{/*  <div> */}
 				{/* <p>This is the Travel detail page</p> */}
