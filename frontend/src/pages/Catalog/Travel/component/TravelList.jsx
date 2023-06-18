@@ -7,7 +7,7 @@ import DeleteTravel from './DeleteTravel.jsx'
 import DoneTravel from './DoneTravel.jsx'
 import TravelDetail from '../TravelDetail.jsx'
 
-const TravelList = ({open}) => {
+const TravelList = () => {
 
     const dispatcher = useDispatch();
     const travels = useSelector(state => state.travelReducer.travels);
@@ -15,10 +15,33 @@ const TravelList = ({open}) => {
         dispatcher(gettravel());
     }, [])
     // console.log(travels);
+    // ====================SET==================== 
+    const [selectedTravel, setSelectedTravel] = useState(null);
+    const [showTravelDetail, setShowTravelDetail] = useState(false);
+    const [detailOpen, setDetailOpen] = useState(false);
 
+
+    const handleDetailClickOpen = () => {
+        // setSelectedTravel(travel)
+        setDetailOpen(true);
+    };
+    const handleDetailClose = () => {
+        setDetailOpen(false);
+    };
+    // const handleSetButton = (travel) => {
+    //     setSelectedTravel(travel)
+    //     setShowTravelDetail(true);
+    // };
+    // ====================SET====================
 
     return (
         <div>
+            {/* {showTravelDetail && (
+                <div>
+                    <TravelDetail travelid={selectedTravel.travel_id} />
+                </div>
+            )} */}
+
             <List>
                 <ListItem>
                     <ListItemText primary="Travel Name" />
@@ -31,29 +54,45 @@ const TravelList = ({open}) => {
                 </ListItem>
                 {travels.length > 0 ? (
                     travels[0].map((travel) => (
-                <ListItem key={travel.travel_id}>
-                    <ListItemText primary={travel.travel_name} />
-                    {/* <ListItemText primary={travel.travel_description} />
+                        <ListItem key={travel.travel_id}>
+                            <ListItemText primary={travel.travel_name} />
+                            {/* <ListItemText primary={travel.travel_description} />
                     <ListItemText primary={travel.travel_peoplenum} />
                     <ListItemText primary={travel.travel_date} />
                     <ListItemText primary={travel.travel_done} /> */}
-                    <ListItemText primary={travel.travel_id} />
-                    {/* <ListItemText primary={travel.group_id} /> */}
-                    <DoneTravel targetTravel={travel} />
-                    {/* <Button variant="contained" color="warning" style={{ marginRight: '10px' }} onClick={open}>Set</Button> */}
-                    {/* <Button variant="contained" color="warning" style={{ marginRight: '10px' }} onClick={open} travelid={travel.travel_id} >Set</Button> */}
-                    <TravelDetail variant="contained" color="warning" style={{ marginRight: '10px' }} onClick={open} travelid={travel.travel_id} />
+                            <ListItemText primary={travel.travel_id} />
+                            {/* <ListItemText primary={travel.group_id} /> */}
+                            <DoneTravel targetTravel={travel} />
+                            {/* =====================TravelDetail===================== */}
+                            <Button variant="contained" color="warning" style={{ marginRight: '10px' }} onClick={handleDetailClickOpen}>
+                                SET
+                            </Button>
+                            <Dialog open={detailOpen} onClose={handleDetailClose}>
+                                <DialogTitle>Travel Detail</DialogTitle>
+                                <DialogContent style={{ backgroundColor: 'transparent' }}>
+                                    <div>
+                                        <TravelDetail travelid={travel.travel_id} />
+                                    </div>
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={handleDetailClose}>Cancel</Button>
+                                </DialogActions>
+                            </Dialog>
+                            {/* =====================TravelDetail===================== */}
 
-                    <EditTravel targetTravel={travel} />
-                    <DeleteTravel travelId={travel.travel_id} />
+                            {/* EditTravel */}
+                            <EditTravel targetTravel={travel} />
+
+                            {/* DeleteTravel */}
+                            <DeleteTravel travelId={travel.travel_id} />
 
 
-                </ListItem>
-                ))
+                        </ListItem>
+                    ))
                 ) : (
-                <ListItem>
-                    <ListItemText primary="No travels available" />
-                </ListItem>
+                    <ListItem>
+                        <ListItemText primary="No travels available" />
+                    </ListItem>
                 )}
             </List>
         </div>

@@ -15,20 +15,20 @@ const Travel = () => {
     const dispatcher = useDispatch();
     const loginWithGoogle = useSelector(state => state.loginReducer.loginWithGoogle);
 
-    // ====================SET==================== 
-    const [selectedTravel, setSelectedTravel] = useState(null);  
-    const [showTravelDetail, setShowTravelDetail] = useState(false);
-    const handleSetButton = () => {
-        setShowTravelDetail(true);
-    };
-    // ====================SET====================
+    // // ====================SET==================== 
+    // const [selectedTravel, setSelectedTravel] = useState(null);  
+    // const [showTravelDetail, setShowTravelDetail] = useState(false);
+    // const handleSetButton = () => {
+    //     setShowTravelDetail(true);
+    // };
+    // // ====================SET====================
     return (
         <div>
-            {showTravelDetail && (
+            {/* {showTravelDetail && (
             <div>
                 <TravelDetail travel={selectedTravel}/>
             </div>
-            )}
+            )} */}
 
             <p>Travel</p>
             <br />
@@ -45,7 +45,7 @@ const Travel = () => {
             <br />
 
             {/* <DeleteTravel /> */}
-            <TravelList open={handleSetButton}/>
+            <TravelList />
         </div>
     )
 }
