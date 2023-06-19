@@ -214,7 +214,7 @@ const update_spot = (spot_id, spot_description) => {
 
 const delete_ = (has_id) => {
     return new Promise( async (resolve, reject) => {
-
+        
         var sqls = [
             "DELETE FROM `HAS` WHERE has_id = ?;"
         ];

@@ -20,9 +20,9 @@ export const getUserSpots = () => {
 };
 
 export const getTravelSpots = (travelId) => {
-    return (dispatch) => {
+    return async (dispatch) => {
             const hostUrl = import.meta.env.VITE_HOST_URL;
-            axios.get(`${hostUrl}/api/spot/get2`,{
+            await axios.get(`${hostUrl}/api/spot/get2`,{
                 headers: {
                     travel_id: travelId
                 },

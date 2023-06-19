@@ -129,10 +129,13 @@ const TravelDetail = ({ travelid }) => {
 	//call /api/spot/get2
 	const spotFromBackend = useSelector(state => state.spotReducer.spots);
 	const spotLoaded = spotFromBackend[0]?.length > 0; // 检查 spotFromBackend 是否有数据
-
+	const spotChange = spotFromBackend[0]?.length;
+	// if(spotLoaded){
+	// 	setSteps(spotFromBackend[0].map((spot) => ({label: spot.spot_name})));
+	// }
 
 	useEffect(() => {
-		if (spotLoaded || renewSchedule) {
+		if (spotLoaded) {
 			const newSteps = spotFromBackend[0].map((spot) => ({
 				label: spot.spot_name,
 			}));
@@ -142,7 +145,7 @@ const TravelDetail = ({ travelid }) => {
 			console.log(newSteps);
 			setSteps(newSteps);
 		}
-	}, [spotLoaded, renewSchedule]);
+	}, [spotLoaded, spotChange]);
 
 	const deleteInfo = (index) => {
 		dispatcher(deletespot(spotFromBackend[0][index].has_id));
@@ -179,6 +182,12 @@ const TravelDetail = ({ travelid }) => {
 	};
 
 	const getNewSpot = () => {
+		if(spotLoaded){
+			const newSteps = spotFromBackend[0].map((spot) => ({
+				label: spot.spot_name,
+			}));
+			setSteps(newSteps);
+		}
 		setRenewSchedule(true);
 	}
 
@@ -223,10 +232,10 @@ const TravelDetail = ({ travelid }) => {
 									<Button onClick={() => callTrace(index)} variant="outlined" color="info" size="small" style={{ marginLeft: '10px', marginBottom: '10px' }}>查看路徑</Button>
 								</div>
 							)}
-							{activeStep === steps.length && (
+							{activeStep === steps.length - 1 && (
 								<Button onClick={callMap} variant="outlined" color="secondary" size="small" style={{ marginLeft: '10px' }}>新增地點</Button>
 							)}
-							{activeStep !== steps.length && (
+							{activeStep !== steps.length - 1 && (
 								<Button onClick={() => callMap2(index)} variant="outlined" color="secondary" size="small" style={{ marginLeft: '10px' }}>新增地點</Button>
 							)}
 
