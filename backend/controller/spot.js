@@ -12,10 +12,6 @@ const parseEscape = (value) => {
     var length = value ? value.length : 0;
     return (length >= 6 && typeof value.slice(1, length - 1) === "boolean") ? value.slice(1, length - 1) : value;
 };
-// const parseNULL = (value) => {
-//     var length = value ? value.length
-//     return (typeof value.slice(1, length - 1) === "boolean") ? value.slice(1, length - 1) : value;
-// };
 
 export const get1 = async (req, res, next) => {
 
@@ -82,21 +78,27 @@ export const get1 = async (req, res, next) => {
 }
 
 export const get2 = async (req, res, next) => {
-
+    const { user_id } = req?.session;
     const { travel_id } = req.body;
-    await Spot.get2(travel_id)
+
+    await Spot.get2(travel_id, user_id)
         .then(result => {
             var has_id = null;
             var data = {
                 "spots": []
             };
-
+            const starSpotArray = result[1].map(row => row.spot_id);
             while (result[0].length > 0) {
                 let foundIndex = -1;
               
                 for (let i = 0; i < result[0].length; i++) {
                     if (result[0][i].arrive_id === has_id) {
                         foundIndex = i;
+                        var star = false;
+                        
+                        if (starSpotArray.indexOf(result[0][i].spot_id) !== -1){
+                            star = true;
+                        }
                         var spot = {
                             "has_id": parseEscape(result[0][i].has_id),
                             "arrive_id": parseEscape(result[0][i].arrive_id),
@@ -113,7 +115,8 @@ export const get2 = async (req, res, next) => {
                             "spot_tag_color": parseEscape(result[0][i].color),
                             "spot_start_time": parseEscape(result[0][i].start_time),
                             "spot_arrive_time": parseEscape(result[0][i].arrive_time),
-                            "spot_done": parseEscape(result[0][i].done)
+                            "spot_done": parseEscape(result[0][i].done),
+                            "spot_star": star
                         };
                         data.spots.unshift(spot);
                         has_id = parseEscape(result[0][i].has_id);
