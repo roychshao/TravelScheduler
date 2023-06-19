@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { getgroup, creategroup } from './../../../../../actions/groupAction.js'
+import { getgroup, creategroup, joingroup } from './../../../../../actions/groupAction.js'
 import { useDispatch, useSelector } from 'react-redux'
 import { createUseStyles } from 'react-jss'
 import {
@@ -80,8 +80,8 @@ const CreateGroup = () => {
             justifyContent: 'center',
             position: 'fixed',
             width: '70%',
-            height: '45%',
-            maxHeight: '302px',
+            height: '40%',
+            maxHeight: '280px',
             background: 'linear-gradient(180deg, rgba(249, 249, 244) 0%, rgba(241, 238, 230) 100%)',
             border: '0.5px solid #F9F8F4',
             boxShadow: 'inset 1px 1px 1px rgba(244, 249, 249, 0.55)',
@@ -147,7 +147,7 @@ const CreateGroup = () => {
             borderRadius: '5px',
             width: '100%',
             height: '44px',
-            marginTop: '25px',
+            marginTop: '15px',
             fontFamily: 'Paytone One',
             fontStyle: 'normal',
             fontWeight: '400',
@@ -160,7 +160,7 @@ const CreateGroup = () => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            marginTop: '25px',
+            marginTop: '15px',
             fontFamily: 'Paytone One',
             fontStyle: 'normal',
             fontWeight: '400',
@@ -168,14 +168,56 @@ const CreateGroup = () => {
             lineHeight: '20px',
             letterSpacing: '0.15em',
             color: '#FFB800',
+        },
+        SecondDialog: {
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            position: 'relative',
+            width: '70%',
+            height: '60%',
+            maxHeight: '200px',
+            background: 'linear-gradient(180deg, rgba(249, 249, 244) 0%, rgba(241, 238, 230) 100%)',
+            boxShadow: 'inset 1px 1px 1px rgba(244, 249, 249, 0.55)',
+            borderRadius: '10px',
+            zIndex: 1001,
+            paddingTop: '38px',
+        },
+        DialogHeader: {
+            position: 'absolute',
+            top: '0px',
+            left: '0px',
+            width: '95%',
+            height: '38px',
+            background: 'linear-gradient(180deg, rgba(255, 184, 0, 0.4) 0%, rgba(255, 184, 0, 0.8) 100%)',
+            boxShadow: 'inset 0px -10px 10px rgba(255, 184, 0, 0.4)',
+            borderRadius: '10px 10px 0px 0px',
+            fontFamily: 'Paytone One',
+            fontStyle: 'normal',
+            fontWeight: '400',
+            fontSize: '13px',
+            lineHeight: '18px',
+            letterSpacing: '0.15em',
+            color: '#FFFFFF',
+            textShadow: '0px 1px 4px rgba(210, 188, 131, 0.3)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'left',
+            paddingLeft: '5%',
         }
     })
 
     const classes = useStyles();
     const dispatcher = useDispatch();
     const [open, setOpen] = useState(false);
+    const [joinOpen, setJoinOpen] = useState(false);
+    const [createOpen, setCreateOpen] = useState(false);
     const [groupName, setGroupName] = useState("");
-    const [groupDescription, setGroupDescription] = useState("");
+    const [groupId, setGroupId] = useState("");
+    const userId = useSelector(state => state.loginReducer.userId);
+    // const [groupDescription, setGroupDescription] = useState("");
+
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -186,12 +228,35 @@ const CreateGroup = () => {
     };
 
     const handleCreate = () => {
+        setCreateOpen(true);
+    };
+
+    const handleCreateAction = () => {
         // call api here
         if(groupName.length != 0) {
             dispatcher(creategroup(groupName, groupDescription ));
-            setOpen(false);
+            setCreateOpen(false);
         }
-    };
+    }
+
+    const handleCloseCreate = () => {
+        setCreateOpen(false);
+    }
+
+    const handleJoin = () => {
+        setJoinOpen(true);
+    }
+
+    const handleCloseJoin = () => {
+        setJoinOpen(false);
+    }
+
+    const handleJoinAction = () => {
+        if(groupId.length != 0) {
+            dispatcher(joingroup(userId, groupId));
+            setJoinOpen(false);
+        }
+    }
 
     return (
         <div className={classes.Container}>
@@ -206,19 +271,42 @@ const CreateGroup = () => {
                 <div className={open ? classes.Dialog : classes.Closed}>
                     <div className={classes.ContentWrapper}>
                         <img src={CreateGroupIcon} className={classes.CreateGroupIcon} alt="create group icon"/>
-                        <div className={classes.TitleWrapper}>
-                            <div className={classes.Title}>Group Name</div>
-                        </div>
-                        <input className={classes.Input} type="text" placeholder="New Group" onChange={(e) => setGroupName(e.target.value)}/>
-                        {/* <div className={classes.TitleWrapper}> */}
-                        {/*     <div className={classes.Title}>Group Description</div> */}
-                        {/* </div> */}
-                        {/* <input className={classes.Input} type="text" placeholder="Description" onChange={(e) => setGroupDescription(e.target.value)}/> */}
-                        <div className={classes.SaveBtn} onClick={handleCreate}>Save Group</div>
+                        <div className={classes.SaveBtn} onClick={handleCreate}>Create a new Group</div>
+                        <div className={classes.SaveBtn} onClick={handleJoin}>Join into a Group</div>
                         <div className={classes.CancelBtn} onClick={handleClose}>Cancel</div>
                     </div>
                 </div>
             </div>
+            
+                {createOpen ? <div className={classes.DialogContainer}>
+                <div className={createOpen ? classes.Overlay : classes.Closed} onClick={handleCloseCreate}></div>
+                <div className={classes.SecondDialog}>
+                    <div className={classes.DialogHeader}>Create Group</div>
+                    <div className={classes.ContentWrapper}>
+                        <div className={classes.TitleWrapper}>
+                            <div className={classes.Title}>Group Name</div>
+                        </div>
+                        <input className={classes.Input} type="text" placeholder="New Group" onChange={(e) => setGroupName(e.target.value)}/>
+                        <div className={classes.SaveBtn} onClick={handleCreateAction}>Create</div>
+                        <div className={classes.CancelBtn} onClick={handleCloseCreate}>Cancel</div>
+                    </div>
+                </div>
+            </div> : <></>}
+
+            {joinOpen ? <div className={classes.DialogContainer}>
+                <div className={joinOpen ? classes.Overlay : classes.Closed} onClick={handleCloseJoin}></div>
+                <div className={classes.SecondDialog}>
+                    <div className={classes.DialogHeader}>Join Group</div>
+                    <div className={classes.ContentWrapper}>
+                        <div className={classes.TitleWrapper}>
+                            <div className={classes.Title}>Group ID</div>
+                        </div>
+                        <input className={classes.Input} type="text" placeholder="Group ID Here" onChange={(e) => setGroupId(e.target.value)}/>
+                        <div className={classes.SaveBtn} onClick={handleJoinAction}>Join</div>
+                        <div className={classes.CancelBtn} onClick={handleCloseJoin}>Cancel</div>
+                    </div>
+                </div>
+            </div> : <></>}
         </div>
     )
 }
