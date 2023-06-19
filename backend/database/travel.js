@@ -115,8 +115,7 @@ const edit = (
       "UPDATE `TRAVEL` SET group_id = ?, name = ?, date = ?, people_num = ?, description = ?, done = ? WHERE travel_id = ?",
     ];
 
-    if (group_id) 
-      user_id = null;
+
 
     var values = [
       [
