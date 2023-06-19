@@ -95,7 +95,7 @@ const DoneTravel = ({ targetTravel }) => {
         <div>
             <button style={{ marginRight: '10px' }} onClick={handleClick}>
                 {/* {isDone ? "已完成" : "未完成"} */}
-                {isDone ? "Done" : "Undone"}
+                {!isDone ? "Done" : "Undone"}
 
             </button>
 

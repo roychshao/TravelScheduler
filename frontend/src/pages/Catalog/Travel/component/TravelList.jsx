@@ -29,20 +29,12 @@ const TravelList = () => {
     const handleDetailClose = () => {
         setDetailOpen(false);
     };
-    // const handleSetButton = (travel) => {
-    //     setSelectedTravel(travel)
-    //     setShowTravelDetail(true);
-    // };
+
     // ====================SET====================
 
     return (
         <div>
-            {/* {showTravelDetail && (
-                <div>
-                    <TravelDetail travelid={selectedTravel.travel_id} />
-                </div>
-            )} */}
-
+       
             <List>
                 <ListItem>
                     <ListItemText primary="Travel Name" />

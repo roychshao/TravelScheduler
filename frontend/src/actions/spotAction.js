@@ -45,7 +45,7 @@ export const getTravelSpots = (travelId) => {
 
 export const createspot = (spotName, spotLatitude, spotLongitude, spotLocation, spotRank, spotOpenhour, spotTagName, spotArriveId, spotStartTime, spotArriveTime, travelId) => {
     return (dispatch) => {
-        console.log("有嗎");
+        console.log("CREATE:",spotName);
         const hostUrl = import.meta.env.VITE_HOST_URL;
         axios.post(`${hostUrl}/api/spot/create`,
             {
@@ -80,6 +80,11 @@ export const createspot = (spotName, spotLatitude, spotLongitude, spotLocation, 
 
 
 export const updatespot = (hasId, spotId, spotDescription, spotTagName, spotTransportation, spotStartTime, spotArriveTime, spotArriveId, spotTravelId) => {
+   console.log("UPDATE:",hasId);
+    console.log(spotStartTime);
+    console.log(spotArriveTime);
+    console.log(spotArriveId);
+
     return (dispatch) => {
         const hostUrl = import.meta.env.VITE_HOST_URL;
         axios.put(
@@ -111,6 +116,7 @@ export const updatespot = (hasId, spotId, spotDescription, spotTagName, spotTran
 };
 
 export const deletespot = (hasId) => {
+    console.log("DELETE:",hasId);
   return (dispatch) => {
       const hostUrl = import.meta.env.VITE_HOST_URL;
       axios.delete(
