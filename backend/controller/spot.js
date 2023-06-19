@@ -12,6 +12,10 @@ const parseEscape = (value) => {
     var length = value ? value.length : 0;
     return (length >= 6 && typeof value.slice(1, length - 1) === "boolean") ? value.slice(1, length - 1) : value;
 };
+// const parseNULL = (value) => {
+//     var length = value ? value.length
+//     return (typeof value.slice(1, length - 1) === "boolean") ? value.slice(1, length - 1) : value;
+// };
 
 export const get1 = async (req, res, next) => {
 
@@ -82,7 +86,7 @@ export const get2 = async (req, res, next) => {
     const { travel_id } = req.headers;
     await Spot.get2(travel_id)
         .then(result => {
-            var has_id = "null";
+            var has_id = null;
             var data = {
                 "spots": []
             };
@@ -90,9 +94,6 @@ export const get2 = async (req, res, next) => {
                 let foundIndex = -1;
               
                 for (let i = 0; i < result[0].length; i++) {
-                    if(result[0][i].arrive_id === null){
-                        result[0][i].arrive_id = "null";
-                    }
                     if (result[0][i].arrive_id === has_id) {
                         foundIndex = i;
                         var spot = {
