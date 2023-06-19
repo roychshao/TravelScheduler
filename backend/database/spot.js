@@ -210,15 +210,17 @@ const update_spot = (spot_id, spot_description) => {
     })
 }
 
-const delete_ = (has_id) => {
+const delete_ = (has_id, origin_next_spot, origin_last_spot) => {
     return new Promise( async (resolve, reject) => {
 
         var sqls = [
-            "DELETE FROM `HAS` WHERE has_id = ?;"
+            "DELETE FROM `HAS` WHERE has_id = ?",
+            "UPDATE `HAS` SET arrive_id = ? WHERE has_id = ?"
         ];
 
         var values = [
-            [has_id]
+            [has_id],
+            [origin_next_spot, origin_last_spot]
         ];
 
         await useTransaction(sqls, values).then(results => {

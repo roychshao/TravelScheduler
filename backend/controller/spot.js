@@ -217,11 +217,11 @@ export const create = async (req, res, next) => {
 
 export const update = async (req, res, next) => {
 
-    const { user_id } = req?.session; 
-    // const user_id = "user_id_1";
+    // const { user_id } = req?.session; 
+    const user_id = "user_id_1";
     const { has_id, spot_id, spot_description, spot_tag_name, spot_transportation, spot_start_time, spot_arrive_time, arrive_id, travel_id, spot_star } = req.body;
 
-    var origin_last_spot;//, origin_next_spot, new_last_spot;
+    var origin_last_spot;
     var origin_next_spot;
     var new_last_spot;
 
@@ -274,24 +274,42 @@ export const update = async (req, res, next) => {
         next();
     })
     await Spot.update_has(has_id, travel_id, spot_id, spot_tag_name, spot_transportation, spot_start_time, spot_arrive_time, arrive_id, origin_last_spot, origin_next_spot, new_last_spot)
-        .then(result => {
-            req.data = JSON.stringify({});
-            next();
-        }).catch(err => {
-            req.err = err;
-            next();
-        })
+    .then(result => {
+        req.data = JSON.stringify({});
+        next();
+    }).catch(err => {
+        req.err = err;
+        next();
+    })
 }
 
 export const delete_ = async (req, res, next) => {
 
     const { has_id } = req.body;
-    await Spot.delete_(has_id)
-        .then(result => {
-            req.data = JSON.stringify({});
-            next();
-        }).catch(err => {
-            req.err = err;
-            next();
-        })
+
+    var origin_last_spot;
+    var origin_next_spot;
+    
+    await Spot.get_origin_spots(has_id)
+    .then(result => {
+        if(result[0][0]){
+            origin_last_spot = parseEscape(result[0][0].has_id); 
+        }else{
+            origin_last_spot = "";
+        }
+        origin_next_spot = parseEscape(result[1][0].arrive_id);
+        next();
+    }).catch(err => {
+        req.err = err;
+        next();
+    })
+
+    await Spot.delete_(has_id, origin_next_spot, origin_last_spot)
+    .then(result => {
+        req.data = JSON.stringify({});
+        next();
+    }).catch(err => {
+        req.err = err;
+        next();
+    })
 }
