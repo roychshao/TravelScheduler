@@ -122,7 +122,6 @@ const Map2 = ({ close, renew, travelid, arriveID }) => {
 
     const callMsg = () => {
         setShowAddMsg(true);
-        renew();
     }
 
     const closeMsg = () => {

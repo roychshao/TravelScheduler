@@ -12,9 +12,11 @@ import StepLabel from '@mui/material/StepLabel'
 import StepContent from '@mui/material/StepContent'
 import Button from '@mui/material/Button'
 import Paper from '@mui/material/Paper'
+import { Dialog, DialogTitle, DialogActions, DialogContent } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import { getTravelSpots, deletespot } from '../../../actions/spotAction.js'
 import { makeStyles } from '@mui/styles'
+import { set } from 'date-fns'
 
 const useStyles = makeStyles({
 	map: {
@@ -116,7 +118,6 @@ const TravelDetail = ({ travelid }) => {
 	const [passedIndex, setPassedIndex] = useState(0);
 	const [passedArriveID, setPassedArriveID] = useState("");
 	const [showEditSpot, setShowEditSpot] = useState(false);
-	const [renewSchedule, setRenewSchedule] = useState(false);
 	const [showDialog, setShowDialog] = useState(false); // State for dialog visibility
 	const classes = useStyles();
 
@@ -130,6 +131,8 @@ const TravelDetail = ({ travelid }) => {
 	const spotFromBackend = useSelector(state => state.spotReducer.spots);
 	const spotLoaded = spotFromBackend[0]?.length > 0; // 检查 spotFromBackend 是否有数据
 	const spotChange = spotFromBackend[0]?.length;
+
+
 	// if(spotLoaded){
 	// 	setSteps(spotFromBackend[0].map((spot) => ({label: spot.spot_name})));
 	// }
@@ -141,16 +144,16 @@ const TravelDetail = ({ travelid }) => {
 			}));
 			console.log(spotFromBackend[0]);
 
-			// console.log(renewSchedule);
-			console.log(newSteps);
+			//console.log(newSteps);
 			setSteps(newSteps);
 		}
 	}, [spotLoaded, spotChange]);
 
 	const deleteInfo = (index) => {
-		dispatcher(deletespot(spotFromBackend[0][index].has_id));
-		setRenewSchedule(true);
-	  };
+		dispatcher(deletespot(spotFromBackend[0][index].has_id, travelid));
+		// setSteps((prevSteps) => prevSteps.filter((_, i) => i !== index));
+		setShowDialog(true);
+	}
 
 	// Function to open the dialog
 	const openDialog = () => {
@@ -164,20 +167,18 @@ const TravelDetail = ({ travelid }) => {
 
 	const callMap = () => {
 		setShowMap(true);
-		setRenewSchedule(false);
 	};
-	const closeMap = () => {
-		console.log(renewSchedule);		
+	const closeMap = () => {	
+		//setSpotChange(spotFromBackend[0]?.length);
 		setShowMap(false);
 	};
 
 	const callMap2 = (index) => {
 		setShowMap2(true);
 		setPassedArriveID(spotFromBackend[0][index].arrive_id)
-		setRenewSchedule(false);
 	};
 	const closeMap2 = () => {
-		console.log(renewSchedule);		
+		//setSpotChange(spotFromBackend[0]?.length);
 		setShowMap2(false);
 	};
 
@@ -188,7 +189,6 @@ const TravelDetail = ({ travelid }) => {
 			}));
 			setSteps(newSteps);
 		}
-		setRenewSchedule(true);
 	}
 
 	//進入查看路徑
@@ -312,6 +312,16 @@ const TravelDetail = ({ travelid }) => {
 					</div>
 				</div>
 			)}
+
+			<Dialog open={showDialog} onClose={closeDialog}>
+				<DialogTitle>刪除成功</DialogTitle>
+				<DialogContent>
+					<p>您已成功刪除該地點</p>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={closeDialog}>完成</Button>
+				</DialogActions>
+			</Dialog>
 			</div>
 
 	);

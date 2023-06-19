@@ -5,6 +5,7 @@ import ArriveTime from '../Time/ArriveTime.jsx';
 import StartTime from '../Time/StartTime.jsx';
 import { makeStyles } from '@mui/styles';
 import { Button, TextField, FormControl, Select, InputLabel, MenuItem} from '@mui/material'
+import { Dialog, DialogTitle, DialogActions, DialogContent } from '@mui/material'
 import { getTravelSpots, updatespot } from '../../../../../actions/spotAction.js';
 
 import { useDispatch, useSelector } from 'react-redux'
@@ -65,6 +66,7 @@ const useStyles = makeStyles({
 const EditSpot = ({close, index, travelid}) => {
   const [showStartTime, setShowStartTime] = useState(false);
   const [showArriveTime, setShowArriveTime] = useState(false);
+  const [showDialog, setShowDialog] = useState(false); // State for dialog visibility
 
   const classes = useStyles();  
 
@@ -118,7 +120,7 @@ const EditSpot = ({close, index, travelid}) => {
     console.log(startTimeFormatted);
     console.log(arriveTimeFormatted);
    
-
+    console.log("arriveID: ", selectedPlaceInfo.arrive_id);
     //要改成用edit api
     dispatcher(
       updatespot(
@@ -133,6 +135,11 @@ const EditSpot = ({close, index, travelid}) => {
         travelid
       )
     );
+    setShowDialog(true);
+
+  }
+
+  const closeDialog = () => {
     close();
   }
 
@@ -218,13 +225,26 @@ const EditSpot = ({close, index, travelid}) => {
               description: e.target.value
             }))}
           />
+          <div>
+            <Button variant="contained" color="warning" style={{ marginTop: '10px' }} size="small">我的最愛</Button>
+          </div>
           {startTime && arriveTime && (
             <Button onClick={passToBackend} variant="outlined" color="success" style={{ marginTop: '10px' }}>確定</Button>
           )}
         </div>
       )}
       <br />
-      
+
+      <Dialog open={showDialog} onClose={closeDialog}>
+				<DialogTitle>編輯成功</DialogTitle>
+				<DialogContent>
+					<p>您已成功編輯該地點</p>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={closeDialog}>完成</Button>
+				</DialogActions>
+			</Dialog>
+
       {showStartTime && (
         <div className={classes.time}>
           <div className={classes.timeContent}>
