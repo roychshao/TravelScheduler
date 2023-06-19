@@ -252,9 +252,7 @@ export const update = async (req, res, next) => {
         }else{
             origin_last_spot = null
         }    
-        if(result[1][0].arrive_id === null){
-            origin_next_spot = result[1][0].arrive_id;
-        }else if(arrive_id === result[1][0].arrive_id){
+        if(result[1][0].arrive_id === arrive_id){
             origin_next_spot = has_id;
         }else{
             origin_next_spot = parseEscape(result[1][0].arrive_id);
