@@ -123,12 +123,13 @@ const TravelDetail = ({ travelid }) => {
 
 
 	useEffect(() => {
-		console.log("detail:", travelid);
 		dispatcher(getTravelSpots(travelid));
+		console.log("detail:", travelid);
 	}, [travelid]);
 
 	//call /api/spot/get2
 	const spotFromBackend = useSelector(state => state.spotReducer.spots);
+	console.log(spotFromBackend[0]);
 	const spotLoaded = spotFromBackend[0]?.length > 0; // 检查 spotFromBackend 是否有数据
 	const spotChange = spotFromBackend[0]?.length;
 
@@ -138,16 +139,19 @@ const TravelDetail = ({ travelid }) => {
 	// }
 
 	useEffect(() => {
+		console.log(travelid);
 		if (spotLoaded) {
 			const newSteps = spotFromBackend[0].map((spot) => ({
 				label: spot.spot_name,
 			}));
 			console.log(spotFromBackend[0]);
-
 			//console.log(newSteps);
 			setSteps(newSteps);
 		}
-	}, [spotLoaded, spotChange]);
+		else{
+			setSteps([]);
+		}
+	}, [spotLoaded, spotChange, travelid]);
 
 	const deleteInfo = (index) => {
 		dispatcher(deletespot(spotFromBackend[0][index].has_id, travelid));
