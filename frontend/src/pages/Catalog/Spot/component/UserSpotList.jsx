@@ -16,6 +16,7 @@ const UserSpotList = () => {
 
     useEffect(() => {
         dispatcher(getUserSpots())
+        console.log(star_spots);
     }, []);
 
     // console.log(star_spots);
@@ -23,6 +24,7 @@ const UserSpotList = () => {
 
     const handleClickOpen = (spot) => {
         setSelectedSpot(spot);
+        // console.log(selectedSpot);
         setOpen(true);
     };
 
@@ -37,7 +39,7 @@ const UserSpotList = () => {
 
     return (
         <div>
-                    {/* ==============================UnDone============================================ */}
+            {/* ==============================UnDone============================================ */}
 
             <h2>"尚未去過的地點"</h2>
             {undone_spots.length > 0 ? (
@@ -58,16 +60,16 @@ const UserSpotList = () => {
                                         <ListItemText primary={`Name: ${selectedSpot && selectedSpot.spot_name}`} />
                                     </ListItem>
                                     <ListItem>
-                                        <ListItemText primary={`Location: ${selectedSpot && selectedSpot.location}`} />
+                                        <ListItemText primary={`Location: ${selectedSpot && selectedSpot.spot_location}`} />
                                     </ListItem>
                                     <ListItem>
-                                        <ListItemText primary={`Rank: ${selectedSpot && selectedSpot.ranking}`} />
+                                        <ListItemText primary={`Rank: ${selectedSpot && selectedSpot.spot_rank}`} />
                                     </ListItem>
                                     <ListItem>
-                                        <ListItemText primary={`Openhour: ${selectedSpot && selectedSpot.open_hour}`} />
+                                        <ListItemText primary={`Openhour: ${selectedSpot && selectedSpot.spot_openhour}`} />
                                     </ListItem>
                                     <ListItem>
-                                        <ListItemText primary={`Description: ${selectedSpot && selectedSpot.description}`} />
+                                        <ListItemText primary={`Description: ${selectedSpot && selectedSpot.spot_description}`} />
                                     </ListItem>
 
                                 </List>
@@ -91,7 +93,7 @@ const UserSpotList = () => {
                 </ListItem>
             )}
 
-        {/* ==============================Done============================================ */}
+            {/* ==============================Done============================================ */}
             <h2>"去過的地點"</h2>
             {done_spots.length > 0 ? (
                 done_spots[0].map((spot) => (
@@ -102,7 +104,6 @@ const UserSpotList = () => {
                         <Dialog open={open} onClose={handleClose}>
                             <DialogTitle>{selectedSpot && selectedSpot.spot_name}</DialogTitle>
                             <DialogContent>
-
                                 <List>
                                     <ListItem>
                                         <ListItemText primary={`SpotID: ${selectedSpot && selectedSpot.spot_id}`} />
@@ -111,16 +112,16 @@ const UserSpotList = () => {
                                         <ListItemText primary={`Name: ${selectedSpot && selectedSpot.spot_name}`} />
                                     </ListItem>
                                     <ListItem>
-                                        <ListItemText primary={`Location: ${selectedSpot && selectedSpot.location}`} />
+                                        <ListItemText primary={`Location: ${selectedSpot && selectedSpot.spot_location}`} />
                                     </ListItem>
                                     <ListItem>
-                                        <ListItemText primary={`Rank: ${selectedSpot && selectedSpot.ranking}`} />
+                                        <ListItemText primary={`Rank: ${selectedSpot && selectedSpot.spot_rank}`} />
                                     </ListItem>
                                     <ListItem>
-                                        <ListItemText primary={`Openhour: ${selectedSpot && selectedSpot.open_hour}`} />
+                                        <ListItemText primary={`Openhour: ${selectedSpot && selectedSpot.spot_openhour}`} />
                                     </ListItem>
                                     <ListItem>
-                                        <ListItemText primary={`Description: ${selectedSpot && selectedSpot.description}`} />
+                                        <ListItemText primary={`Description: ${selectedSpot && selectedSpot.spot_description}`} />
                                     </ListItem>
 
                                 </List>
@@ -144,7 +145,7 @@ const UserSpotList = () => {
                 </ListItem>
             )}
 
-        {/* ==============================Star============================================ */}
+            {/* ==============================Star============================================ */}
 
             <h2>"收藏的地點"</h2>
             {star_spots.length > 0 ? (
@@ -165,16 +166,16 @@ const UserSpotList = () => {
                                         <ListItemText primary={`Name: ${selectedSpot && selectedSpot.spot_name}`} />
                                     </ListItem>
                                     <ListItem>
-                                        <ListItemText primary={`Location: ${selectedSpot && selectedSpot.location}`} />
+                                        <ListItemText primary={`Location: ${selectedSpot && selectedSpot.spot_location}`} />
                                     </ListItem>
                                     <ListItem>
-                                        <ListItemText primary={`Rank: ${selectedSpot && selectedSpot.ranking}`} />
+                                        <ListItemText primary={`Rank: ${selectedSpot && selectedSpot.spot_rank}`} />
                                     </ListItem>
                                     <ListItem>
-                                        <ListItemText primary={`Openhour: ${selectedSpot && selectedSpot.open_hour}`} />
+                                        <ListItemText primary={`Openhour: ${selectedSpot && selectedSpot.spot_openhour}`} />
                                     </ListItem>
                                     <ListItem>
-                                        <ListItemText primary={`Description: ${selectedSpot && selectedSpot.description}`} />
+                                        <ListItemText primary={`Description: ${selectedSpot && selectedSpot.spot_description}`} />
                                     </ListItem>
 
                                 </List>

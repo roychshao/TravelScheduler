@@ -87,17 +87,17 @@ const TravelList = () => {
         //                             <Button variant="contained" color="warning" style={{ marginRight: '10px' }} onClick={() => handleDetailClickOpen(travel.travel_id)}>
         //                                 SET
         //                             </Button>
-        //                             <Dialog open={detailOpen} onClose={handleDetailClose}>
-        //                                 <DialogTitle>Travel Detail</DialogTitle>
-        //                                 <DialogContent>
-        //                                     <div>
-        //                                         <TravelDetail travelid={selectedTravelId} />
-        //                                     </div>
-        //                                 </DialogContent>
-        //                                 <DialogActions>
-        //                                     <Button onClick={handleDetailClose}>Cancel</Button>
-        //                                 </DialogActions>
-        //                             </Dialog>
+        // <Dialog open={detailOpen} onClose={handleDetailClose}>
+        //     <DialogTitle>Travel Detail</DialogTitle>
+        //     <DialogContent>
+        //         <div>
+        //             <TravelDetail travelid={selectedTravelId} />
+        //         </div>
+        //     </DialogContent>
+        //     <DialogActions>
+        //         <Button onClick={handleDetailClose}>Cancel</Button>
+        //     </DialogActions>
+        // </Dialog>
         //                         </td>
         //                         <td>
         //                             <EditTravel targetTravel={travel} />
@@ -117,68 +117,69 @@ const TravelList = () => {
         // </div>
         <div>
             <table style={{ width: '100%' }}>
-                <tr style={{ backgroundColor: 'lightblue' }}>
-                    <td style={{ flex: '1', padding: '10px', textAlign: 'center' }}>
-                        <ListItemText primary="Travel Name" />
-                    </td>
-                    <td style={{ flex: '1', padding: '10px', textAlign: 'center' }}>
-                        <ListItemText primary="Creator Name" />
-                    </td>
-                    <td style={{ flex: '1', padding: '10px', textAlign: 'center' }}>
-                        <ListItemText primary="Travel Date" />
-                    </td>
-                    <td style={{ flex: '1', padding: '10px', textAlign: 'center' }}></td>
-                </tr>
-                {sortedTravels.length > 0 ? (
-                    sortedTravels.map((travel) => {
-                        const groupName = getGroupName(travel.group_id);
-                        return (
-                            <tr key={travel.travel_id} >
-                                <td style={{ padding: '10px', textAlign: 'center' }}>
-                                    <ListItemText primary={travel.travel_name} />
-                                </td>
-                                <td style={{ padding: '10px', textAlign: 'center' }}>
-                                    <ListItemText primary={groupName} />
-                                </td>
-                                <td style={{ padding: '10px', textAlign: 'center' }}>
-                                    <ListItemText primary={getFormattedDate(travel.travel_date)} />
-                                </td>
-                                <td style={{ padding: '0 10px', textAlign: 'center' }}>
-                                    <DoneTravel targetTravel={travel} />
-                                </td>
-                                <td style={{ padding: '0 10px', textAlign: 'center' }}>
-                                    <Button variant="contained" color="warning" style={{ marginRight: '10px' }} onClick={() => handleDetailClickOpen(travel.travel_id)}>
-                                        SET
-                                    </Button>
-                                    <Dialog open={detailOpen} onClose={handleDetailClose}>
-                                        <DialogTitle>Travel Detail</DialogTitle>
-                                        <DialogContent>
-                                            <div>
-                                                <TravelDetail travelid={selectedTravelId} />
-                                            </div>
-                                        </DialogContent>
-                                        <DialogActions>
-                                            <Button onClick={handleDetailClose}>Cancel</Button>
-                                        </DialogActions>
-                                    </Dialog>
-                                </td>
-                                <td style={{ padding: '0 10px', textAlign: 'center' }}>
-                                    <EditTravel targetTravel={travel} />
-                                </td>
-                                <td style={{ padding: '0 10px', textAlign: 'center' }}>
-                                    <DeleteTravel travelId={travel.travel_id} />
-                                </td>
-                            </tr>
-                        );
-                    })
-                ) : (
-                    <tr>
-                        <td colSpan="4" style={{ textAlign: 'center' }}>
-                            <ListItemText primary="No travels available" />
-                        </td>
+                <thead>
+                    <tr style={{ backgroundColor: 'lightblue' }}>
+                        <th style={{ flex: '1', padding: '10px', textAlign: 'center' }}>
+                            <ListItemText primary="Travel Name" />
+                        </th>
+                        <th style={{ flex: '1', padding: '10px', textAlign: 'center' }}>
+                            <ListItemText primary="Creator Name" />
+                        </th>
+                        <th style={{ flex: '1', padding: '10px', textAlign: 'center' }}>
+                            <ListItemText primary="Travel Date" />
+                        </th>
+                        <th style={{ flex: '1', padding: '10px', textAlign: 'center' }}>
+                            <ListItemText primary="Action" />
+                        </th>
                     </tr>
-                )}
+                </thead>
+                <tbody>
+                    {sortedTravels.length > 0 ? (
+                        sortedTravels.map((travel) => {
+                            const groupName = getGroupName(travel.group_id);
+                            return (
+                                <tr key={travel.travel_id}>
+                                    <td style={{ padding: '10px', textAlign: 'center' }}>
+                                        <ListItemText primary={travel.travel_name} />
+                                    </td>
+                                    <td style={{ padding: '10px', textAlign: 'center' }}>
+                                        <ListItemText primary={groupName} />
+                                    </td>
+                                    <td style={{ padding: '10px', textAlign: 'center' }}>
+                                        <ListItemText primary={getFormattedDate(travel.travel_date)} />
+                                    </td>
+                                    <td style={{ textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'space-evenly' }}>
+                                        <DoneTravel targetTravel={travel} />
+                                        <Button variant="contained" color="warning" style={{ marginRight: '10px' }} onClick={() => handleDetailClickOpen(travel.travel_id)}>
+                                            SET
+                                        </Button>
+                                        <Dialog open={detailOpen} onClose={handleDetailClose}>
+                                            <DialogTitle>Travel Detail</DialogTitle>
+                                            <DialogContent>
+                                                <div>
+                                                    <TravelDetail travelid={selectedTravelId} />
+                                                </div>
+                                            </DialogContent>
+                                            <DialogActions>
+                                                <Button onClick={handleDetailClose}>Cancel</Button>
+                                            </DialogActions>
+                                        </Dialog>
+                                        <EditTravel targetTravel={travel} />
+                                        <DeleteTravel travelId={travel.travel_id} />
+                                    </td>
+                                </tr>
+                            );
+                        })
+                    ) : (
+                        <tr>
+                            <td colSpan="4" style={{ textAlign: 'center' }}>
+                                <ListItemText primary="No travels available" />
+                            </td>
+                        </tr>
+                    )}
+                </tbody>
             </table>
+
         </div>
     )
 }
