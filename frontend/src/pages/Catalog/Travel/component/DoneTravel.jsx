@@ -60,7 +60,7 @@ const DoneTravel = ({ targetTravel }) => {
 
         if (targetTravelDone === "0") {
             setTargetTravelDone("1");
-        } 
+        }
         else if (targetTravelDone === "1") {
             setTargetTravelDone("0");
         }
@@ -84,7 +84,7 @@ const DoneTravel = ({ targetTravel }) => {
                 targetGroupId,
             )
         );
-    },[targetTravelDone]);
+    }, [targetTravelDone]);
 
     const handleClick = () => {
         setIsDone(!isDone);
@@ -93,11 +93,10 @@ const DoneTravel = ({ targetTravel }) => {
 
     return (
         <div>
-            <button style={{ marginRight: '10px' }} onClick={handleClick}>
-                {/* {isDone ? "已完成" : "未完成"} */}
-                {isDone ? "Done" : "Undone"}
-
+            <button style={{ marginRight: '10px', width: '70px', height: '30px' }} onClick={handleClick}>
+                {!isDone ? "Done" : "Undone"}
             </button>
+
 
         </div>
     );

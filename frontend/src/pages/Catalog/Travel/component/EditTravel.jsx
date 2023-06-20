@@ -133,7 +133,7 @@ const EditTravel = ({ targetTravel }) => {
                             value={targetTravelDescription}
                             onChange={(e) => setTargetTravelDescription(e.target.value)}
                         />
-                        <Select
+                        {/* <Select
                             margin="dense"
                             label="Group Name"
                             type="text"
@@ -149,7 +149,27 @@ const EditTravel = ({ targetTravel }) => {
                                     </MenuItem>
                                 ) : null
                             ))}
+                        </Select> */}
+                        <InputLabel htmlFor="group-select">Group Name</InputLabel>
+                        <Select
+                            margin="dense"
+                            labelId="group-select"
+                            id="group-select"
+                            fullWidth
+                            value={targetGroupId || ""}
+                            onChange={(e) => setTargetGroupId(e.target.value)}
+                        >
+                            <MenuItem value="">無</MenuItem>
+                            {Array.isArray(groups) && Array.isArray(groups[0]) && groups[0].map(group => (
+                                group.group_name && group.group_id ? (
+                                    <MenuItem key={group.group_id} value={group.group_id}>
+                                        {group.group_name}
+                                    </MenuItem>
+                                ) : null
+                            ))}
                         </Select>
+
+
                         {/* <TextField
                             autoFocus
                             margin="dense"

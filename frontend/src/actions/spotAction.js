@@ -45,7 +45,7 @@ export const getTravelSpots = (travelId) => {
 
 export const createspot = (spotName, spotLatitude, spotLongitude, spotLocation, spotRank, spotOpenhour, spotTagName, spotArriveId, spotStartTime, spotArriveTime, travelId) => {
     return (dispatch) => {
-        console.log("有嗎");
+        console.log("CREATE:",spotName);
         const hostUrl = import.meta.env.VITE_HOST_URL;
         axios.post(`${hostUrl}/api/spot/create`,
             {
@@ -79,9 +79,15 @@ export const createspot = (spotName, spotLatitude, spotLongitude, spotLocation, 
 };
 
 
-export const updatespot = (hasId, spotId, spotDescription, spotTagName, spotTransportation, spotStartTime, spotArriveTime, spotArriveId, spotTravelId) => {
+export const updatespot = (hasId, spotId, spotDescription, spotTagName, spotTransportation, spotStartTime, spotArriveTime, spotArriveId, spotTravelId,spotStar) => {
+   console.log("UPDATE:",hasId);
+    console.log(spotStartTime);
+    console.log(spotArriveTime);
+    console.log(spotArriveId);
+
     return (dispatch) => {
         const hostUrl = import.meta.env.VITE_HOST_URL;
+        console.log("UPDATE ACTION:",spotStar);
         axios.put(
             `${hostUrl}/api/spot/update`,
             {
@@ -94,7 +100,7 @@ export const updatespot = (hasId, spotId, spotDescription, spotTagName, spotTran
                 spot_arrive_time: spotArriveTime,
                 arrive_id: spotArriveId,
                 travel_id: spotTravelId,
-                spot_star: null
+                spot_star: spotStar,
             },
             { withCredentials: true }
         )

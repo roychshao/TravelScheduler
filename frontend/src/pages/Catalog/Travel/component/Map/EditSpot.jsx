@@ -63,12 +63,12 @@ const useStyles = makeStyles({
   }
 });
 
-const EditSpot = ({close, index, travelid}) => {
+const EditSpot = ({ close, index, travelid }) => {
   const [showStartTime, setShowStartTime] = useState(false);
   const [showArriveTime, setShowArriveTime] = useState(false);
   const [showDialog, setShowDialog] = useState(false); // State for dialog visibility
 
-  const classes = useStyles();  
+  const classes = useStyles();
 
   const dispatcher = useDispatch();
 
@@ -76,9 +76,10 @@ const EditSpot = ({close, index, travelid}) => {
   const spotFromBackend = useSelector(state => state.spotReducer.spots);
   useEffect(() => {
     dispatcher(getTravelSpots(travelid));
-  },[travelid])
-  console.log("travelID: ", travelid);
-  console.log(spotFromBackend[0]);
+    // console.log(spotFromBackend);
+  }, [travelid])
+  // console.log("travelID: ", travelid);
+  // console.log(spotFromBackend[0]);
   const [selectedPlaceInfo, setSelectedPlaceInfo] = useState({
     arrive_id: spotFromBackend[0][index].arrive_id,
     has_id: spotFromBackend[0][index].has_id,
@@ -93,7 +94,8 @@ const EditSpot = ({close, index, travelid}) => {
     transportation: spotFromBackend[0][index].spot_transportation,
     start_time: spotFromBackend[0][index].spot_start_time,
     arrive_time: spotFromBackend[0][index].spot_arrive_time,
-    description: spotFromBackend[0][index].spot_description
+    description: spotFromBackend[0][index].spot_description,
+    spotStar: spotFromBackend[0][index].spot_star || false,
   });
   const preStartDateTime = new Date(selectedPlaceInfo.start_time);
   const preStartTime = preStartDateTime.toLocaleString('en-US', {
@@ -132,7 +134,8 @@ const EditSpot = ({close, index, travelid}) => {
         startTimeFormatted,           //填寫適當的 spotStartTime 值   (datetime)
         arriveTimeFormatted,          //填寫適當的 spotArriveTime 值  (datetime)
         selectedPlaceInfo.arrive_id,
-        travelid
+        travelid,
+        selectedPlaceInfo.spotStar,
       )
     );
     setShowDialog(true);
@@ -192,28 +195,46 @@ const EditSpot = ({close, index, travelid}) => {
             <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
               <InputLabel id="demo-select-small-label">Travel Mode</InputLabel>
               <Select
-              labelId="demo-select-small-label"
-              id="demo-select-small"
-              value={selectedPlaceInfo.transportation}
-              label="TravelMode"
-              onChange={(e) =>
-                setSelectedPlaceInfo((prevState) => ({
-                  ...prevState,
-                  transportation: e.target.value
-                }))}
+                labelId="demo-select-small-label"
+                id="demo-select-small"
+                value={selectedPlaceInfo.transportation}
+                label="TravelMode"
+                onChange={(e) =>
+                  setSelectedPlaceInfo((prevState) => ({
+                    ...prevState,
+                    transportation: e.target.value
+                  }))}
               >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value={'DRIVING'}>開車</MenuItem>
-              <MenuItem value={'WALKING'}>步行</MenuItem>
-              <MenuItem value={'BICYCLING'}>腳踏車</MenuItem>
-              <MenuItem value={'TRANSIT'}>大眾運輸</MenuItem>
-              <MenuItem value={'TWO_WHEELER'}>機車</MenuItem>
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                <MenuItem value={'DRIVING'}>開車</MenuItem>
+                <MenuItem value={'WALKING'}>步行</MenuItem>
+                <MenuItem value={'BICYCLING'}>腳踏車</MenuItem>
+                <MenuItem value={'TRANSIT'}>大眾運輸</MenuItem>
+                <MenuItem value={'TWO_WHEELER'}>機車</MenuItem>
               </Select>
             </FormControl>
           </div>
-          <br/>
+          <div>
+            <Button
+              variant="contained"
+              color="warning"
+              style={{ marginTop: '10px' }}
+              size="small"
+              onClick={() =>
+                setSelectedPlaceInfo((prevState) => (
+                  console.log("A",setSelectedPlaceInfo.spotStar),
+                  {
+                  ...prevState,
+                  spotStar: !prevState.spotStar
+                }))
+              }
+            >
+              {selectedPlaceInfo.spotStar ? '移除我的最愛' : '加入我的最愛'}
+            </Button>
+          </div>
+          <br />
           <TextField
             margin="dense"
             label="Description"
@@ -248,7 +269,7 @@ const EditSpot = ({close, index, travelid}) => {
       {showStartTime && (
         <div className={classes.time}>
           <div className={classes.timeContent}>
-              <StartTime Close={closeStartTime} updateStartTime={updateStartTime}/>
+            <StartTime Close={closeStartTime} updateStartTime={updateStartTime} />
           </div>
         </div>
       )}
@@ -256,7 +277,7 @@ const EditSpot = ({close, index, travelid}) => {
       {showArriveTime && (
         <div className={classes.time}>
           <div className={classes.timeContent}>
-              <ArriveTime Close={closeArriveTime} updateArriveTime={updateArriveTime}/>
+            <ArriveTime Close={closeArriveTime} updateArriveTime={updateArriveTime} />
           </div>
         </div>
       )}

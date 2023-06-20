@@ -16,6 +16,7 @@ const UserSpotList = () => {
 
     useEffect(() => {
         dispatcher(getUserSpots())
+        console.log(star_spots);
     }, []);
 
     // console.log(star_spots);
@@ -23,6 +24,7 @@ const UserSpotList = () => {
 
     const handleClickOpen = (spot) => {
         setSelectedSpot(spot);
+        // console.log(selectedSpot);
         setOpen(true);
     };
 
@@ -32,16 +34,18 @@ const UserSpotList = () => {
 
 
 
- 
+
 
 
     return (
         <div>
-            <h2>"收藏的地點"</h2>
-            {star_spots.length > 0 ? (
-                star_spots[0].map((spot) => (
+            {/* ==============================UnDone============================================ */}
+
+            <h2>"尚未去過的地點"</h2>
+            {undone_spots.length > 0 ? (
+                undone_spots[0].map((spot) => (
                     <div key={spot.spot_id}>
-                        <Button variant="contained" color="primary" onClick={() => handleClickOpen(spot)}>
+                        <Button variant="contained" color="primary" style={{ marginBottom: '10px' }} onClick={() => handleClickOpen(spot)}>
                             {spot.spot_name}
                         </Button>
                         <Dialog open={open} onClose={handleClose}>
@@ -56,16 +60,122 @@ const UserSpotList = () => {
                                         <ListItemText primary={`Name: ${selectedSpot && selectedSpot.spot_name}`} />
                                     </ListItem>
                                     <ListItem>
-                                        <ListItemText primary={`Location: ${selectedSpot && selectedSpot.location}`} />
+                                        <ListItemText primary={`Location: ${selectedSpot && selectedSpot.spot_location}`} />
                                     </ListItem>
                                     <ListItem>
-                                        <ListItemText primary={`Rank: ${selectedSpot && selectedSpot.ranking}`} />
+                                        <ListItemText primary={`Rank: ${selectedSpot && selectedSpot.spot_rank}`} />
                                     </ListItem>
                                     <ListItem>
-                                        <ListItemText primary={`Openhour: ${selectedSpot && selectedSpot.open_hour}`} />
+                                        <ListItemText primary={`Openhour: ${selectedSpot && selectedSpot.spot_openhour}`} />
                                     </ListItem>
                                     <ListItem>
-                                        <ListItemText primary={`Description: ${selectedSpot && selectedSpot.description}`} />
+                                        <ListItemText primary={`Description: ${selectedSpot && selectedSpot.spot_description}`} />
+                                    </ListItem>
+
+                                </List>
+
+                            </DialogContent>
+                            <DialogActions>
+                                <Button variant="contained" color="primary" onClick={handleClose}>Cancel</Button>
+                                {/* <UpdateSpot targetSpot={spot}/> */}
+                                {/* <DeleteSpot targetSpot={spot}/> */}
+                                {/* <Button onClick={confirmDelete}>Delete</Button> */}
+                                {/* <Button onClick={handleUpdateDialogOpen}>Update</Button> */}
+
+                            </DialogActions>
+                        </Dialog>
+
+                    </div>
+                ))
+            ) : (
+                <ListItem>
+                    <ListItemText primary="No spots available" />
+                </ListItem>
+            )}
+
+            {/* ==============================Done============================================ */}
+            <h2>"去過的地點"</h2>
+            {done_spots.length > 0 ? (
+                done_spots[0].map((spot) => (
+                    <div key={spot.spot_id}>
+                        <Button variant="contained" color="primary" style={{ marginBottom: '10px' }} onClick={() => handleClickOpen(spot)}>
+                            {spot.spot_name}
+                        </Button>
+                        <Dialog open={open} onClose={handleClose}>
+                            <DialogTitle>{selectedSpot && selectedSpot.spot_name}</DialogTitle>
+                            <DialogContent>
+                                <List>
+                                    <ListItem>
+                                        <ListItemText primary={`SpotID: ${selectedSpot && selectedSpot.spot_id}`} />
+                                    </ListItem>
+                                    <ListItem>
+                                        <ListItemText primary={`Name: ${selectedSpot && selectedSpot.spot_name}`} />
+                                    </ListItem>
+                                    <ListItem>
+                                        <ListItemText primary={`Location: ${selectedSpot && selectedSpot.spot_location}`} />
+                                    </ListItem>
+                                    <ListItem>
+                                        <ListItemText primary={`Rank: ${selectedSpot && selectedSpot.spot_rank}`} />
+                                    </ListItem>
+                                    <ListItem>
+                                        <ListItemText primary={`Openhour: ${selectedSpot && selectedSpot.spot_openhour}`} />
+                                    </ListItem>
+                                    <ListItem>
+                                        <ListItemText primary={`Description: ${selectedSpot && selectedSpot.spot_description}`} />
+                                    </ListItem>
+
+                                </List>
+
+                            </DialogContent>
+                            <DialogActions>
+                                <Button variant="contained" color="primary" onClick={handleClose}>Cancel</Button>
+                                {/* <UpdateSpot targetSpot={spot}/> */}
+                                {/* <DeleteSpot targetSpot={spot}/> */}
+                                {/* <Button onClick={confirmDelete}>Delete</Button> */}
+                                {/* <Button onClick={handleUpdateDialogOpen}>Update</Button> */}
+
+                            </DialogActions>
+                        </Dialog>
+
+                    </div>
+                ))
+            ) : (
+                <ListItem>
+                    <ListItemText primary="No spots available" />
+                </ListItem>
+            )}
+
+            {/* ==============================Star============================================ */}
+
+            <h2>"收藏的地點"</h2>
+            {star_spots.length > 0 ? (
+                star_spots[0].map((spot) => (
+                    <div key={spot.spot_id}>
+                        <Button variant="contained" color="primary" style={{ marginBottom: '10px' }} onClick={() => handleClickOpen(spot)}>
+                            {spot.spot_name}
+                        </Button>
+                        <Dialog open={open} onClose={handleClose}>
+                            <DialogTitle>{selectedSpot && selectedSpot.spot_name}</DialogTitle>
+                            <DialogContent>
+
+                                <List>
+                                    <ListItem>
+                                        <ListItemText primary={`SpotID: ${selectedSpot && selectedSpot.spot_id}`} />
+                                    </ListItem>
+                                    <ListItem>
+                                        <ListItemText primary={`Name: ${selectedSpot && selectedSpot.spot_name}`} />
+                                    </ListItem>
+                                    <ListItem>
+                                        <ListItemText primary={`Location: ${selectedSpot && selectedSpot.spot_location}`} />
+                                    </ListItem>
+                                    <ListItem>
+                                        <ListItemText primary={`Rank: ${selectedSpot && selectedSpot.spot_rank}`} />
+                                    </ListItem>
+                                    <ListItem>
+                                        <ListItemText primary={`Openhour: ${selectedSpot && selectedSpot.spot_openhour}`} />
+                                    </ListItem>
+                                    <ListItem>
+                                        <ListItemText primary={`Description: ${selectedSpot && selectedSpot.spot_description}`} />
                                     </ListItem>
 
                                 </List>
