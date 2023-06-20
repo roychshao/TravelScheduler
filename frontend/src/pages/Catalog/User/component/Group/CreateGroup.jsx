@@ -216,7 +216,7 @@ const CreateGroup = () => {
     const [groupName, setGroupName] = useState("");
     const [groupId, setGroupId] = useState("");
     const userId = useSelector(state => state.loginReducer.userId);
-    // const [groupDescription, setGroupDescription] = useState("");
+    const [groupDescription, setGroupDescription] = useState("");
 
 
     const handleClickOpen = () => {
