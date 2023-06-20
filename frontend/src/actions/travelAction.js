@@ -3,11 +3,12 @@ import axios from "axios";
 export const gettravel = () => {
     return (dispatch) => {
         const hostUrl = import.meta.env.VITE_HOST_URL;
-        axios.get(`${hostUrl}/api/travel/`, { withCredentials: true }).then(res => res = res.data)
+        axios.get(`${hostUrl}/api/travel/get1`, { withCredentials: true })
+            .then(res => res = res.data)
             .then(res => {
                 if (res.success === true) {
                     dispatch({
-                        type: "Get",
+                        type: "GetTravels",
                         payload: res.data.travels
                     })
                 }
@@ -25,6 +26,7 @@ export const createtravel = (
 ) => {
     return (dispatch) => {
         const hostUrl = import.meta.env.VITE_HOST_URL;
+        groupId = groupId === "" ? null : groupId;
         axios.post(`${hostUrl}/api/travel/create`, {
             travel_name: travelName,
             group_id: groupId,
@@ -35,7 +37,7 @@ export const createtravel = (
         }, { withCredentials: true }).then(res => res = res.data)
             .then(res => {
                 if (res.success === true) {
-                    //dispatch(gettravel());
+                    dispatch(gettravel());
                 }
             }).catch(err => {
                 console.log('error: ' + err.message);
@@ -43,22 +45,24 @@ export const createtravel = (
     }
 }
 
-export const edittravel = (travelId, travelName, travelDate, travelPeoplenum, travelDescription, groupId, travelDone) => {
+export const edittravel = (travelId, travelName, travelDate, travelPeoplenum, travelDescription, travelDone, groupId) => {
     return (dispatch) => {
         const hostUrl = import.meta.env.VITE_HOST_URL;
+        // const formattedDate = new Date(travelDate).toISOString().slice(0, 16);
+        console.log(travelDate);
         axios.put(`${hostUrl}/api/travel/edit`, {
             travel_id: travelId,
             travel_name: travelName,
             travel_date: travelDate,
             travel_peoplenum: travelPeoplenum,
             travel_description: travelDescription,
-            group_id: groupId,
             travel_done: travelDone,
+            group_id: groupId,
 
         }, { withCredentials: true }).then(res => res = res.data)
             .then(res => {
                 if (res.success === true) {
-                    // dispatch(gettravel());
+                    dispatch(gettravel());
                 }
             }).catch(err => {
                 console.log('error: ' + err.message);
@@ -76,7 +80,7 @@ export const deletetravel = (travelId) => {
         }, { withCredentials: true }).then(res => res = res.data)
             .then(res => {
                 if (res.success === true) {
-                    // dispatch(gettravel());
+                    dispatch(gettravel());
                 }
             }).catch(err => {
                 console.log('error: ' + err.message);

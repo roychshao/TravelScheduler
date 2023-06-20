@@ -64,6 +64,12 @@ const InfoCard = () => {
             boxShadow: '0px 2px 4px rgba(210, 188, 131, 0.15), inset 0px -8px 8px rgba(249, 248, 244, 0.9)',
             borderRadius: '30px',
         },
+        ConnectWay: {
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'left',
+            alignItems: 'center',
+        },
         Username: {
             fontFamily: 'Paytone One',
             fontStyle: 'normal',
@@ -113,13 +119,13 @@ const InfoCard = () => {
                     <div className={classes.UsernameWrapper}>
                         <div className={classes.Username}>{displayName}</div>
                     </div>
-                    <div className={classes.Container}>
+                    <div className={classes.ConnectWay}>
                         <img src={EmailIcon} alt="email icon"/>
                         <div className={classes.IdandMail}>{email}</div>
                     </div>
-                    <div className={classes.Container}>
+                    <div className={classes.ConnectWay}>
                         <img src={UserIcon} alt="user icon"/>
-                        <div className={classes.IdandMail}>copy userId to clipboard</div>
+                        <div className={classes.IdandMail}>copy userId</div>
                         <img src={CopyIcon} alt="CopyIcon" onClick={copyUserId}/>
                     </div>
                 </div>

@@ -27,7 +27,7 @@ body: {
 
 ## Travel
 
-#### GET /api/travel
+#### GET /api/travel/get1
 
 request
 
@@ -57,12 +57,12 @@ body: {
 }
 ```
 
-#### GET /api/travel/spot
+#### GET /api/travel/get2
 
 request
 
 ```
-body: {
+headers: {
     travel_id,
 }
 ```
@@ -80,7 +80,8 @@ body: {
         travel_peoplenum,
         travel_description,
         travel_done,
-        group_id,
+        id,     //if (user_id == null) id = group_id  else id = user_id
+        name,   //if (user_id == null) name = group_name  else id = user_name
         days: [
             {
                 spots: [
@@ -245,7 +246,7 @@ body: {
 request
 
 ```
-body: {
+headers: {
     travel_id,
 }
 ```

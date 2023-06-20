@@ -40,13 +40,15 @@ const GroupDetails = ({group_id, group_name, group_creator_name, group_peoplenum
             // top: '15%',
             // left: '10%',
             width: '80%',
-            height: '70%',
+            height: '80%',
             maxHeight: '468px',
             zIndex: 1001,
             background: 'linear-gradient(180deg, rgba(249, 249, 244) 0%, rgba(241, 238, 230) 100%)',
             border: '0.5px solid #F9F8F4',
             boxShadow: 'inset 1px 1px 1px rgba(244, 249, 249, 0.55)',
             borderRadius: '10px',
+            paddingTop: '10px',
+            paddingBottom: '10px',
         },
         InfoWrapper: {
             display: 'flex',
@@ -180,7 +182,7 @@ const GroupDetails = ({group_id, group_name, group_creator_name, group_peoplenum
             letterSpacing: '0.15em',
             color: 'rgba(152, 152, 152, 0.6)',
         },
-        SaveBtn: {
+        CopyGroupIdBtn: {
             width: '90%',
             height: '45px',
             background: 'linear-gradient(180deg, rgba(255, 184, 0, 0.6) 0%, #FFB800 100%)',
@@ -195,7 +197,7 @@ const GroupDetails = ({group_id, group_name, group_creator_name, group_peoplenum
             letterSpacing: '0.15em',
             color: '#F5F5F5',
             textShadow: '0px 1px 4px rgba(210, 188, 131, 0.15)',
-            marginTop: '5%',
+            marginTop: '10px',
         },
         DeleteBtn: {
             width: '90%',
@@ -212,7 +214,7 @@ const GroupDetails = ({group_id, group_name, group_creator_name, group_peoplenum
             letterSpacing: '0.15em',
             color: '#F5F5F5',
             textShadow: '0px 1px 4px rgba(210, 188, 131, 0.15)',
-            marginTop: '5%',
+            marginTop: '10px',
         },
         CancelBtn: {
             fontFamily: 'Paytone One',
@@ -224,7 +226,7 @@ const GroupDetails = ({group_id, group_name, group_creator_name, group_peoplenum
             letterSpacing: '0.15em',
             color: '#FFB800',
             border: '0px',
-            marginTop: '5%',
+            marginTop: '10px',
         }
     })
 
@@ -266,6 +268,14 @@ const GroupDetails = ({group_id, group_name, group_creator_name, group_peoplenum
         dispatcher(deletegroup(group_id));
     }
 
+    const copyGroupId = () => {
+        navigator.clipboard.writeText(group_id).then(() => {
+            console.log("write to clipboard successfully");
+        }).catch(err => {
+            console.log(err);
+        })
+    }
+
     return (
         <div className={classes.Container}>
             <div className={classes.Overlay} onClick={handleClose}></div>
@@ -305,7 +315,7 @@ const GroupDetails = ({group_id, group_name, group_creator_name, group_peoplenum
                         )
                     })}
                 </div>
-                {/* <button className={classes.SaveBtn}>Save</button> */}
+                <button className={classes.CopyGroupIdBtn} onClick={copyGroupId}>Copy GroupID</button>
                 <button className={classes.DeleteBtn} onClick={() => setOpenDeleteDialog(true)}>Delete Group</button>
                 <button className={classes.CancelBtn} onClick={handleClose}>Cancel</button>
                 { openDeleteDialog ? <DeleteDialog
