@@ -1,6 +1,5 @@
 const initialState = {
     spots: []
-
 };
 
 
@@ -10,8 +9,7 @@ const spotReducer = (state = initialState, action) => {
         case 'GetTravelSpot':
             return {
                 ...state,
-                spots: [action.payload]
-
+                spots: [action.payload.spots],
             };
         default:
             return state;

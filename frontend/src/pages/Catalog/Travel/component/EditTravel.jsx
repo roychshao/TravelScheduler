@@ -12,6 +12,8 @@ import {
     DialogActions,
     Select,
     MenuItem,
+    InputLabel, // 新增
+
 } from '@mui/material';
 
 const EditTravel = ({ targetTravel }) => {
@@ -59,22 +61,18 @@ const EditTravel = ({ targetTravel }) => {
     };
 
     const handleUpdate = () => {
-           // 將 travelDate 轉換為指定格式
-        //    const formattedDate = new Date(targetTravelDate).toISOString().slice(0, 16);
-        //    const doneValue = targetTravelDone.toString(); // 將目標旅遊的 done 值轉換為字串
+        // 將 travelDate 轉換為指定格式
+        const formattedDate = new Date(targetTravelDate).toLocaleDateString();
 
-        //    console.log(targetGroupId);
-        // call api here
         dispatcher(
             edittravel(
                 targetTravelId,
                 targetTravelName,
-                targetTravelDate,
+                formattedDate,
                 targetTravelPeoplenum,
                 targetTravelDescription,
                 targetTravelDone,
                 targetGroupId,
-
             )
         );
         setOpen(false);
@@ -84,14 +82,14 @@ const EditTravel = ({ targetTravel }) => {
 
     return (
         <div>
-            <Button variant="contained" color="primary" onClick={handleClickOpen}>
+            <Button variant="contained" color="primary" style={{ marginRight: '10px' }} onClick={handleClickOpen}>
                 Update
             </Button>
             <Dialog open={open && !!targetTravel} onClose={handleClose}>
                 <DialogTitle>Update Travel</DialogTitle>
                 <DialogContent>
                     <form>
-                        <TextField
+                        {/* <TextField
                             autoFocus
                             margin="dense"
                             label="Travel ID"
@@ -99,7 +97,7 @@ const EditTravel = ({ targetTravel }) => {
                             fullWidth
                             value={targetTravelId}
                             onChange={(e) => setTargetTravelId(e.target.value)}
-                        />
+                        /> */}
                         <TextField
                             autoFocus
                             margin="dense"
@@ -135,7 +133,7 @@ const EditTravel = ({ targetTravel }) => {
                             value={targetTravelDescription}
                             onChange={(e) => setTargetTravelDescription(e.target.value)}
                         />
-                     <Select
+                        <Select
                             margin="dense"
                             label="Group Name"
                             type="text"
@@ -152,7 +150,7 @@ const EditTravel = ({ targetTravel }) => {
                                 ) : null
                             ))}
                         </Select>
-                        <TextField
+                        {/* <TextField
                             autoFocus
                             margin="dense"
                             label="Done or Not"
@@ -160,7 +158,7 @@ const EditTravel = ({ targetTravel }) => {
                             fullWidth
                             value={targetTravelDone}
                             onChange={(e) => setTargetTravelDone(e.target.value)}
-                        />
+                        /> */}
                     </form>
                 </DialogContent>
                 <DialogActions>

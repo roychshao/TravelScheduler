@@ -78,16 +78,14 @@ export const get1 = async (req, res, next) => {
 }
 
 export const get2 = async (req, res, next) => {
-    const { user_id } = req?.session;
-    const { travel_id } = req.body;
 
-    await Spot.get2(travel_id, user_id)
+    const { travel_id } = req.headers;
+    await Spot.get2(travel_id)
         .then(result => {
             var has_id = null;
             var data = {
                 "spots": []
             };
-            const starSpotArray = result[1].map(row => row.spot_id);
             while (result[0].length > 0) {
                 let foundIndex = -1;
               
@@ -222,8 +220,8 @@ export const create = async (req, res, next) => {
 
 export const update = async (req, res, next) => {
 
-    const { user_id } = req?.session; 
-    //const user_id = "user_id_1";
+    // const { user_id } = req?.session; 
+    const user_id = "user_id_1";
     const { has_id, spot_id, spot_description, spot_tag_name, spot_transportation, spot_start_time, spot_arrive_time, arrive_id, travel_id, spot_star } = req.body;
 
     var origin_last_spot;
@@ -231,16 +229,18 @@ export const update = async (req, res, next) => {
     var new_last_spot;
 
     if (spot_star) {
+        console.log("true");
         await Star.create(user_id, spot_id).then().catch(err => {
             req.err = err;
             next();
         })
-    } else if(spot_star === false)(
+    } else if(spot_star === false) {
+        console.log("false");
         await Star.delete_(user_id, spot_id).then().catch(err => {
             req.err = err;
             next();
         })
-    )
+    }
     await Spot.update_spot(spot_id, spot_description)
     .then(result => {
         req.data = JSON.stringify({});

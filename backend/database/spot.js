@@ -8,8 +8,8 @@ const get1 = (user_id) => {
     return new Promise( async (resolve, reject) => {
 
         var sqls = [
-            "SELECT * FROM SPOT WHERE spot_id in (SELECT DISTINCT spot_id FROM HAS WHERE spot_id NOT IN (SELECT spot_id FROM HAS INNER JOIN travel ON HAS.travel_id = travel.travel_id WHERE travel.done = true AND (travel.user_id = ? OR TRAVEL.group_id IN (SELECT group_id FROM CONTAIN WHERE user_id = ?)))GROUP BY spot_id);",
-            "SELECT * FROM SPOT WHERE spot_id in (SELECT DISTINCT spot_id FROM HAS WHERE spot_id IN (SELECT spot_id FROM HAS INNER JOIN travel ON HAS.travel_id = travel.travel_id WHERE travel.done = true AND (travel.user_id = ? OR TRAVEL.group_id IN (SELECT group_id FROM CONTAIN WHERE user_id = ?)))GROUP BY spot_id);",
+            "SELECT * FROM SPOT WHERE spot_id in (SELECT DISTINCT spot_id FROM HAS WHERE spot_id NOT IN (SELECT spot_id FROM HAS INNER JOIN TRAVEL ON HAS.travel_id = TRAVEL.travel_id WHERE TRAVEL.done = true AND (TRAVEL.user_id = ? OR TRAVEL.group_id IN (SELECT group_id FROM CONTAIN WHERE user_id = ?)))GROUP BY spot_id);",
+            "SELECT * FROM SPOT WHERE spot_id in (SELECT DISTINCT spot_id FROM HAS WHERE spot_id IN (SELECT spot_id FROM HAS INNER JOIN TRAVEL ON HAS.travel_id = TRAVEL.travel_id WHERE TRAVEL.done = true AND (TRAVEL.user_id = ? OR TRAVEL.group_id IN (SELECT group_id FROM CONTAIN WHERE user_id = ?)))GROUP BY spot_id);",
             "SELECT * FROM SPOT WHERE spot_id in (SELECT spot_id FROM STAR WHERE user_id = ?);"
         ]
 
@@ -28,7 +28,9 @@ const get1 = (user_id) => {
     });
 }
 
-const get2 = (travel_id, user_id) => {
+const get2 = (travel_id) => {
+    // console.log(travel_id);
+
     return new Promise( async (resolve, reject) => {
 
         var sqls = [
@@ -214,7 +216,7 @@ const update_spot = (spot_id, spot_description) => {
 
 const delete_ = (has_id, origin_next_spot, origin_last_spot) => {
     return new Promise( async (resolve, reject) => {
-
+        
         var sqls = [
             "DELETE FROM `HAS` WHERE has_id = ?",
             "UPDATE `HAS` SET arrive_id = ? WHERE has_id = ?"

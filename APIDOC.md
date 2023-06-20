@@ -62,7 +62,7 @@ body: {
 request
 
 ```
-body: {
+headers: {
     travel_id,
 }
 ```
@@ -246,7 +246,7 @@ body: {
 request
 
 ```
-body: {
+headers: {
     travel_id,
 }
 ```
