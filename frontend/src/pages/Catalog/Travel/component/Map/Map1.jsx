@@ -106,7 +106,7 @@ const Map1 = ({ close, renew, travelid }) => {
                 selectedPlaceInfo.rating,     //(float)
                 openingHoursString,           //填寫適當的 spotOpenhour 值    (string)
                 selectedPlaceInfo.types,      //填寫適當的 spotTagName 值     (string)
-                null,
+                null,                         //填寫適當的arriveID
                 startTimeFormatted,           //填寫適當的 spotStartTime 值   (datetime)
                 arriveTimeFormatted,          //填寫適當的 spotArriveTime 值  (datetime)
                 travelid,

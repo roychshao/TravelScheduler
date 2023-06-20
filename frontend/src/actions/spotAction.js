@@ -107,7 +107,7 @@ export const updatespot = (hasId, spotId, spotDescription, spotTagName, spotTran
             .then((res) => (res = res.data))
             .then((res) => {
                 if (res.success === true) {
-                    dispatch(getUserSpots());
+                    dispatch(getTravelSpots(spotTravelId));
                 }
             })
             .catch((err) => {
@@ -116,8 +116,7 @@ export const updatespot = (hasId, spotId, spotDescription, spotTagName, spotTran
     };
 };
 
-export const deletespot = (hasId) => {
-    console.log("DELETE:",hasId);
+export const deletespot = (hasId, travelId) => {
   return (dispatch) => {
       const hostUrl = import.meta.env.VITE_HOST_URL;
       axios.delete(
@@ -132,7 +131,7 @@ export const deletespot = (hasId) => {
           .then((res) => (res = res.data))
           .then((res) => {
               if (res.success === true) {
-                  dispatch(getUserSpots());
+                  dispatch(getTravelSpots(travelId));
               }
           })
           .catch((err) => {
