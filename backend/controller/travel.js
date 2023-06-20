@@ -11,7 +11,6 @@ export const create = async (req, res, next) => {
   const { user_id } = req?.session;
   const {
     group_id,
-    // user_id,
     travel_name,
     travel_date,
     travel_peoplenum,
@@ -127,7 +126,8 @@ export const get2 = async (req, res, next) => {
         travel_peoplenum : parseEscape(result[0][0].people_num),
         travel_description : parseEscape(result[0][0].travel_description),
         travel_done : parseEscape(result[0][0].done),
-        group_id : parseEscape(result[0][0].group_id),
+        id : parseEscape(result[0][0].id),
+        name : parseEscape(result[0][0].name),
         days: []
       };
 
@@ -142,7 +142,7 @@ export const get2 = async (req, res, next) => {
 
         day[spotDate].push({
           spot_id: row.spot_id,
-          spot_name: row.name,
+          spot_name: row.spot_name,
           spot_location: row.location,
           spot_rank: row.ranking,
           spot_openhour: row.open_hour,
@@ -151,7 +151,7 @@ export const get2 = async (req, res, next) => {
           spot_start_time: row.start_time,
           spot_transportation: row.transportation,
           spot_tag_id: row.tag_id,
-          spot_tag_name: row.name,
+          spot_tag_name: row.tag_name,
           spot_tag_color: row.color,
         });
       });
