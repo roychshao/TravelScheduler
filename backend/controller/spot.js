@@ -79,13 +79,16 @@ export const get1 = async (req, res, next) => {
 
 export const get2 = async (req, res, next) => {
 
+    const { user_id } = req?.session;
     const { travel_id } = req.headers;
-    await Spot.get2(travel_id)
+
+    await Spot.get2(user_id, travel_id)
         .then(result => {
             var has_id = null;
             var data = {
                 "spots": []
             };
+            const starSpotArray = result[1].map(row => row.spot_id);
             while (result[0].length > 0) {
                 let foundIndex = -1;
               

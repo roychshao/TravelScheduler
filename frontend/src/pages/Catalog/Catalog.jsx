@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import Group from './Group/Group.jsx'
 import Travel from './Travel/Travel.jsx'
 import User from './User/User.jsx'
 import Spot from './Spot/Spot.jsx'
@@ -36,7 +35,6 @@ const Catalog = () => {
                     <Route path="/user" element={<User/>}/>
                     <Route path="/travel" element={<Travel/>}/>
                     <Route path="/spot" element={<Spot/>}/>
-                    <Route path="/group" element={<Group/>}/>
                 </Routes>
                 <BottomNavbar/>
             </div>

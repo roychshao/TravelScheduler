@@ -62,13 +62,12 @@ const EditTravel = ({ targetTravel }) => {
 
     const handleUpdate = () => {
         // 將 travelDate 轉換為指定格式
-        const formattedDate = new Date(targetTravelDate).toLocaleDateString();
-
+        // const formattedDate = new Date(targetTravelDate).toLocaleDateString();
         dispatcher(
             edittravel(
                 targetTravelId,
                 targetTravelName,
-                formattedDate,
+                targetTravelDate,
                 targetTravelPeoplenum,
                 targetTravelDescription,
                 targetTravelDone,
@@ -115,15 +114,6 @@ const EditTravel = ({ targetTravel }) => {
                             fullWidth
                             value={targetTravelDate}
                             onChange={(e) => setTargetTravelDate(e.target.value)}
-                        />
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            label="New Number of People"
-                            type="text"
-                            fullWidth
-                            value={targetTravelPeoplenum}
-                            onChange={(e) => setTargetTravelPeoplenum(e.target.value)}
                         />
                         <TextField
                             margin="dense"

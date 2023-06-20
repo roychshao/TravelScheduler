@@ -28,7 +28,7 @@ const get1 = (user_id) => {
     });
 }
 
-const get2 = (travel_id) => {
+const get2 = (user_id, travel_id) => {
     // console.log(travel_id);
 
     return new Promise( async (resolve, reject) => {

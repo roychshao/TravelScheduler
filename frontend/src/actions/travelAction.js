@@ -49,6 +49,7 @@ export const edittravel = (travelId, travelName, travelDate, travelPeoplenum, tr
     return (dispatch) => {
         const hostUrl = import.meta.env.VITE_HOST_URL;
         // const formattedDate = new Date(travelDate).toISOString().slice(0, 16);
+        console.log(travelDate);
         axios.put(`${hostUrl}/api/travel/edit`, {
             travel_id: travelId,
             travel_name: travelName,

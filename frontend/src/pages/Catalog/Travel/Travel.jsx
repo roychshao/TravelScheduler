@@ -32,16 +32,13 @@ const Travel = () => {
 
             <p>Travel</p>
             <br />
-            <br />
 
             <CreateTravel />
 
             <br />
-            <br />
 
             {/* <EditTravel /> */}
 
-            <br />
             <br />
 
             {/* <DeleteTravel /> */}

@@ -72,12 +72,20 @@ const DoneTravel = ({ targetTravel }) => {
 
     useEffect(() => {
         // 將 travelDate 轉換為指定格式
-        const formattedDate = new Date(targetTravelDate).toLocaleDateString();
+        // const formattedDate = new Date(targetTravelDate).toLocaleDateString();
+        var date = new Date(targetTravelDate);
+        var year = date.getUTCFullYear();
+        var month = ('0' + (date.getUTCMonth() + 1)).slice(-2);
+        var day = ('0' + date.getUTCDate()).slice(-2);
+
+        // 创建 MySQL 日期格式字符串
+        date = year + '-' + month + '-' + day;
+        
         dispatcher(
             edittravel(
                 targetTravelId,
                 targetTravelName,
-                formattedDate,
+                date,
                 targetTravelPeoplenum,
                 targetTravelDescription,
                 targetTravelDone,

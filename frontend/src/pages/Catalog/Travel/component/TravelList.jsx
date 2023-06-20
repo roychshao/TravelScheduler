@@ -40,8 +40,14 @@ const TravelList = () => {
     }) : [];
 
     const getFormattedDate = (dateString) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('en-US');
+        var date = new Date(dateString);
+        var year = date.getUTCFullYear();
+        var month = ('0' + (date.getUTCMonth() + 1)).slice(-2);
+        var day = ('0' + date.getUTCDate()).slice(-2);
+
+        // 创建 MySQL 日期格式字符串
+        date = year + '-' + month + '-' + day;
+        return date;
     };
 
     const [selectedTravelId, setSelectedTravelId] = useState("");
