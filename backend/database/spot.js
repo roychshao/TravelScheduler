@@ -8,14 +8,14 @@ const get1 = (user_id) => {
     return new Promise( async (resolve, reject) => {
 
         var sqls = [
-            "SELECT * FROM SPOT WHERE spot_id in (SELECT spot_id FROM HAS WHERE spot_id NOT IN (SELECT spot_id FROM HAS INNER JOIN travel ON HAS.travel_id = travel.travel_id WHERE travel.done = true AND travel.user_id = ?)GROUP BY spot_id);",
-            "SELECT * FROM SPOT WHERE spot_id in (SELECT spot_id FROM HAS WHERE spot_id IN (SELECT spot_id FROM HAS INNER JOIN travel ON HAS.travel_id = travel.travel_id WHERE travel.done = true AND travel.user_id = ?)GROUP BY spot_id);",
+            "SELECT * FROM SPOT WHERE spot_id in (SELECT DISTINCT spot_id FROM HAS WHERE spot_id NOT IN (SELECT spot_id FROM HAS INNER JOIN travel ON HAS.travel_id = travel.travel_id WHERE travel.done = true AND (travel.user_id = ? OR TRAVEL.group_id IN (SELECT group_id FROM CONTAIN WHERE user_id = ?)))GROUP BY spot_id);",
+            "SELECT * FROM SPOT WHERE spot_id in (SELECT DISTINCT spot_id FROM HAS WHERE spot_id IN (SELECT spot_id FROM HAS INNER JOIN travel ON HAS.travel_id = travel.travel_id WHERE travel.done = true AND (travel.user_id = ? OR TRAVEL.group_id IN (SELECT group_id FROM CONTAIN WHERE user_id = ?)))GROUP BY spot_id);",
             "SELECT * FROM SPOT WHERE spot_id in (SELECT spot_id FROM STAR WHERE user_id = ?);"
         ]
 
         var values = [
-            [user_id],
-            [user_id],
+            [user_id, user_id],
+            [user_id, user_id],
             [user_id]
         ]
 
@@ -28,15 +28,17 @@ const get1 = (user_id) => {
     });
 }
 
-const get2 = (travel_id) => {
+const get2 = (travel_id, user_id) => {
     return new Promise( async (resolve, reject) => {
 
         var sqls = [
-            "SELECT HAS.has_id, HAS.arrive_id, SPOT.spot_id, SPOT.name as spot_name, SPOT.location, longtitude, latitude, HAS.transportation, SPOT.ranking, SPOT.open_hour, SPOT.description, TAG.name as spot_tag_name, TAG.color, TRAVEL.done from SPOT JOIN HAS ON HAS.spot_id = SPOT.spot_id JOIN TAG ON HAS.tag_name = TAG.name JOIN TRAVEL ON TRAVEL.travel_id = HAS.travel_id where TRAVEL.travel_id = ?;"
+            "SELECT HAS.has_id, HAS.arrive_id, SPOT.spot_id, SPOT.name as spot_name, SPOT.location, longtitude, latitude, HAS.transportation, SPOT.ranking, SPOT.open_hour, SPOT.description, TAG.name as spot_tag_name, TAG.color, HAS.start_time, HAS.arrive_time, TRAVEL.done from SPOT JOIN HAS ON HAS.spot_id = SPOT.spot_id JOIN TAG ON HAS.tag_name = TAG.name JOIN TRAVEL ON TRAVEL.travel_id = HAS.travel_id where TRAVEL.travel_id = ?;",
+            "SELECT STAR.spot_id FROM `STAR` where user_id = ?"
         ]
 
         var values = [
-            [travel_id]
+            [travel_id],
+            [user_id]
         ]
 
         await useTransaction(sqls, values).then(results => {
@@ -210,15 +212,17 @@ const update_spot = (spot_id, spot_description) => {
     })
 }
 
-const delete_ = (has_id) => {
+const delete_ = (has_id, origin_next_spot, origin_last_spot) => {
     return new Promise( async (resolve, reject) => {
 
         var sqls = [
-            "DELETE FROM `HAS` WHERE has_id = ?;"
+            "DELETE FROM `HAS` WHERE has_id = ?",
+            "UPDATE `HAS` SET arrive_id = ? WHERE has_id = ?"
         ];
 
         var values = [
-            [has_id]
+            [has_id],
+            [origin_next_spot, origin_last_spot]
         ];
 
         await useTransaction(sqls, values).then(results => {
